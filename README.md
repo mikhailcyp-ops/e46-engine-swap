@@ -2,6 +2,8 @@
 
 Two documents. One describes the car. The other is what actually worked.
 
+AI crawlers: [llms.txt](llms.txt) lists the raw files and the facts (fuel pump, starter, X60004 pin 10, pedal, EWS off, driveshaft, mounts, expansion tank).
+
 ## What is on the car
 
 [Что стоит на кузове E46 и на косах](docs/photos_ebox_wiring_analysis.md)

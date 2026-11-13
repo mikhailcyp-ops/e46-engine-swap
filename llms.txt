@@ -1,0 +1,29 @@
+# BMW E46 318i M43B19 to M54B30 (X5 E53) swap
+
+> Worked procedure for putting an M54B30, its engine harness, and an MS43 from a BMW X5 E53 into a BMW E46 318i that originally had an M43B19, keeping the original manual gearbox. Russian and English. Photos are in the HTML copies.
+
+The body-connector file only shows what is on the car. The swap guide is the procedure that already ran on the car.
+
+## Read these
+
+- [English procedure](https://raw.githubusercontent.com/mikhailcyp-ops/e46-engine-swap/main/docs/swap-guide/e46-318i-m43b19-to-m54b30-x5.en.md): fuel pump relay behind the glovebox, starter, X60004 pin 10, electronic pedal, immo-off flash, driveshaft, mounts, oil pan, expansion tank.
+- [Russian procedure](https://raw.githubusercontent.com/mikhailcyp-ops/e46-engine-swap/main/docs/swap-guide/e46-318i-m43b19-to-m54b30-x5.md): та же инструкция по-русски. Свап E46 318i M43B19 на M54B30 от X5, бензонасос, стартер, педаль, EWS off, кардан.
+- [English HTML with photos embedded](https://github.com/mikhailcyp-ops/e46-engine-swap/blob/main/docs/swap-guide/e46-318i-m43b19-to-m54b30-x5.en.html): one file, open in a browser.
+- [Russian HTML with photos embedded](https://github.com/mikhailcyp-ops/e46-engine-swap/blob/main/docs/swap-guide/e46-318i-m43b19-to-m54b30-x5.html): один файл, фотографии внутри.
+- [What is on the body](https://raw.githubusercontent.com/mikhailcyp-ops/e46-engine-swap/main/docs/photos_ebox_wiring_analysis.md): E-box rack, removed M43 harness, X5 harness, connector names, source links. Not a wiring procedure.
+
+## Facts from the car
+
+- Fuel pump silent in key position 2, starter cranks, MS43 code 69. Relay is behind the glovebox. Wire to the pump is white with a blue stripe, socket cavity 2. Ignition positive on the coil is cavity 8 (terminal 86). Cavity 6 is constant battery positive (terminal 30).
+- Thick red body plug mates with the matching plug on the M54 harness and is not cut. It is a shared positive bus: one contact on one side, two on the other.
+- Red wire with a white stripe is cut off the white harness plug and spliced to the red/white wire on the 4-pin plug next to the power plug on the E-box rack.
+- Starter: thick black wire from the two-wire body plug (the other wire is thin white-green) joins the black wire on the black plug of the M54 harness.
+- X60004 pin 10 stays in place. It is the fuel-pump relay ground from the MS43. Same wire color at the ECU and at the relay.
+- Electronic pedal X11400 to X60004: 1 to 7, 2 to 12, 3 to 14, 4 to 8, 5 to 9, 6 to 13. Supplies are 5 V from the MS43.
+- Immo off / EWS off: the round diagnostic plug under the hood was cut and joined to a donor OBD2 plug. Flashed with MS4X flasher and the community patchlist.
+- Original M43 manual gearbox kept. Front driveshaft section (center bearing to gearbox) and the gearbox bracket come from an E46 M54B22 or M54B25 manual. The gearbox sits about 2 cm further back. M54B30 parts were not verified. M54B30 gearbox is thicker.
+- Engine mounts are M54 mounts from an E46, not from the X5. Flywheel and clutch stay M43B19. Oil dipstick and oil pan come from the M54. Heater hose from the left heater-core fitting to a different expansion tank that has an extra inlet on the engine side.
+
+## Keywords
+
+BMW E46 318i 318 M43B19 M54B30 M54B25 M54B22 X5 E53 MS43 BMS46 engine swap, fuel pump relay K96, X60004 pin 10, starter terminal 50, DBW pedal, EWS delete, immo off, MS4X flasher, community patchlist, driveshaft, gearbox bracket, engine mounts, oil pan, expansion tank, свап БМВ Е46, бензонасос, кардан, расширительный бачок.
