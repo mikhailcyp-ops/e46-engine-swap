@@ -1,0 +1,294 @@
+<div style="float:right;">__TOC__</div>
+Here is an overview of connectors used in the engine harness of M52TU and M54.
+
+Feel free to add partnumbers if you find them useful.
+
+==Sensor Connectors==
+=====BMW M54 Crankshaft Sensor=====
+*'''ECU Side:''' Kostal 3 Way Sealed SLK 2,8 Black Female Connector (Coding A) - '''09-4413-91 // 9441391''' 
+**Pin: Female SLK 2,8 Sealed Tin Plated Terminal 0.5-0.75mm² - '''22140492060'''
+**Seal: Individual Loose Cable Seal SLK 2,8 Series 1.5-2.5mm² - '''10800444523'''
+*'''Sensor Side:''' Kostal 3 Way Sealed SLK 2,8 Black Male Connector (Coding A) - '''1-968408-2 // '''
+**Pin: Male SLK 2,8 Sealed Silver Plated Terminal 0.5-0.75mm² - '''10124499140'''
+**Seal: Individual Loose Cable Seal SLK 2,8 Series 1.5-2.5mm² - '''10800444523'''
+
+{| class="wikitable"
+|-
+! Pin 1
+|| M_KWG (Sensor Ground)
+|-
+! Pin 2
+|| P_KWG (Crankshaft Sensor Signal Output)
+|-
+! Pin 3
+|| U_HR (+12V Voltage Input)
+|}
+
+=====BMW M54 MAF Sensor (MS43)=====
+3-pin Junior Mini Timer 2.8mm
+
+Plug: 12521427222 (BMW)
+
+Pin: 12521427612
+
+Cover: 12521707749
+
+{| class="wikitable"
+|-
+! Pin 1
+|| M_HFM (Sensor Ground)
+|-
+! Pin 2
+|| A_HFM (MAF Signal Output)
+|-
+! Pin 3
+|| U_HR (+12V Voltage Input)
+|}
+
+=====BMW M54 MAF Sensor (MS45)=====
+Plug: 12527512935 (BMW) (Sealing grommet to go with the plug is part # 61138366245)
+
+Pin: 12527545852
+
+{| class="wikitable"
+|-
+! Pin 1
+|| +5V Voltage Input?
+|-
+! Pin 2
+|| +12V Voltage Input?
+|-
+! Pin 3
+|| A_HFM (MAF Signal Output)
+|-
+! Pin 4
+|| Unused
+|-
+! Pin 5
+|| M_HFM (Sensor Ground)
+|-
+! Pin 6
+|| IAT Sensor Output
+|}
+
+=====BMW B58 TMAP Sensor (13628637900)=====
+Plug: 18302411427 (BMW) (8 509 441-02)
+
+AliExpress: 7549032-02
+
+{| class="wikitable"
+|-
+! Pin 1
+|| A_TNDK (Temperature Signal After Throttlebody)
+|-
+! Pin 2
+|| U_5V_2 (Sensor Supply Voltage +5V)
+|-
+! Pin 3
+|| M_PNDK (Sensor Ground)
+|-
+! Pin 4
+|| A_PNDK (Absolute Pressure Signal After Throttlebody)
+|}
+
+=====Audi RS4 MAF Sensor (0280218067)=====
+Also matches S4 B5 MAF sensor
+*Plug: 1J0973775A (VAG)
+*Socket: 1J0973824  (VAG)
+
+{| class="wikitable"
+|-
+! Pin 1
+|| IAT Sensor Output
+|-
+! Pin 2
+|| +12V Input Voltage
+|-
+! Pin 3
+|| Common Ground
+|-
+! Pin 4
+|| +5V Input Voltage
+|-
+! Pin 5
+|| MAF Sensor Output
+|}
+
+=====Bosch MAP Sensor 20-300kPa (0261230119)=====
+3-pin Bosch Compact 1.1a  2.8mm
+*Plug: Bosch 1928403966
+*Pin: Bosch 1928498056
+*Cover: Bosch 12521707749
+
+{| class="wikitable"
+|-
+! Pin 1
+|| +5V Voltage Input
+|-
+! Pin 2
+|| Ground
+|-
+! Pin 3
+|| Signal Output
+|}
+
+=====Mercedes M275 MAP Sensor (Bosch 0261230191)=====
+Alternative Part Number: 0051537228
+*Plug: BMW 61132359998  / TE 1-968402-1
+
+{| class="wikitable"
+|-
+! Pin 1
+|| +5V Voltage Input
+|-
+! Pin 2
+|| Signal Output
+|-
+! Pin 3
+|| Ground
+|}
+
+=====BMW M52TU M54 Lambda Sensor Connectors=====
+These connectors describe the probe side. ECU wiring side is exactly the other connector.
+
+'''Pre Catalytic Converter Lambda Probe:'''
+*Housing: BMW 12521740485
+*Pin: BMW 12521744077
+*Sealing: BMW 1427785
+*Cable Protection: BMW 12521703593
+
+[[File:Pre Cat Lambda Sensor Connector.png|450px]]
+
+
+'''Post Catalytic Converter Lambda Probe :'''
+*Housing: BMW 12521740486
+*Pin: BMW 1703596
+*Sealing: BMW 1427785
+*Cable Protection: BMW 12521703593
+
+[[File:Post Cat Lambda Sensor Connector.png|450px]]
+
+===== BMW E46, E39 etc. Throttle Pedal (35426786282 / 35426786281) =====
+
+Plug: 61138383300 (BMW) / 1-967616-1 (TE) / 7M0973119 (VAG)
+
+Socket: 1-967587-3 (TE)
+
+Pins: 61136931880 (BMW) / 5-963727-1 (TE)
+
+Pins with wire: 61130005197 (BMW)
+
+{| class="wikitable"
+|-
+! Pin 1
+|| M_FWG1 (Sensor Ground 1)
+|-
+! Pin 2
+|| M_FWG2 (Sensor Ground 2)
+|-
+! Pin 3
+|| U_FWG2 (Hall Sensor 2)
+|-
+! Pin 4
+|| A_FWG1 (Sensor Supply Voltage +5V 1)
+|-
+! Pin 5
+|| U_FWG1 (Hall Sensor 1)
+|-
+! Pin 6
+|| A_FWG2 (Sensor Supply Voltage +5V 2)
+|}
+
+==Throttle Body Connectors==
+
+===== BMW M52TU Throttle Body =====
+Throttlebody Side: 09331003 (Kostal) / 12521740615 (BMW)
+
+Wiring Harness Side: 12521740615 (BMW)
+
+{| class="wikitable"
+|-
+! Pin 1
+|| U_DKWF1 (Supply Voltage +5V Sensor 1)
+|-
+! Pin 2
+|| U_DKWF2 (Supply Voltage +5V Sensor 2)
+|-
+! Pin 3
+|| A_FWG2 (Signal Pedal Value Sensor 2)
+|-
+! Pin 4
+|| M_DKWF2 (Ground Sensor 2)
+|-
+! Pin 5
+|| A_DKG2 (Signal Throttle Position Sensor 2)
+|-
+! Pin 6
+|| A_FWG1 (Signal Pedal Value Sensor 1)
+|-
+! Pin 7
+|| M_DKWF1 (Ground Sensor 1)
+|-
+! Pin 8
+|| A_DKG1 (Signal Throttle Position Sensor 1)
+|-
+! Pin 9
+|| T_MDK1 (Throttle Body Motor 1)
+|-
+! Pin 10
+|| T_MDK2 (Throttle Body Motor 2)
+|}
+
+===== BMW M54 Throttle Body =====
+Plug: 1J0973713 (VAG) / 12527505669 (BMW)
+
+Socket: 3B0973813 (VAG)
+
+{| class="wikitable"
+|-
+! Pin 1
+|| A_DKG1 (Potentiometer 1)
+|-
+! Pin 2
+|| U_DKG (Sensor Supply Voltage +5V)
+|-
+! Pin 3
+|| T_MDK1 (Actuator 1)
+|-
+! Pin 4
+|| A_DKG2 (Potentiometer 2)
+|-
+! Pin 5
+|| T_MDK2 (Actuator 1)
+|-
+! Pin 6
+|| M_DKG (Sensor Ground)
+|}
+
+===== BMW B58 Throttle Body (13548623324) =====
+The B58 throttle body adapts perfectly to MS43 and can therefore be used on a B58 manifold that has been adapted for use on an M5X engine.
+
+Plug: 12527635615 (BMW) / 1-1718646-1 (TE) / 4F0973706 (VAG)
+
+Pins: 61138600419 (BMW) / 2141970-1 (TE)
+
+{| class="wikitable"
+|-
+! Pin 1
+|| T_MDK1 (Actuator 1)
+|-
+! Pin 2
+|| T_MDK2 (Actuator 2)
+|-
+! Pin 3
+|| A_DKG1 (Hall Sensor 1)
+|-
+! Pin 4
+|| M_DKG (Sensor Ground)
+|-
+! Pin 5
+|| U_5V_1 (Sensor Supply Voltage +5V)
+|-
+! Pin 6
+|| A_DKG2 (Hall Sensor 2)
+|}

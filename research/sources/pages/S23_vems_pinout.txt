@@ -1,0 +1,361 @@
+
+
+A6000 Digital motor electronics control unit
+Connector location views
+Number
+X-pin,
+colour
+Description
+X60001
+9-pin,
+black
+Plug connector Digital motor electronics control
+unit Module 1
+X60002
+24-pin,
+black
+Plug connector Digital motor electronics control
+unit Module 2
+X60003
+52-pin,
+black
+Plug connector Digital motor electronics control
+unit Module 3
+X60004
+40-pin,
+black
+Plug connector Digital motor electronics control
+unit Module 4
+X60005
+9-pin,
+black
+Plug connector Digital motor electronics control
+unit Module 5
+Pin assignments at plug connector X60001
+Pin    TypeDescription / Signal type
+Connection /
+Measuring notes
+1    ATerminal 15Unloader relay terminal 15
+2Not used
+3Not used
+4    MGroundGround point
+5    MGroundGround connector
+6    MGroundGround connector
+7    ETerminal 30B+ terminal
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+1 of 1208/21/2014 12:46 AM
+
+8    EVoltage supplyFuse carrier, engine electronics
+9    EVoltage supplyFuse carrier, engine electronics
+Pin assignments at plug connector X60002
+Pin    TypeDescription / Signal type
+Connection /
+Measuring notes
+1    E
+Signal Oxygen sensor heater
+in front of catalytic converter
+Heated oxygen sensor 1 in
+front of catalytic converter
+2Not used
+3    E/A   Signal CAN bus lowTransmission control unit
+4    E/A   Signal CAN bus highTransmission control unit
+5Not used
+6    E/A   Signal Diagnostic link TXDTransmission control unit
+7    E
+Signal Oxygen sensor heater
+behind catalytic converter
+Heated oxygen sensor 1 in
+front of catalytic converter
+8Not used
+9Not used
+10Not used
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+2 of 1208/21/2014 12:46 AM
+
+11Not used
+12   E
+Signal Solenoid valve, fuel
+tank ventilation
+Solenoid valve, fuel tank
+ventilation
+13   E
+Signal Oxygen sensor heater
+in front of catalytic converter
+Heated oxygen sensor 2 in
+front of catalytic converter
+14   E
+Signal Oxygen sensor before
+catalytic converter
+Heated oxygen sensor 1 in
+front of catalytic converter
+15   E
+Signal Oxygen sensor before
+catalytic converter
+Heated oxygen sensor 2 in
+front of catalytic converter
+16   E
+Signal Oxygen sensor after
+catalytic converter
+Heated oxygen sensor 1
+behind catalytic converter
+17Not used
+18   E
+Signal Oxygen sensor after
+catalytic converter
+Heated oxygen sensor 2
+behind catalytic converter
+19   E
+Signal Oxygen sensor heater
+behind catalytic converter
+Heated oxygen sensor 2
+behind catalytic converter
+20   M
+Ground Oxygen sensor
+before catalytic converter
+Heated oxygen sensor 1 in
+front of catalytic converter
+21   M
+Ground Oxygen sensor
+before catalytic converter
+Heated oxygen sensor 2 in
+front of catalytic converter
+22   M
+Ground Oxygen sensor after
+catalytic converter
+Heated oxygen sensor 1
+behind catalytic converter
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+3 of 1208/21/2014 12:46 AM
+
+23   ESignal Activation, main relay   DME relay
+24   M
+Ground Oxygen sensor after
+catalytic converter
+Heated oxygen sensor 2
+behind catalytic converter
+Pin assignments at plug connector X60003
+Pin    TypeDescription / Signal type
+Connection /
+Measuring notes
+1    ESignal Air mass sensorHot-film air mass meter
+2    E
+Signal Exhaust camshaft
+sensor 1
+Camshaft sensor II
+3    E
+Suction jet pump shut-off
+valve
+Valve, sucking jet pump
+4    AThrottle valve supplyThrottle valve
+5    E
+Signal Inlet camshaft sensor
+1
+Camshaft sensor I
+6Not used
+7    AThrottle valve supplyThrottle valve
+8    ESignal Crankshaft sensorCrankshaft sensor
+9    ESignal Driver's wish sensor 2  Throttle valve
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+4 of 1208/21/2014 12:46 AM
+
+10   E
+Signal Throttle potentiometer
+2
+Throttle valve
+11Not used
+12   EEngine start signal feedback   Starter
+13   E
+Signal Battery charge
+indicator lamp
+Alternator
+14   M
+Ground Throttle position
+sensor
+Throttle valve
+15   M
+Ground Exhaust camshaft
+sensor 1
+Camshaft sensor II
+16   ESignal Driver's wish sensor 1  Throttle valve
+17   MGround Air mass sensorHot-film air mass meter
+18   M
+Ground Inlet camshaft
+sensor 1
+Camshaft sensor I
+19   E
+Signal Throttle potentiometer
+1
+Throttle valve
+20   M
+Ground Throttle position
+sensor
+Throttle valve
+21   MGround Crankshaft sensorCrankshaft sensor
+22   ASignal Intake air temperature  Intake air temperature sensor
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+5 of 1208/21/2014 12:46 AM
+
+23   M
+Ground Intake air
+temperature
+Intake air temperature sensor
+24   ASignal Coolant temperature   Coolant temperature sensor
+25   MGround Coolant temperature  Coolant temperature sensor
+26   ESignal Oil pressureOil pressure switch
+27   A
+Signal Engine oil
+temperature
+Oil temperature sensor
+28   M
+Ground Engine oil
+temperature
+Oil temperature sensor
+29   ASignal Knock sensorKnock sensor
+30   ASignal Knock sensorKnock sensor
+31   ASignal Knock sensorKnock sensor
+32   ASignal Knock sensorKnock sensor
+33   ESignal Fuel injector 1Fuel injector 1
+34   ESignal Fuel injector 2Fuel injector 2
+35   ESignal Fuel injector 3Fuel injector 3
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+6 of 1208/21/2014 12:46 AM
+
+36   ESignal Fuel injector 4Fuel injector 4
+37   ESignal Fuel injector 5Fuel injector 5
+38   ESignal Fuel injector 6Fuel injector 6
+39   ESignal Oil level sensorOil level sensor
+40   ESignal VANOS inlet valveVANOS inlet valve
+41   ESignal VANOS outlet valve    VANOS outlet valve
+42   ESignal Fuel tank vent valve    Fuel tank vent valve
+43   ESignal Throttle valveThrottle valve
+44   ESignal Throttle valveThrottle valve
+45   E
+Signal Characteristic map
+cooling
+Thermostat, characteristic map
+cooling
+46   E
+Signal Close idle speed
+control valve
+Idle actuator
+47   E
+Signal Open idle speed
+control valve
+Idle actuator
+48   MSignal Shield, knock sensor   Shield, knock sensor
+49   E
+Signal Valve, individual
+control intake system
+Valve, individual control intake
+system
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+7 of 1208/21/2014 12:46 AM
+
+50Not used
+51Not used
+52   E
+Signal Secondary air pump
+valve
+Secondary air pump valve
+Pin assignments at plug connector X60004
+Pin    TypeDescription / Signal type
+Connection /
+Measuring notes
+1    E
+Signal Battery charge
+indicator lamp
+Instrument cluster control unit
+2    EEngine start signal feedback   Instrument cluster control unit
+3    ESignal Secondary air pump    Secondary air pump relay
+4    ESignal Electric fanElectric fan
+5Not used
+6Not used
+7Not used
+8Not used
+9Not used
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+8 of 1208/21/2014 12:46 AM
+
+10   ESignal Fuel pump relay 1Fuel pump relay 1
+11   ESignal Oil pressure switchInstrument cluster control unit
+12Not used
+13Not used
+14Not used
+15Not used
+16Not used
+17   ESpeed signalDiagnostic connector
+18   A
+Signal, exhaust flap on RHD
+vehicles Not used on LHD
+vehicles
+Valve, exhaust flap
+19Not used
+20Not used
+21   ESignal Oil level sensorInstrument cluster control unit
+22   E
+Signal Processed wheel
+speed, rear right
+ABS/ASC unit ABS/DSC unit
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+9 of 1208/21/2014 12:46 AM
+
+23   ASignal Clutch switchClutch switch
+24   ESignal Brake light switch
+Light switching centre control
+unit
+25Not used
+26   ETerminal 15Fuse F29
+27   EData link MFLVolute spring
+28   ESignal Brake light switchBrake light switch
+29   E
+Signal Relay, A/C
+compressor
+Relay, A/C compressor
+30   A
+Signal Leakage diagnosis
+pump
+Leakage diagnosis pump
+31Not used
+32   E/A   Signal Diagnostic link TXDDiagnostic connector
+33   E
+Electronic vehicle
+immobilisation
+Electronic immobiliser control
+unit
+34   E
+Signal Leakage diagnosis
+pump
+Leakage diagnosis pump
+35Not used
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+10 of 1208/21/2014 12:46 AM
+
+36   E/A   Signal CAN bus highConnector, CAN bus
+37   E/A   Signal CAN bus lowConnector, CAN bus
+38   M
+Ground Coolant outlet
+temperature
+Temperature sensor
+39   A
+Signal Coolant outlet
+temperature
+Temperature sensor
+40Not used
+Pin assignments at plug connector X60005
+Pin    TypeDescription / Signal type
+Connection /
+Measuring notes
+1    ESignal Ignition coil 3Ignition coil 3
+2    ESignal Ignition coil 2Ignition coil 2
+3    ESignal Ignition coil 1Ignition coil 1
+4Not used
+5    AGroundGround connector
+6    AGroundGround connector
+7    ESignal Ignition coil 6Ignition coil 6
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+11 of 1208/21/2014 12:46 AM
+
+8    ESignal Ignition coil 5Ignition coil 5
+9    ESignal Ignition coil 4Ignition coil 4
+WDS Wiring Diagram Systemhttp://www.bmw-planet.com/diagrams/release/en/...
+12 of 1208/21/2014 12:46 AM

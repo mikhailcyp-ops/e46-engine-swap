@@ -1,0 +1,363 @@
+{{TOC limit|2}}
+<div style="float:right;">__TOC__</div>
+TunerPro offers a very good method of editing flash files with its "Patch" function.
+
+We used this feature to create an "All-In-One" solution for editing engine displacement independent functions, like Launch Control, EWS Delete, M3 Cluster functionality etc.
+
+'''Important Notes:'''
+*This patch list is only compatible with the normal MS430069 software version. For extended load go here: [[Siemens_MS43_Extended_Load_Limit|Siemens MS43 Extended Load Limit]]
+*All these features change the program code of the ECU so use it with caution and always correct checksums before flashing or use MS4X Dev Group Flasher from [[Flashing_Tools|here]] which corrects them automatically. 
+*If you are coming from a bootmode flashed 430056 EWS delete, it's recommended to bootmode flash a backup of the original binary to restore the ecu back to stock before flashing the 430069 firmware to avoid issues.
+*Bootmode flashing is only needed when you want to virginize the ECU and re-adapt it to a EWS module. Every other feature works without bootmode flashing!
+*Chipster MSS5X flasher contains a bug where it in some cases incorrectly calculates the program section checksum, so avoid using this software.
+
+'''Download it here: [[:File:Siemens_MS43_MS430069_Community_Patchlist_v2.9.2.xdf|Siemens_MS43_MS430069_Community_Patchlist_v2.9.2.xdf]]'''
+
+Old Versions:
+*[[:File:Siemens_MS43_MS430069_Community_Patchlist_v2.9.1.xdf|Siemens_MS43_MS430069_Community_Patchlist_v2.9.1.xdf]]'''
+*[[:File:Siemens_MS43_MS430069_Community_Patchlist_v2.9.xdf|Siemens_MS43_MS430069_Community_Patchlist_v2.9.xdf]]
+*[[:File:Siemens_MS43_MS430069_Community_Patchlist_v2.5.xdf|Siemens_MS43_MS430069_Community_Patchlist_v2.5.xdf]]
+*[[:File:Siemens_MS43_MS430069_Community_Patchlist.xdf|Siemens_MS43_MS430069_Community_Patchlist_v1.0.xdf]]
+
+
+[[File:MS4X_MS430069_Community_Patchlist.png|900px]]
+
+=ECU Information=
+[[File:MS4X_MS430069_Community_Patchlist_ECU_Information.png‎|thumbnail|ECU Information]]
+
+===== Parameters =====
+*'''UIF Vehicle Identification Number'''
+*'''UIF Manufacturing Date''' - The date code is stored in two bytes. DAY (5 bit) and MONTH (3bit) in the first byte (DDDDDMMM), the YEAR in second. 
+*'''UIF Software Number'''
+*'''UIF Service Number'''
+*'''UIF Assembly Number'''
+*'''ECU Number'''
+*'''ISN Value''' - Immobilizer Sync Code
+*'''Softwareversion'''
+
+===== Explanation =====
+This section shows the first entry of the user information fields (UIF), the ECU number, the ISN and most important the softwareversion.
+
+Please keep in mind that the shown UIF values came with the initial flash from factory. There might be additional entries when the MS43 has been updated at the dealership.
+
+=Immobilizer Bypass=
+===== Parameters =====
+*'''[PATCH] Immobilizer Bypass''' - Bypasses the immobilizer checks of the ECU
+*'''[PATCH] Clear Immobilizer Data''' - Virginizes the ECU by clearing all immobilizer related data
+
+===== Explanation =====
+This will bypass immobilizer checks that are made to prevent the car from starting with an unauthorized key or no key at all.
+
+Note: On some cars it takes some time to start during the first crank. So crank it a bit longer than you are used to if the engine isn't starting up right away.
+
+When virginzing the ECU by clearing the immobilizer data you want to overwrite data in the bootloader area, so bootmode flashing is needed.
+
+To synchronize ISN and rolling codes between the ECU and the EWS3 module just use INPA or MS4X Dev Flasher.
+
+=Checksum Bypass=
+===== Parameters =====
+* '''[PATCH] Checksum Bypass''' - Disables both checksum checks for the calibration data section
+
+===== Explanation =====
+Siemens implemented calibration checksum bypasses from factory into the firmware.
+
+This feature is often misinterpreted with completely turning off all checksums. This is not the case and the program and boot loader section checksums will still need to be corrected to allow the engine to start.
+
+The checksum bypass depends on changes in both the program and calibration section so it's crucial that both sections are patched simultaneously.
+
+If for example the calibration section is overwritten with a calibration section that hasn't been checksum bypassed the ecu will always report a checksum error even if the checksums are corrected so use this feature with caution as incorrect use will result in a non-starting engine.
+
+'''Since the MS4X Dev Group Flasher corrects all five checksums on the fly this checksum bypass is only needed when using old legacy tools to flash a calibration section.'''
+
+=Launch Control Deprecated=
+
+===== Parameters =====
+*'''[PATCH] Remove Deprecated Launch Control''' - Removes the old launch control feature of patchlist v2.5 and before from the binary
+*'''[DATA] Remove Deprecated Launch Control''' - Removes the old launch control data of patchlist v2.5 and before from the binary
+
+===== Explanation =====
+Please do no longer use this and switch to the new launch control feature that implements new features
+
+=M Instrument Cluster LEDs=
+[[File:MS4X_MS430069_Patchlist_M_Cluster.png‎|180px|thumbnail|M Cluster Values]]
+===== Parameters =====
+* '''[PATCH] M3/M5 Cluster LED Mod''' - Implements code that controls the LEDs of the M3/M5 cluster
+* '''ldpm_toil_led''' - Oil temperatur axis to adjust the switch points of the led array for the warmup light feature
+* '''id_icl_toil_led__n''' - LEDs used at the given  oil tempetature for the warmup light feature
+* '''ldpm_toil_led''' - Engine Speed axis to adjust the switch points of the led array for the shift light feature
+* '''id_icl_led__n''' - LEDs used at the given enginespeed for the shift light feature
+
+===== Explanation =====
+After swapping in an M3 cluster into a E46 or M5 cluster into E39, there is no more ecometer displaying the momentary fuel consumption, but a more useful oil temperature gauge. 
+
+Using this cluster and some additional code we can also control the LEDs around the RPM gauge to work similar to the E46 M3 and also manage shift light behavior.
+
+Explanation for the decimal values used (M3):
+
+*112 - all LEDs lit
+*96 - 4500 and upwards
+*80 - 5000 and upwards
+*64 - 5500 and upwards
+*48 - 6000 and upwards
+*32 - 6500 and upwards
+*16 - 7000 and upwards
+*00 - 7500 lit
+*02 - oil warning LED yellow
+*04 - coolant warning LED
+
+Explanation for the decimal values used (M5):
+
+*64 - 4000 and upwards
+*48 - 4500 and upwards
+*32 - 5000 and upwards
+*16 - 5500 and upwards
+*00 - 6500 lit
+*01 - oil warning LED yellow
+*04 - coolant warning LED
+
+[[File:TP_MS43_M3_Cluster_Warmuplights.PNG|320|M3 Cluster warmuplight maps]] [[File:TP_MS43_M3_Cluster_Shiftlights.PNG|320|M3 Cluster shiftlight maps]] 
+
+<youtube>jYAudhc02nQ</youtube>
+
+You can retrofit the LEDs to a non-M cluster with this guide: [[Cluster_M3_LED_Retrofitting|Cluster M3 LED Retrofitting]]
+
+=DS2 Logging Extensions=
+===== Parameters =====
+* '''[PATCH] DS2 Baudrate Switch Engine Stopped Bypass''' - Enable baudrate switching when the engine is started
+* '''[PATCH] DS2 Logging Feature Enhancement''' - Implements code needed for the new logging command
+* '''[PATCH] DS2 Speed Increase''' - Increases how often the ECU processes DS2 commands
+
+===== Explanation =====
+Since MS43 only outputs a small amount of loggable values we created a custom DS2 logging command without slowing down logging rate.
+
+This extends the stock command with the following values:
+* Individual Ignition Timing For All Cylinders And Average
+* Fuel Injector Pulse Width For Bank 2 And Average
+* Calculated Manifold Air Pressure
+* Active VO Table
+* Filtered Load Values (Ignition, Injection, VANOS, Moving Mean Value)
+* Calculated Gear
+* Rear O2 Sensor Input Voltages
+* Secondary Air MAF Sensor Input Voltage
+* DMTL Input Voltage
+* EGT Sensor Input Voltages
+* Ron Adaptation Value
+* Indexed Engine Torque
+
+Especially the calculated MAP and filtered load values will improve tuning since you will be able to see what load the subsystems are really using.
+
+When looking at individual cylinder ignition angles, you will see that sometimes logging only cylinder 1 won't be enough. Same with injection.
+
+You can easily log 0-5V analog sensors over the rear lambda sensors, secondary air MAF and DMTL voltage inputs. Together with the fuel cap detection input and never used EGT inputs we have a total of 8 or 9 spare analog inputs depending on whether your ECU has pencil coil detection circuitry in place or not.
+
+Please choose the matching ADX logging file for your engine from the [[Logger Definition Files]] and look at the [[TunerPro Data Logging]] page for more information on how to datalog with TunerPro RT:
+
+'''Notice:''' The ADX makes use of a much higher baudrate (125kBaud) than the default 9600Baud. The ECU can only change baudrate when engine is not running so you have to start the datalogging with the engine off and the ignition on or patch the bypass.
+
+=MAF Sensor Hack=
+===== Parameters =====
+* '''[PATCH] MAF Sensor Hack 2048kg/h''' - Changes code to allow 2048kg/h of air mass to be measured
+* '''id_maf_tab__v_maf (2048kg/h)''' - MAF sensor table (2048kg/h) 1x256
+* '''id_maf_tab__v_maf_1__v_maf_2 (2048kg/h)''' - MAF sensor table (2048kg/h) 16x16
+* '''[PATCH] MAF Sensor Hack 4096kg/h''' - Changes code to allow 4096kg/h of air mass to be measured
+* '''id_maf_tab__v_maf (4096kg/h)''' - MAF sensor table (4096kg/h) 1x256
+* '''id_maf_tab__v_maf_1__v_maf_2 (4096kg/h)''' - MAF sensor table (4096kg/h) 16x16
+
+===== Explanation =====
+This patch alters the resolution of the mass airflow sensor acquisition logic to allow it to measure an airflow up to 2048kg/h or 4096kg/h.
+
+'''Important:''' As the patch alters the resolution of the mass airflow sensor scale you need to use the id_maf_tab tables in the patch list to alter and display the mass airflow sensor scale. Using any other xdf to view the maf sensor scale will display incorrect data.
+
+'''Note:''' Keep in mind that even after applying the patch the engine load will still be limited to 1389mg/stroke.
+
+=Boost Control Over Canister Purge Output (Experimental)=
+===== Parameters =====
+*'''[PATCH] Boost Control''' - Forces the ecu to use the ip_cppwm_min_* tables to control the canister purge output and linearizes ip_cppwm_cps__cppwm
+*'''c_tco_min_cp''' - Coolant temperature threshold for activation of the boost control / canister purge PWM output
+*'''ip_cppwm_min___n__maf''' - PWM duty circle output table engine speed vs. engine load
+*'''ip_cppwm_min_cat_var__n__maf''' - PWM duty circle output table engine speed vs. engine load in catalyst preperation mode. (c_conf_cat=0/1)
+*'''ldpm_maf_1''' - Engine load X-axis used by the boost control / canister purge PWM output table
+*'''ldpm_n_32_7''' - Engine speed Y-axis used by the boost control / canister purge PWM output table
+
+===== Explanation =====
+This patch implements a basic open loop boost control feature by forcing the ECU to use the '''ip_cppwm_min_*''' tables to control the canister purge output and also linearizes '''ip_cppwm_cps__cppwm'''.
+
+This feature is highly experimental and must be used with caution. The solenoid output uses a 10hz PWM base frequency.
+
+=Ignition Cut Limiter=
+===== Parameters =====
+*'''[PATCH] Ignition Cut Limiter''' - This patch implements a basic ignition cut feature
+*'''c_conf_n_max_max_td''' - Configuration switch for igntion cut hard limiter
+**0 = Ignition cut disabled
+**1 = Ignition cut enabled
+
+===== Explanation =====
+This modification will zero out ignition coil dwell time to interupt ignition while the hard limiter is actively limiting engine speed.
+
+When you set the hard limiter below the soft limiter and lower your the limiter hysteresis (c_n_max_hys & c_n_max_hys_max) to 32rpm you will get most aggressive results.
+
+'''Warning:''' Ignition cut limiters may harm your coils, center sprocket, or whole engine and exhaust system. Use with extreme caution and never with catalyst equipped cars.
+
+Ignition cut will work well with the launch control if you want to build up more boost or impress your neighbours.
+
+=Alpha/N=
+===== Parameters =====
+*'''[PATCH] Alpha/N''' - Implements code to use load value from MAF substitute table
+
+===== Explanation =====
+With this mod, the load calculation will fully rely on the MAF sensor substitude table '''ip_maf_1_diag__n__tps_av'''. Normally the ECU will throw an error when disconnecting the MAF sensor, but this patch prevents it from triggering a DTC.
+
+The ECU will always think that the value it's processing comes from the MAF directly. This is done by utilizing the load lookup table instead of reading the MAF and feeding this value into all important MAF variables used by the code.
+
+'''Warning:''' When this patch is active the ecu will ignore the MAF sensor readings even if it's plugged in, so be careful and tune the '''ip_maf_1_diag__n__tps_av''' table very carefully before applying this patch since this table tends to run a bit lean from factory.
+
+=MIL Knock Indicator=
+[[File:MS4X_MS430069_Patchlist_MIL_Knock.png]]
+===== Parameters =====
+*'''[PATCH] MIL Knock Indicator''' - This patch implements a knock indicator that flashes the MIL light during light or heavy knock events.
+*'''c_t_max_knk_mil''' - Maximum activation time for knock light
+*'''lv_mil_knk_lv_1''' - Activate knock light during light knock
+*'''lv_mil_knk_lv_2''' - Activate knock light during heavy knock
+
+===== Explanation =====
+This modification will flash the MIL when there is a knock event detected. Knock events are either light or heavy and you can configure the indicator the way you need.
+
+With the two configuration bits, you have three possisble configurations: light knock only, heavy knock only, light and heavy knock.
+
+Tests showed, that light knock events can be caused by single mass flywheels in lower engine speed regions.
+
+=Daniel_F 430056 Update Fix=
+===== Parameters =====
+[PATCH] Daniel_F. 430056 Update Fix - Implements the fix
+
+===== Explanation =====
+If the ECU was previously flashed with a MS430056 binary from Daniel_F and you can't or don't want to flash a fresh and unmodified 430069 in boot mode, this patch can help you if your engine won't crank.
+
+'''Don't patch this unless you encounter a non starting engine after updating your ECU from MS430056 to 430069.'''
+
+=E3x Differential Vehicle Speed Sensor Accuracy Improvement=
+===== Parameters =====
+'''[PATCH] E3x Differential Vehicle Speed Sensor Accuracy Improvement''' - Skips division of VS signal
+
+===== Explanation =====
+This will skip the division of the speed sensor signal in ECU code to make the vehicle speed reading more accurate with older BMW speed sensors located inside the rear differential.
+
+Very handy if you install M54 engine into E30 or E34 and want to keep the VS sensor of the rear axle differential. Set c_vs_fac to ~4384 impulses per kilometer.
+
+=Fuel Cut Table Switch Over Cruise Control=
+===== Parameters =====
+* '''[PATCH] Deceleration Maps Over Cruise Switch''' - Decelleration map switching changed to cuise control main switch
+
+===== Explanation =====
+Instead of depending on the AC compressor relay state, the decision of deceleration maps for ignition and injection will be depending on cruise control main switch (green LED in cluster).
+
+Ignition angle change limitation is still depending on AC on/off to put less stress on AC belt.
+
+Affected tables are:
+*ip_n_min_puc__tco & ip_n_min_accin_puc__tco
+*ip_iga_puc__n__tco & ip_iga_accin_puc__n__tco
+
+=LC / NLS / RAL Features=
+'''LC stand for Launch Control, NLS stands for No Lift Shift and RAL stands for Rolling Anti Lag'''
+
+[[File:MS4X_MS430069_Patchlist_LC_NLS_RAL_1.png]]
+*'''[PATCH] Launch Control & Rolling Anti Lag''' - Implements code for the launch control and rolling anti lag feature
+*'''[PATCH] LC & RAL Default Values''' - Implements default values for the launch control and rolling anti lag feature
+*'''c_tco_max_iga_rtd_lc_nls_ral''' - Maximum coolant temperature during ignition retard for LC, NLS and RAL features
+*'''c_pvs_min_lc''' - Minimum accelerator pedal position for the launch control to be activated
+*'''c_pvs_min_lc_nls''' - Minimum accelerator pedal input to activate launch control and no lift shift feature.
+
+=== Launch Control ===
+[[File:MS4X_MS430069_Patchlist_LC_1.png]]
+==== General Parameters ====
+*'''c_conf_lc''' - Configuration switch to change the launch control behaviour
+**0 = LC Disabled
+**1 = LC Enabled when clutch is pressed
+**2 = LC Enabled when clutch is pressed and cruise control LED is active
+*'''c_conf_lc_iga_rtd''' - Configuration switch to apply additional ignition angle retard c_iga_rtd_lc_nls_ral while the launch control is active and clutch is depressed
+**0 = Disabled
+**1 = Enabled
+*'''c_n_max_lc''' - Maximum engine speed while the launch control is active
+*'''c_vs_max_lc''' - Maximum vehicle speed when the launch control deactivates and switches to normal limiters
+
+==== Explanation ====
+This implements a configurable launch control feature that sets an additional engine speed limiter up to a specific vehicle speed.
+
+You should tweak c_vs_max_lc to be slightly below the regular vehicle speed in 1st gear for the configured limiter c_n_max_lc. If the car engaged the limiter too long, slightly lower c_vs_max_lc.
+
+The c_conf_lc mode "2" is an additional feature to be able to heat up your tires before launching, as the launch control limiter will only become active when the cruise control LED in your cluster is active.
+
+To make the launch control limiter less bouncy please set the soft and hard limiter hysteris to 32rpm (c_n_max_hys & c_n_max_hys_max).
+
+=== Rolling Anti Lag ===
+[[File:MS4X_MS430069_Patchlist_RAL_1.png]]
+==== General Parameters ====
+*'''c_conf_ral''' - Configuration switch to control the rolling anti lag behaviour
+**0 = Disabled
+**1 = Enabled
+*'''c_pvs_min_ral''' - Minimum accelerator pedal input to activate rolling anti lag feature.
+
+==== Explanation ====
+This implements a rolling anti lag feature that retards the current igntion angle by a configurable amount.
+
+It will be activated as soon as you press and hold the "-" button on your cruise control and exceed the configured PVS value c_pvs_min_ral.
+
+=Injection Calculation Based On Fuel Factor=
+[[File:MS4X_MS430069_Patchlist_Fuel_Factor_Calculation_Patch.png|900px]]
+
+===== Parameters =====
+*'''[PATCH] Injection Calculation Patch''' - Implements injection calculation patch for MS43.
+*'''[DATA] Injection Calculation Default Data - M54B30''' - Applies the default M54B30 calibration data for the injection calculation patch
+*'''c_inj_flow''' - Injector flow rate in cm³/min
+*'''c_af_stoich''' - Stoichiometric air fuel ratio
+*'''c_fuel_density''' - Fuel density in kg/dm³
+
+===== Explanation =====
+'''Extended Load Binary Only!'''
+
+This patch will completely rework the injection logic and purely relies on the air mass consumed by the engine.
+
+Based on the measured mass air flow, a configurable value for the injector size, target air/fuel ration and the fuel density, the ECU can now calculate injection pulse width on its own.
+
+With this patch, the engine can't go lean even when exceeding the fuel tables, because those are refactored to be used as correction tables to compensate for non linear injectors. as long as your intake path isn't leaking.
+
+=MAF Based Full Load Enrichment=
+[[File:MS4X_MS430069_Patchlist_MAF_Full_Load_Values.png|900px]]
+===== Parameters =====
+*'''[PATCH] MAF Based Full Load Enrichment''' - Implements code changes
+*'''[DATA] MAF Based FL Default Values - M54B30''' - Applies the default calibration data for the MAF full load detection patch for M54B30 engine
+*'''c_maf_fl_accin''' - Load threshold for AC compressor deactivation during full load
+*'''id_maf_fl_ivvt__n''' - Load threshold for full load activation - VANOS
+*'''id_maf_fl_vim__n_vim''' - Load threshold for full load activation - DISA
+*'''ip_ti_fl__n__maf''' - Full load enrichment factor for nominal injection time (Factor)
+*'''ip_ti_fl__n__maf___afr''' - Full load enrichment factor for nominal injection time (AFR Gasoline)
+*'''ip_ti_fl__n__maf___lambda''' - Full load enrichment factor for nominal injection time (Lambda)
+
+===== Explanation =====
+This patch reworks the pedal value depending full load detection so that the '''injection full load''' is controlled by an extended 16x12 ip_ti_fl 3D table.
+
+'''ip_ti_fl__n__maf''' is the enrichment factor used by the ECU to richen up the air fuel mixture by the given value.
+
+A factor of 0.00 means that there will be no enrichment and injection system will not enter full load state.
+
+Any value other than 0.00 will make the ECU leave closed loop operation and richens up or leans out the air fuel mixture depending on value.
+
+'''ip_ti_fl__n__maf___afr''' & '''ip_ti_fl__n__maf___lambda''' are just calculated from ip_ti_fl__n__maf and can only be used as intended when your part load fuel tables are tuned for lambda 1.0 / AFR 14.7
+
+'''The other full load systems'''(as VANOS, DISA, AC) are triggered by exceeding the configured MAF threshold instead of the old pedal value threshold.
+
+=CAN Bus Addons=
+We will add some addtional CAN bus messages or functions over time.
+
+==== Custom CAN - OLM Boost Gauge ====
+===== Parameters =====
+*'''[PATCH]''' Custom CAN - OLM Boost Gauge - Implements code changes
+
+===== Explanation =====
+This patch adds the calculated manifold pressure (ov_map) to the CAN bus output byte 0x545 (DME4) to display it on Bosch redesign clusters with the oil level meter option.
+
+The "OILSERVICE" option is only available on E46 clusters from Bosch with coding indexes 07, 08 (non-M) or 23, 24 (M3) and needs coding. Set OELNIVEAU_M3 to "aktiv" with NCS Expert.
+
+Values are displayed in bar. Negative values indicate vacuum, positive mean boost. Unfortunately we cannot hide the liter (L) indicator.
+
+<youtube>BOOSI0IK8E4</youtube>

@@ -1,0 +1,1008 @@
+<div style="float:right">__TOC__</div>
+[[File:BMW_MS_43_Pinout.png]]
+
+
+'''Note:''' Some pins were intended to be used in further developement stages, but never in actual production. We marked them grey in the following table.
+
+=X60001 - Voltage Supply=
+{| class="wikitable" style="width: 900px;"
+|- style="font-weight:bold; text-align:center;"
+! colspan="6" | X60001 9-pin
+|- style="font-weight:bold;"
+| style="text-align:center;" | Pin
+| style="text-align:center;" | Type
+| Name
+| Wire
+| Description / Signal type
+| Connection / Measuring notes
+|-
+| style="text-align:center; font-weight:bold;" | 1
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | U_15
+| style="vertical-align:bottom;" | 0.5 GN
+| Voltage Supply Terminal 15
+| Fuel Injector Relay K6327
+|-
+| style="text-align:center; font-weight:bold;" | 2
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 3
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_TXD2
+| style="vertical-align:bottom;" | 0.5 WS/VI
+| Diagnostic Link TXD
+| K-Line
+|-
+| style="text-align:center; font-weight:bold;" | 4
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | 31E
+| style="vertical-align:bottom;" | 1.5 BR/OR
+| Ground
+| Ground Connector X6454
+|-
+| style="text-align:center; font-weight:bold;" | 5
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | 31L
+| style="vertical-align:bottom;" | 1.5 BR
+| Ground
+| Ground Connector X6458
+|-
+| style="text-align:center; font-weight:bold;" | 6
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | 31L
+| style="vertical-align:bottom;" | 1.5 BR
+| Ground
+| Ground Connector X6458
+|-
+| style="text-align:center; font-weight:bold;" | 7
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | 30H<102
+| style="vertical-align:bottom;" | 1.5 RT
+| Voltage Supply Terminal 30
+| B+ Potential Distributor A2076
+|-
+| style="text-align:center; font-weight:bold;" | 8
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | U_HR<2
+| style="vertical-align:bottom;" | 1.5 RT/WS/GE
+| Voltage Supply Terminal 87
+| Fuse Carrier Engine Electronics   A8680
+|-
+| style="text-align:center; font-weight:bold;" | 9
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | U_HR<2
+| style="vertical-align:bottom;" | 1.5 RT/WS/GE
+| (optional) Fuel Injector Supply   Voltage
+| (optional) Fuel Injector Relay   K6327
+|}
+
+=X60002 - Peripherals=
+{| class="wikitable" style="vertical-align:middle;"
+|- style="font-weight:bold; text-align:center;"
+! colspan="6" | X60002 24-pin
+|- style="font-weight:bold;"
+| style="text-align:center;" | Pin
+| style="text-align:center;" | Type
+| Name
+| Wire
+| Description / Signal type
+| Connection / Measuring notes
+|-
+| style="text-align:center; font-weight:bold;" | 1
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_LHV1
+| style="vertical-align:bottom;" | 0.50 BR
+| [PWM] O2 Sensor Heater Pre-Cat   Bank 1
+| Heated O2 Sensor Pre-Cat Bank 1   B62101
+|-
+| style="text-align:center; font-weight:bold;" | 2
+| style="text-align:center; font-weight:bold; color:#808080;" | Input
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | [0-5V] Signal EGT Sensor Pre-Cat   Bank 1
+| style="color:#808080;" | Never Used In Production // MS43X: Flex Fuel Input
+|-
+| style="text-align:center; font-weight:bold;" | 3
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_CAN--L
+| style="vertical-align:bottom;" | 0.35 SW
+| Gearbox CAN-Low
+| Transmission Control Unit A7000   (AT/SMG only)
+|-
+| style="text-align:center; font-weight:bold;" | 4
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_CAN--H
+| style="vertical-align:bottom;" | 0.35 GE
+| Gearbox CAN-High
+| Transmission Control Unit A7000   (AT/SMG only)
+|-
+| style="text-align:center; font-weight:bold;" | 5
+| style="text-align:center; font-weight:bold; color:#808080;" | Input
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | [0-5V] Signal EGT Sensor Pre-Cat   Bank 2
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 6
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_TXD2
+| style="vertical-align:bottom;" | 0.50 WS/VI
+| Gearbox Diagnostic Link TXD2
+| Transmission Control Unit A7000   (AT/SMG only)
+|-
+| style="text-align:center; font-weight:bold;" | 7
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_LHH1
+| style="vertical-align:bottom;" | 0.50 BR
+| [PWM] O2 Sensor Heater Post-Cat   Bank 1
+| Heated O2 Sensor Post-Cat Bank 1   B62102
+|-
+| style="text-align:center; font-weight:bold;" | 8
+| style="text-align:center; font-weight:bold; color:#808080;" | Ground
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | EGT Sensor Pre-Cat Bank 1
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 9
+| style="text-align:center; font-weight:bold; color:#808080;" | Ground
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | EGT Sensor Pre-Cat Bank 2
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 10
+| style="text-align:center; font-weight:bold; color:#808080;" | Ground
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | EGT Sensor Post-Cat Bank 1
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 11
+| style="text-align:center; font-weight:bold; color:#808080;" | Ground
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | EGT Sensor Post-Cat Bank 2
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 12
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | U_HR<2
+| style="vertical-align:bottom;" | 0.50 RT/WS
+| [0/1] Pencil Coil Detection
+| ECU Main Relay With Pencil   Coils
+|-
+| style="text-align:center; font-weight:bold;" | 13
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_LHV2
+| style="vertical-align:bottom;" | 0.50 BR
+| [PWM] O2 Sensor Heater Pre-Cat   Bank 2
+| Heated O2 Sensor Pre-Cat Bank 2   B62201
+|-
+| style="text-align:center; font-weight:bold;" | 14
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_LSV1
+| style="vertical-align:bottom;" | 0.50 GE
+| [0-5V] Signal O2 Sensor Pre-Cat   Bank 1
+| Heated O2 Sensor Pre-Cat Bank 1   B62101
+|-
+| style="text-align:center; font-weight:bold;" | 15
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_LSV2
+| style="vertical-align:bottom;" | 0.50 GE
+| [0-5V] Signal O2 Sensor Pre-Cat   Bank 2
+| Heated O2 Sensor Pre-Cat Bank 2   B62201
+|-
+| style="text-align:center; font-weight:bold;" | 16
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_LSH1
+| style="vertical-align:bottom;" | 0.50 GE
+| [0-5V] Signal O2 Sensor Post-Cat   Bank 1
+| Heated O2 Sensor Post-Cat Bank 1   B62102
+|-
+| style="text-align:center; font-weight:bold;" | 17
+| style="text-align:center; font-weight:bold; color:#808080;" | Input
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | [0-5V] Signal EGT Sensor   Post-Cat Bank 2
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 18
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_LSH2
+| style="vertical-align:bottom;" | 0.50 GE
+| [0-5V] Signal O2 Sensor Post-Cat   Bank 2
+| Heated O2 Sensor Post-Cat Bank 2   B62202
+|-
+| style="text-align:center; font-weight:bold;" | 19
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_LHH2
+| style="vertical-align:bottom;" | 0.50 BR
+| [PWM] O2 Sensor Heater Post-Cat   Bank 2
+| Heated O2 Sensor Post-Cat Bank 2   B62202
+|-
+| style="text-align:center; font-weight:bold;" | 20
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_LSV1
+| style="vertical-align:bottom;" | 0.50 SW
+| O2 Sensor Pre-Cat Bank 1
+| Heated O2 Sensor Pre-Cat Bank 1   B62101
+|-
+| style="text-align:center; font-weight:bold;" | 21
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_LSV2
+| style="vertical-align:bottom;" | 0.50 SW
+| O2 Sensor Pre-Cat Bank 2
+| Heated O2 Sensor Pre-Cat Bank 2   B62201
+|-
+| style="text-align:center; font-weight:bold;" | 22
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_LSH1
+| style="vertical-align:bottom;" | 0.50 SW
+| O2 Sensor Post-Cat Bank 1
+| Heated O2 Sensor Post-Cat Bank 1   B62102
+|-
+| style="text-align:center; font-weight:bold;" | 23
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_HR
+| style="vertical-align:bottom;" | 0.50 BR/WS
+| [0/1] ECU Main Relay Control
+| ECU Main Relay K6300
+|-
+| style="text-align:center; font-weight:bold;" | 24
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_LSH2
+| style="vertical-align:bottom;" | 0.50 SW
+| O2 Sensor Post-Cat Bank 2
+| Heated O2 Sensor Post-Cat Bank 2   B62202
+|}
+
+=X60003 - Engine=
+{| class="wikitable" style="vertical-align:middle;"
+|- style="font-weight:bold; text-align:center;"
+! colspan="6" | X60003 52-pin
+|- style="font-weight:bold;"
+| style="text-align:center;" | Pin
+| style="text-align:center;" | Type
+| Name
+| Wire
+| Description / Signal type
+| Connection / Measuring notes
+|-
+| style="text-align:center; font-weight:bold;" | 1
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_HFM
+| style="vertical-align:bottom;" | 0.50 GE
+| [0-5V] Signal Hot Film Mass Air   Flow Sensor
+| Hot Film Mass Air Flow Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 2
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | P_NWGA1
+| style="vertical-align:bottom;" | 0.50 GE
+| Signal Exhaust Camshaft Sensor
+| Exhaust Camshaft Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 3
+| style="text-align:center; font-weight:bold; color:#808080;" | Output
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | Spare Output 1
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 4
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 5
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | P_NWGE1
+| style="vertical-align:bottom;" | 0.50 GE
+| Signal Intake Camshaft Sensor
+| Intake Camshaft Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 6
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 7
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | U_DKG
+| style="vertical-align:bottom;" | 0.50 BR/WS
+| [+5V] Voltage Supply Electric   Throttle Body
+| Electric Throttle Body
+|-
+| style="text-align:center; font-weight:bold;" | 8
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | P_KWG
+| style="vertical-align:bottom;" | 0.50 GE
+| Signal Crankshaft Sensor
+| Crankshaft Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 9
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 10
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_DKG2
+| style="vertical-align:bottom;" | 0.50 BR/BL
+| [0-5V] Signal Electric Throttle   Body Potentiometer 2
+| Electric Throttle Body
+|-
+| style="text-align:center; font-weight:bold;" | 11
+| style="text-align:center; font-weight:bold; color:#808080;" | Output
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | Spare Output 3
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 12
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 13
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 14
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 15
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_NWGA1
+| style="vertical-align:bottom;" | 0.50 BR
+| Exhaust Camshaft Sensor
+| Exhaust Camshaft Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 16
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 17
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_HFM
+| style="vertical-align:bottom;" | 0.50 SW
+| Hot Film Mass Air Flow Sensor
+| Hot Film Mass Air Flow Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 18
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_NWGE1
+| style="vertical-align:bottom;" | 0.50 BR
+| Intake Camshaft Sensor
+| Intake Camshaft Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 19
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_DKG1
+| style="vertical-align:bottom;" | 0.50 BR/VI
+| [0-5V] Signal Electric Throttle   Body Potentiometer 1
+| Electric Throttle Body
+|-
+| style="text-align:center; font-weight:bold;" | 20
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_DKG
+| style="vertical-align:bottom;" | 0.50 BR/GR
+| Electric Throttle Body
+| Electric Throttle Body
+|-
+| style="text-align:center; font-weight:bold;" | 21
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | M_KWG
+| style="vertical-align:bottom;" | 0.50 BR
+| Ground Crankshaft sensor
+| Crankshaft sensor
+|-
+| style="text-align:center; font-weight:bold;" | 22
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | A_TANS
+| style="vertical-align:bottom;" | 0.50 GR
+| [0-5V] Signal Intake Air   Temperature
+| Intake Air Temperature Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 23
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_TANS
+| style="vertical-align:bottom;" | 0.50 GR/BR
+| Intake Air Temperature
+| Intake Air Temperature Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 24
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | A_TMOT
+| style="vertical-align:bottom;" | 0.50 BR/RT
+| [0-5V] Signal Coolant   Temperature
+| Coolant Temperature Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 25
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_TMOT
+| style="vertical-align:bottom;" | 0.50 GR/BR
+| Coolant Temperature
+| Coolant Temperature Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 26
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 27
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | A_TOEL
+| style="vertical-align:bottom;" | 0.50 RT/BL
+| [0-5V] Signal Engine Oil   Temperature
+| Oil Temperature Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 28
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_TOEL
+| style="vertical-align:bottom;" | 0.50 GR/BR
+| Engine Oil Temperature
+| Oil Temperature Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 29
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_KS1A
+| style="vertical-align:bottom;" | 0.50 GE
+| Signal Knock Sensor 1A
+| Knock Sensor Cylinder 1-3
+|-
+| style="text-align:center; font-weight:bold;" | 30
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_KS1B
+| style="vertical-align:bottom;" | 0.50 SW
+| Signal Knock Sensor 1B
+| Knock Sensor Cylinder 1-3
+|-
+| style="text-align:center; font-weight:bold;" | 31
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_KS2A
+| style="vertical-align:bottom;" | 0.50 GN
+| Signal Knock Sensor 2A
+| Knock Sensor Cylinder 4-6
+|-
+| style="text-align:center; font-weight:bold;" | 32
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_KS2B
+| style="vertical-align:bottom;" | 0.50 BR
+| Signal Knock Sensor 2B
+| Knock Sensor Cylinder 4-6
+|-
+| style="text-align:center; font-weight:bold;" | 33
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_EVZ1
+| style="vertical-align:bottom;" | 0.75 BR/WS
+| [0/1] Signal Fuel Injector   Cylinder 1
+| Fuel Injector Cylinder 1 Y6101   Pin 1
+|-
+| style="text-align:center; font-weight:bold;" | 34
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_EVZ2
+| style="vertical-align:bottom;" | 0.75 BR/RT
+| [0/1] Signal Fuel Injector   Cylinder 2
+| Fuel Injector Cylinder 2 Y6102   Pin 1
+|-
+| style="text-align:center; font-weight:bold;" | 35
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_EVZ3
+| style="vertical-align:bottom;" | 0.75 BR/GE
+| [0/1] Signal Fuel Injector   Cylinder 3
+| Fuel Injector Cylinder 3 Y6103   Pin 1
+|-
+| style="text-align:center; font-weight:bold;" | 36
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_EVZ4
+| style="vertical-align:bottom;" | 0.75 BR/BL
+| [0/1] Signal Fuel Injector   Cylinder 4
+| Fuel Injector Cylinder 4 Y6104   Pin 1
+|-
+| style="text-align:center; font-weight:bold;" | 37
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_EVZ5
+| style="vertical-align:bottom;" | 0.75 BR/GN
+| [0/1] Signal Fuel Injector   Cylinder 5
+| Fuel Injector Cylinder 5 Y6105   Pin 1
+|-
+| style="text-align:center; font-weight:bold;" | 38
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_EVZ6
+| style="vertical-align:bottom;" | 0.75 BR/VI
+| [0/1] Signal Fuel Injector   Cylinder 6
+| Fuel Injector Cylinder 6 Y6106   Pin 1
+|-
+| style="text-align:center; font-weight:bold;" | 39
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 40
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_NWE1
+| style="vertical-align:bottom;" | 0.50 GN/BL
+| [PWM] Signal VANOS Intake   Solenoid
+| VANOS Intake Solenoid
+|-
+| style="text-align:center; font-weight:bold;" | 41
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_NWA1
+| style="vertical-align:bottom;" | 0.50 GN/VI
+| [PWM] Signal VANOS Exhaust   Solenoid
+| VANOS Exhaust Solenoid
+|-
+| style="text-align:center; font-weight:bold;" | 42
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_TEV
+| style="vertical-align:bottom;" | 0.50 BR
+| [PWM] Signal Fuel Tank Vent   Valve
+| Fuel Tank Vent Valve
+|-
+| style="text-align:center; font-weight:bold;" | 43
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_MDK1
+| style="vertical-align:bottom;" | 0.75 GR/WS
+| [H-Bridge] Electric Throttle   Body Actuator 1
+| Electric Throttle Body
+|-
+| style="text-align:center; font-weight:bold;" | 44
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_MDK2
+| style="vertical-align:bottom;" | 0.75 BR/SW
+| [H-Bridge] Electric Throttle   Body Actuator 2
+| Electric Throttle Body
+|-
+| style="text-align:center; font-weight:bold;" | 45
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_KFK
+| style="vertical-align:bottom;" | 0.50 GR/BR
+| [0/1] Characteristic Map Cooling   Thermostat
+| Thermostat
+|-
+| style="text-align:center; font-weight:bold;" | 46
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_LLFSS
+| style="vertical-align:bottom;" | 0.50 WS/GN
+| [H-Bridge] Idle Speed Actuator   Closing Coil
+| Idle Speed Actuator
+|-
+| style="text-align:center; font-weight:bold;" | 47
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_LLFSO
+| style="vertical-align:bottom;" | 0.50 WS/GE
+| [H-Bridge] Idle Speed Actuator   Opening Coil
+| Idle Speed Actuator
+|-
+| style="text-align:center; font-weight:bold;" | 48
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_KS
+| style="vertical-align:bottom;" | Shielding
+| Shield Knock Sensors
+| Knock Sensors
+|-
+| style="text-align:center; font-weight:bold;" | 49
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_DISA
+| style="vertical-align:bottom;" | 0.50 BR/BL
+| [0/1] Variable Intake Manifold   Flap (VIM/DISA)
+| Variable Intake Manifold Flap   (VIM/DISA)
+|-
+| style="text-align:center; font-weight:bold;" | 50
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 51
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | DMTLH
+| style="vertical-align:bottom;" | 0.75 SW/RT
+| [PWM] DMTL Heater
+| Diagnostic Module Fuel Tank   Leakage (With Heater)
+|-
+| style="text-align:center; font-weight:bold;" | 52
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_SLV
+| style="vertical-align:bottom;" | 0.50 BR/WS
+| [0/1] Signal Secondary Air Pump   Valve
+| Secondary Air Pump Valve
+|}
+
+=X60004 - Vehicle=
+{| class="wikitable" style="vertical-align:middle;"
+|- style="font-weight:bold; text-align:center;"
+! colspan="6" | X60004 40-pin
+|- style="font-weight:bold;"
+| Pin
+| Type
+| Name
+| Wire
+| Description / Signal type
+| Connection / Measuring notes
+|-
+| style="text-align:center; font-weight:bold;" | 1
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 2
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 3
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_SLP
+| style="vertical-align:bottom;" | 0.35 BR/BL
+| [0/1] Signal Secondary Air Pump   Relay
+| Secondary Air Pump Relay
+|-
+| style="text-align:center; font-weight:bold;" | 4
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | T_ELUE
+| style="vertical-align:bottom;" | 0.50 SW/GN
+| [PWM] Signal Electric Cooling   Fan
+| Electric Cooling Fan
+|-
+| style="text-align:center; font-weight:bold;" | 5
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_SHFM
+| style="vertical-align:bottom;" | 0.50 SW/GE
+| Secondary Air Pump MAF Sensor
+| Secondary Air Pump MAF Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 6
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 7
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_FWG1
+| style="vertical-align:bottom;" | 0.35 BR/GN
+| Pedal Value Sensor
+| Accelerator Pedal
+|-
+| style="text-align:center; font-weight:bold;" | 8
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_FWG1
+| style="vertical-align:bottom;" | 0.35 WS
+| [0-5V] Signal Pedal Value Sensor   1
+| Accelerator Pedal
+|-
+| style="text-align:center; font-weight:bold;" | 9
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | U_FWG1
+| style="vertical-align:bottom;" | 0.35 GE
+| [+5V] Supply Voltage 1 Pedal   Value Sensor
+| Accelerator Pedal
+|-
+| style="text-align:center; font-weight:bold;" | 10
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | S_EKP
+| style="vertical-align:bottom;" | 0.35 SW/VI
+| Signal Fuel Pump Relay
+| Fuel Pump Relay
+|-
+| style="text-align:center; font-weight:bold;" | 11
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 12
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_FWG2
+| style="vertical-align:bottom;" | 0.35 BR
+| Pedal Value Sensor
+| Accelerator Pedal
+|-
+| style="text-align:center; font-weight:bold;" | 13
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_FWG2
+| style="vertical-align:bottom;" | 0.35 WS/GN
+| [0-5V] Signal Pedal Value Sensor   2
+| Accelerator Pedal
+|-
+| style="text-align:center; font-weight:bold;" | 14
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | U_FWG2
+| style="vertical-align:bottom;" | 0.35 GE/GN
+| [+5V] Supply Voltage 2 Pedal   Value Sensor
+| Accelerator Pedal
+|-
+| style="text-align:center; font-weight:bold;" | 15
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_SHFM
+| style="vertical-align:bottom;" | 0.50 SW/RT
+| [0-5V] Signal Secondary Air Pump   MAF Sensor
+| Secondary Air Pump MAF Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 16
+| style="text-align:center; font-weight:bold; color:#808080;" | Output
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| style="color:#808080;" | Spare Output 4
+| style="color:#808080;" | Never Used In Production
+|-
+| style="text-align:center; font-weight:bold;" | 17
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | F_TD
+| style="vertical-align:bottom;" | 0.35 SW
+| Engine Speed Signal
+| OBD-II Connector
+|-
+| style="text-align:center; font-weight:bold;" | 18
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_AKL
+| style="vertical-align:bottom;" | 0.50 GR/VI
+| [0/1] Signal Exhaust Flap Valve
+| Exhaust Flap Valve (xi & B30 only)
+|-
+| style="text-align:center; font-weight:bold;" | 19
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 20
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | DMTL
+| style="vertical-align:bottom;" | 0.50 SW/GN
+| [0-5V] Signal DMTL
+| Diagnostic Module Fuel Tank Leakage
+|-
+| style="text-align:center; font-weight:bold;" | 21
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 22
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | F_DFAHR
+| style="vertical-align:bottom;" | 0.35 WS/GN
+| Signal Processed Wheel Speed   Sensor Rear Right
+| ABS/ASC or ABS/DSC Control Unit
+|-
+| style="text-align:center; font-weight:bold;" | 23
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | S_KUP
+| style="vertical-align:bottom;" | 0.35 BL/BR
+| [0-5V] Signal Clutch Switch
+| Clutch Switch
+|-
+| style="text-align:center; font-weight:bold;" | 24
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | S_BLS
+| style="vertical-align:bottom;" | 0.35 BL/RT
+| [0-5V] Signal Brake Light Switch   (BLS)
+| Light Control Module
+|-
+| style="text-align:center; font-weight:bold;" | 25
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 26
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | 15<29
+| style="vertical-align:bottom;" | 0.50 GN/VI
+| Voltage Supply Terminal 15
+| Fuse F29
+|-
+| style="text-align:center; font-weight:bold;" | 27
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | FGRS
+| style="vertical-align:bottom;" | 0.35 BL/SW
+| Data Link Multi Function   Steering Wheel
+| Volute Spring Steering Wheel
+|-
+| style="text-align:center; font-weight:bold;" | 28
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | S_BLTS
+| style="vertical-align:bottom;" | 0.35 BR/GR
+| [0-5V] Signal Brake Light Test   Switch (BTS)
+| Brake Light Switch
+|-
+| style="text-align:center; font-weight:bold;" | 29
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | S_KOREL
+| style="vertical-align:bottom;" | 0.50 SW/BL
+| [0/1] Signal A/C Compressor   Relay (ACC_RLY)
+| A/C Compressor Relay
+|-
+| style="text-align:center; font-weight:bold;" | 30
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | DMTLP
+| style="vertical-align:bottom;" | 0.75 BR/BL
+| [0/1] Signal DMTL Pump
+| Diagnostic Module Fuel Tank Leakage
+|-
+| style="text-align:center; font-weight:bold;" | 31
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 32
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_TXD2
+| style="vertical-align:bottom;" | 0.50 WS/VI
+| Engine Diagnostic Link TXD
+| OBD-II Connector
+|-
+| style="text-align:center; font-weight:bold;" | 33
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_EWS
+| style="vertical-align:bottom;" | 0.35 SW/VI
+| Electronic Vehicle   Immobilisation Crosslink
+| Electronic Vehicle   Immobilisation Unit (EWS)
+|-
+| style="text-align:center; font-weight:bold;" | 34
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| [0-5V] Input Fuel Cap Status   Switch
+| Diagnostic Module Fuel Tank   Leakage
+|-
+| style="text-align:center; font-weight:bold;" | 35
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | 31
+| style="vertical-align:bottom;" | 0.50 BR/OR
+| Cruise control interface
+| Cruise control interface (Z3   only)
+|-
+| style="text-align:center; font-weight:bold;" | 36
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_CAN--H
+| style="vertical-align:bottom;" | 0.50 GE/RT
+| CAN High
+| CAN Bus Connector
+|-
+| style="text-align:center; font-weight:bold;" | 37
+| style="text-align:center; font-weight:bold;" | I/O
+| style="vertical-align:bottom;" | D_CAN--L
+| style="vertical-align:bottom;" | 0.50 GE/BR
+| CAN Low
+| CAN Bus Connector
+|-
+| style="text-align:center; font-weight:bold;" | 38
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | M_TKA
+| style="vertical-align:bottom;" | 0.35 SW/GN
+| Coolant Outlet Temperature
+| Coolant Outlet Temperature   Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 39
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_TKA
+| style="vertical-align:bottom;" | 0.35 SW/GR
+| [0-5V] Signal Coolant Outlet   Temperature
+| Coolant Outlet Temperature   Sensor
+|-
+| style="text-align:center; font-weight:bold;" | 40
+| style="text-align:center; font-weight:bold;" | 
+| 
+| 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+|}
+
+=X60005 - Ignition=
+{| class="wikitable" style="width: 900px;"
+|- style="font-weight:bold; text-align:center;"
+! colspan="6" | X60005 9-pin
+|- style="font-weight:bold;"
+| style="text-align:center;" | Pin
+| style="text-align:center;" | Type
+| Name
+| Wire
+| Description / Signal type
+| Connection / Measuring notes
+|-
+| style="text-align:center; font-weight:bold;" | 1
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_ZSZ3
+| style="vertical-align:bottom;" | 1.5 SW/GE
+| Ignition Signal Cylinder 3
+| Ignition Coil Cylinder 3
+|-
+| style="text-align:center; font-weight:bold;" | 2
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_ZSZ2
+| style="vertical-align:bottom;" | 1.5 SW/RT
+| Ignition Signal Cylinder 2
+| Ignition Coil Cylinder 2
+|-
+| style="text-align:center; font-weight:bold;" | 3
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_ZSZ1
+| style="vertical-align:bottom;" | 1.5 SW/WS
+| Ignition Signal Cylinder 1
+| Ignition Coil Cylinder 1
+|-
+| style="text-align:center; font-weight:bold;" | 4
+| style="text-align:center; font-weight:bold;" | 
+| style="vertical-align:bottom;" | 
+| style="vertical-align:bottom;" | 
+| 
+| 
+|-
+| style="text-align:center; font-weight:bold;" | 5
+| style="text-align:center; font-weight:bold;" | Ground
+| style="vertical-align:bottom;" | 31L
+| style="vertical-align:bottom;" | 2.5 BR
+| Ignition Coil Ground
+| Ground Connector X6458
+|-
+| style="text-align:center; font-weight:bold;" | 6
+| style="text-align:center; font-weight:bold;" | Input
+| style="vertical-align:bottom;" | A_ZSR
+| style="vertical-align:bottom;" | 0.5 BR
+| Signal Feedback Ignition Coils
+| Ignition Coil Wiring Harness
+|-
+| style="text-align:center; font-weight:bold;" | 7
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_ZSZ6
+| style="vertical-align:bottom;" | 1.5 SW/VI
+| Ignition Signal Cylinder 6
+| Ignition Coil Cylinder 6
+|-
+| style="text-align:center; font-weight:bold;" | 8
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_ZSZ5
+| style="vertical-align:bottom;" | 1.5 SW/GN
+| Ignition Signal Cylinder 5
+| Ignition Coil Cylinder 5
+|-
+| style="text-align:center; font-weight:bold;" | 9
+| style="text-align:center; font-weight:bold;" | Output
+| style="vertical-align:bottom;" | P_ZSZ4
+| style="vertical-align:bottom;" | 1.5 SW/BL
+| Ignition Signal Cylinder 4
+| Ignition Coil Cylinder 4
+|}

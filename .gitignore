@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+*.tmp
+~$*
+.env
+.env.*
+
+# Large binaries — keep paths in research/notes instead
+*.pdf
+!research/sources/files/*.pdf
+!docs/M54_swap_visual_guide.pdf
+!docs/M54_wiring_for_beginners.pdf
+*.zip
+build/photos/raw/
+research/sources/files/node_modules/

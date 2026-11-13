@@ -1,0 +1,98 @@
+[
+    {
+        "id":  "S01",
+        "bytes":  35570,
+        "out":  "S01_ms4x_ms43_pinout.wiki",
+        "error":  "",
+        "url":  "https://www.ms4x.net/index.php?title=Siemens_MS43_Pinout\u0026action=raw",
+        "status":  "ok"
+    },
+    {
+        "id":  "S02",
+        "bytes":  8501,
+        "out":  "S02_ms4x_m52tu_to_ms43.wiki",
+        "error":  "",
+        "url":  "https://www.ms4x.net/index.php?title=HowTo:_Convert_M52TU_Engine_to_MS43\u0026action=raw",
+        "status":  "ok"
+    },
+    {
+        "id":  "S03",
+        "bytes":  5356,
+        "out":  "S03_ms4x_harness_connectors.wiki",
+        "error":  "",
+        "url":  "https://www.ms4x.net/index.php?title=Engine_Wiring_Harness_Connectors\u0026action=raw",
+        "status":  "ok"
+    },
+    {
+        "id":  "S33",
+        "bytes":  8494,
+        "out":  "S33_ms4x_flasher.wiki",
+        "error":  "",
+        "url":  "https://www.ms4x.net/index.php?title=MS4x_Flasher\u0026action=raw",
+        "status":  "ok"
+    },
+    {
+        "id":  "S34",
+        "bytes":  21780,
+        "out":  "S34_ms4x_patchlist.wiki",
+        "error":  "",
+        "url":  "https://www.ms4x.net/index.php?title=TunerPro_MS43_Community_Patchlist\u0026action=raw",
+        "status":  "ok"
+    },
+    {
+        "id":  "S35",
+        "bytes":  103452,
+        "out":  "S35_ms4x_ms43.wiki",
+        "error":  "",
+        "url":  "https://www.ms4x.net/index.php?title=Siemens_MS43\u0026action=raw",
+        "status":  "ok"
+    },
+    {
+        "id":  "S06",
+        "bytes":  1149534,
+        "out":  "S06_pinoutbms46.pdf",
+        "error":  "",
+        "url":  "https://raw.githubusercontent.com/krided/E46/main/pinoutbms46.pdf",
+        "status":  "ok"
+    },
+    {
+        "id":  "S22",
+        "bytes":  8504281,
+        "out":  "S22_bmw_st055_ms42_ms43.pdf",
+        "error":  "",
+        "url":  "https://ia800902.us.archive.org/26/items/BMWTechnicalTrainingDocuments/ST055%20Engine%20Electronics%20(Archive%202)/01_MS42%20MS43.pdf",
+        "status":  "ok"
+    },
+    {
+        "id":  "S23",
+        "bytes":  72841,
+        "out":  "S23_vems_bmw_pinout.pdf",
+        "error":  "",
+        "url":  "http://www.vems.hu/files/BMW/pinout.pdf",
+        "status":  "ok"
+    },
+    {
+        "id":  "S32",
+        "bytes":  0,
+        "out":  "S32_bimmerfest_ms43_pinout.pdf",
+        "error":  "Удаленный сервер возвратил ошибку: (409) Конфликт.",
+        "url":  "https://www.bimmerfest.com/attachments/siemens-ms43-pinout-pdf.879427/",
+        "status":  "fail"
+    },
+    {
+        "id":  "S14",
+        "bytes":  0,
+        "out":  "S14_rusefi_e46_dme_pinout.md",
+        "error":  "Удаленный сервер возвратил ошибку: (404) Не найден.",
+        "url":  "https://raw.githubusercontent.com/wiki/rusefi/rusefi/2002-BMW-325-and-2004-BMW-330Ci-E46-DME-pinout.md",
+        "status":  "fail"
+    },
+    {
+        "id":  "S15",
+        "bytes":  1396,
+        "out":  "S15_rusefi_bmw_e46.md",
+        "error":  "",
+        "url":  "https://raw.githubusercontent.com/wiki/rusefi/rusefi/BMW-e46.md",
+        "status":  "ok"
+    }
+]

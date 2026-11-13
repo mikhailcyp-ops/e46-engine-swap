@@ -1,0 +1,225 @@
+<div style="float:right;">__TOC__</div>
+First question to answer would be: Why do all this, when your engine is running fine?
+
+Answer to this is: MS43 is the faster ECU, has a lot more analog inputs, better tuning support, a significantly less often failing throttlebody assembly and last but not least no for custom firmware like MS43X.
+
+Engine wise the M52TU is almost the same as its successor the M54. Except for the throttle body and accelerator pedal it shares all sensors with MS43 powered M54.
+
+This procedure is not completely plug & play but we try to make it as easy as possible with this guide.
+
+'''Note:''' Currently we have no E39 available for measuring and testing, so all lengths and part numbers will be listed for E46. Please validate E39 part numbers on your own.
+
+== Install Electronic Throttle Pedal ==
+Regardless of method used to adapt the M52TU wiring to MS43, you have to retrofit a fully electric throttle paddle.
+
+[[File:MS43 Pedal Retrofit.jpg|frameless|400px|MS43 pedal with wiring]]
+=== Parts List ===
+*Mounting plate: 
+**LHD: 35 42 6 772 703
+**RHD: 35 42 6 772 704
+*Accelerator pedal:
+**Automatic: 35 42 6 786 281
+**Manual: 35 42 6 786 282
+*Connector and cabling:
+** Connector: BMW 61 13 8 383 300 (Tyco 1-967616-1)
+** Terminals: 12x Tyco 5-963727-1 (MQS Quadlock 0.35mm²)
+** Cable: 6m FLRy 0.35mm² (E46 chassis, others may vary)
+
+=== Pinout ===
+The electronic accelerator pedal (connector X11400) needs to be connected to MS43 (connector X60004) with six wires of about 1m in length for an LHD E46 chassis others may need longer wires due to the ECU box being on the other vehicle side or vice versa.
+
+You can use any 0.35mm² cable since there is not much current used by the two potentiometers. We suggest using FLRy type wires with original colors from the table below.
+{| class="wikitable" 
+|-
+! Pedal Side Pin
+! Signal Name
+! Color
+! ECU Side Pin
+|-
+| X11400.1
+| M_FWG1
+| brown/green
+| X60004.7
+|-
+| X11400.2
+| M_FWG2
+| brown
+| X60004.12
+|-
+| X11400.3
+| U_FWG2
+| yellow/green
+| X60004.14
+|-
+| X11400.4
+| A_FWG1
+| white
+| X60004.8
+|-
+| X11400.5
+| U_FWG1
+| yellow
+| X60004.9
+|-
+| X11400.6
+| A_FWG2
+| white/green
+| X60004.13
+|}
+The finished wiring for the electronic throttle paddle will look something like this when finished:
+
+[[File:MS43_Convesion_Wiring_PVS.jpg|frameless|400px|MS43 PVS wiring adapter]]
+
+=== Hardware Install ===
+
+== Engine Wiring Modification ==
+For M52TU to work with MS43 ECU you have two options for the wiring. Both options are valid and you can decide whatever suits your needs better:
+*'''Option A''': Maintain M52TU engine wiring and work with adapters
+*'''Option B''': Update engine wiring to M54 and solder some cables
+
+If you prefer not having to change the whole wiring loom itself or have soldered connections in the engine wiring, we would advise to stick with the M52TU wiring. Same goes for vehicles that came with an M52TU but never with an M54 like the E38 or if your wiring loom is in a very good condition.
+
+Keeping the M52TU wiring needs an adapter for the throttlebody, while a full M54 wiring conversion needs soldering for the cluster signals and a 4mm² voltage supply line. 
+
+-----
+=== Option A: Adapt M52TU wiring harness to full DBW throttlebody ===
+The easiest approach make your engines wiring compatible to MS43 is to create two little adapters, one for the throttlebody and another one for the instrument cluster signals.
+
+[[File:MS42_to_MS43_Complete_Adapter.jpg|frameless|400px|M52TU MS43 adapter]]
+
+==== Throttlebody Adapter ====
+The throttlebody adapter is a bit more complicated to make, because is involves drilling the connector housing, as it was not meant for throttlebody application originally.
+
+On the M52TU engine wiring harness you have four additional wires that should be depinned from connector X60003:
+* Pin X60003.4 (red/green)
+* Pin X60003.9 (black/yellow)
+* Pin X60003.14 (brown)
+* Pin X60003.16 (black/violett)
+
+Once those are gone you can build the actual wiring adapter. For easier troubleshooting we advice to keep the orignal wire colors but more importantly wire gauges.
+
+As initially mentioned you need to open the holes for pins 9 and 10 in the throttlebody connector very carefully with a 5mm drill. To maintain water resistance close the other holes with glue or blind plugs.
+
+'''Adapter pinout:'''
+{| class="wikitable"
+! M52TU Pin !! Name !! Color !! Wire Gauge !! M54 Pin
+|-
+| 1 || --- || --- || --- || ---
+|-
+| 2 || U_DKG || brown/white || 0.50mm² || 2
+|-
+| 3 || --- || --- || --- || ---
+|-
+| 4 || M_DKG || brown/green || 0.50mm² || 6
+|-
+| 5 || A_DKG2 || brown/blue || 0.50mm² || 4
+|-
+| 6 || --- || --- || --- || ---
+|-
+| 7 || --- || --- || --- || ---
+|-
+| 8 || A_DKG1 || brown/violet || 0.50mm² || 1
+|-
+| 9 || T_MDK1 || gray/white || 0.75mm² || 3
+|-
+| 10 || T_MDK2 || brown/black || 0.75mm² || 5
+|}
+
+'''Parts needed:'''
+*1x Male Connector: BMW 61 12 1 740 615
+**6x Male Terminals: Kostal 10124444700-L (LKS 1.5 1.5mm² - 2.5mm²)
+**6x Seals: Kostal 10800444521 (LKS 1.5 0.22mm² - 1.0mm²)
+*1x Female Connector: FEP 42545100 (1.5mm sealed) | VAG 4H0973713G
+**6x Female Terminals: TE 1241381-1 (1.5mm sealed 0.5 - 1.0mm²)
+**6x Seals: FEP 46021200 (1.5mm sealed 0.75mm²)
+*1.0m FLRy wire 0.50mm²
+*0.5m FLRy wire 0.75mm²
+
+==== Cluster Signals Adapter ====
+Vehicles equipped with M52TU and MS42 have 4 cluster signal wired through the ECU plug from connector X60004 to connector X60003:
+{| class="wikitable"
+! Signal !! Vehicle Side !! Engine Side !! Color
+|-
+| Charge Control Light || X60004.1 || X60003.13 || blue
+|-
+| Engine Start Signal  || X60004.2 || X60003.12 || black/yellow
+|-
+| Oil Pressure Switch || X60004.11 || X60003.26 || brown/grey
+|-
+| Oil Level Sensor Signal || X60004.21 || X60003.39 || grey/blue
+|}
+
+These signal wires need to be depinned from the connectors housings and connected with each other. A very easy solution would be cutting them and solder them together, but that makes it impossible to remove the engine wiring in the future.
+
+A better way is keeping the MQS terminal in place and make an adapter. For this adapter you need two female MQS quadlock 4 way connectors and two male ones with matching terminals.
+
+'''Parts needed:'''
+*2x Female Connector: BMW 61 13 2 359 994 | Tyco 1241634-1
+*2x Male Connector: BMW 61 13 6 925 611 | Tyco 0-1452576-9
+*8x Male Terminals: 8x Tyco 5-963730-1 (MQS Quadlock 0.50mm² - 0.75mm²)
+*0.5-1m FLRy wire
+
+The goal is to have a male to male connector that acts as a gender changer for the female connections you depinned previously, something like this:
+
+[[File:MS42_to_MS43_Cluster_Signals_Adapter.png|frameless|400px|MS43 cluster signal adapter]]
+
+The pinout doesn't matter as long as you maintain a straight 1:1 connection. To make things easier, here is a suggested pin assignment:
+*Pin 1: Charge Control Light
+*Pin 2: Engine Start Signal
+*Pin 3: Oil Pressure Switch
+*Pin 4: Oil Level Sensor Signal
+
+Now click the depinned terminals into the female connectors and secure the second locking mechnism. Once you are done it will look something like this:
+
+-----
+
+=== Option B: Change Engine Wiring Loom To M54 ===
+The M54 engine wiring has a single black 8-way connector with 6 pins equipped, where as the M52TU only has a black 2-way connector and runs the four other wires through the ECU.
+
+'''X6011 - Engine Signals''' - 8-way black connector
+{| class="wikitable" 
+|-
+! M54 Engine
+! Cable Color
+! MS42 Vehicle
+! Function
+|-
+| X6011.1
+| black
+| X6011.1 (2w)
+| Starter Signal
+|-
+| X6011.2
+| green/brown
+| X6011.2 (2w)
+| Terminal 15
+|-
+| X6011.3
+| brown/grey
+| X60004.11
+| Oil Pressure Switch
+|-
+| X6011.4
+| blue
+| X60004.13
+| Charge Control Light
+|-
+| X6011.5
+| grey/blue
+| X60004.21
+| Oil Level Sensor
+|-
+| X6011.6
+| black/yellow
+| X60004.02
+| Engine Start Signal
+|}
+In this guide we declare the M52TU connector "2w" for 2-way because unfortunately BMW decided to call the 2-way and 8-way connectors both X6011 in their documentation.
+
+The wire gauge of the M54s cluster signal wires (pins 3-6) is too large for a neat MQS-based adapter like above so just use any 4-way connector you have laying around. We found AMPs Superseal connectors work perfectly.
+
+The thicker 2.5mm² wires (pins 1&2) can be connected with Herth+Buss crimp connectors like the 50253352 and some heat shrink tubing.
+
+'''X6053 - Voltage Supply''' - 8-way white connector
+
+M52TU cars dont have seperated +12V lines for ignition coils and injection valves, so you have to combine pin 7 (red/yellow) with pin 2 (red/white/yellow).

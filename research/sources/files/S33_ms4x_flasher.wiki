@@ -1,0 +1,191 @@
+<div style="float:right;">__TOC__</div>
+[[File:MS4X_Flasher_Unactivated.png|400px|thumb|right|Unactivated Flasher Instance]]
+
+We are proud to present our own flash tool that you can use to quickly read and write the following control units:
+*Siemens MS42 (M52TU)
+*Siemens MS43 (M54)
+*GS8.60.0 (ZF 5HP19)
+*GS8.60.2 (ZF 5HP24)
+*GS8.60.4 (ZF 5HP19)
+*GS20 (GM 5L40/5L50)
+*GDSMG2 (Getrag SMG II)
+
+This tool is completely free of charge, though if you are using it commercially consider a small donation to support this project.
+
+'''Key features:'''
+*On-the-fly checksum correction before flashing
+*Checksum correction for local files
+*EWS3 sync and reset
+*Adaptations reset
+*DTC read and clear
+*DS2 command sender
+*64 KByte read/write (~20 seconds)
+*512 KByte read/write (~120 seconds)
+
+Releases moved to our Github page ([https://github.com/ms4x-net/ms4x_flasher LINK])
+
+'''Download Windows:'''
+*[https://github.com/ms4x-net/ms4x_flasher/releases/download/v1.6.0/ms4x-flasher_1.6.0_x86.msi Download MS4x Flasher v1.6.0 Windows 32bit]
+*[https://github.com/ms4x-net/ms4x_flasher/releases/download/v1.6.0/ms4x-flasher_1.6.0_x64.msi Download MS4x Flasher v1.6.0 Windows 64bit]
+*[https://github.com/ms4x-net/ms4x_flasher/releases/download/v1.6.0/ms4x-flasher_1.6.0_arm64.msi Download MS4x Flasher v1.6.0 Windows ARM 64bit]
+'''Download Linux:'''
+*[https://github.com/ms4x-net/ms4x_flasher/releases/download/v1.6.0/ms4x-flasher_1.6.0_amd64.deb Download MS4x Flasher v1.6.0 Linux 64bit]
+*[https://github.com/ms4x-net/ms4x_flasher/releases/download/v1.6.0/ms4x-flasher_1.6.0_arm64.deb Download MS4x Flasher v1.6.0 Linux ARM 64bit]
+*[https://github.com/ms4x-net/ms4x_flasher/releases/download/v1.6.0/ms4x-flasher_1.6.0_armhf.deb Download MS4x Flasher v1.6.0 Linux ARM HF]
+
+'''Activation:'''
+
+After the first start of the executable you will see your unique hardware ID that you need for the activation.
+
+To generate a computer specific key file, head over to [https://activation.ms4x.net MS4x Activation] and copy and paste the hardware ID. You will be presented a "licence.lic" file for downloading.
+
+'''Then go to the setting tab in MS4x Flasher, click on "Load Licence" button and chose the licence file.'''
+
+==Functions==
+
+===Read From ECU===
+The first and default page is the ECU read function, where you can read out any MS42 or MS43.
+
+Its always great to have a complete backup of the data stored in the ECUs flash memory, but you can chose between full or partial read out.
+
+"Partial Read" only includes the 64kByte of calibration data, whereas "Full Read" contains all 512kByte of data (excluding the ISN area for sensitive data).
+
+Note: Some ECUs are read locked for DS2 reading, which is the protocol of communication MS4x Flasher uses. In this case you have to read it through boot mode with JMGarage flasher.
+
+[[File:MS4X_Flasher_Read.png|500px|frameless]]
+
+===Write To ECU===
+With the write function you can either write full or partial files back to the ECU.
+
+'''Hint:''' You can load a full file and click write partial if you only changed calibation values. The flasher will then automatically skip the program code part and only update the tune.
+
+This will save you time whilst keeping a single file on your hard drive. No more confusion which patch was applied for the partial file!
+
+[[File:MS4X_Flasher_Write.png|500px|frameless]]
+
+===EWS Sync===
+The EWS Sync or immobilizer sync is currently in beta stage and not working all the time.
+*Sync: If your ECU is virginized correctly, you can pair it with an existing immobilizer unit
+*Reset start value:  Use this if you have multiple ECUs paired with a single immobilizer unit to reset the rolling code mechanism
+
+[[File:MS4X_Flasher_EWS.png|500px|frameless]]
+
+===Reset Adaptation===
+With this function you can reset all the adaptation values that the supported ECU's store in the EEPROM.
+
+The visible options that you can see and reset depend on the detected ECU.
+
+[[File:MS4X_Flasher_Adaptation_Reset.png|500px|frameless]]
+
+===Diagnostic Codes===
+The diagnostic code function is really handy when it comes to troubleshooting.
+
+Please always attach a screenshot of this when you post about something that's not working correctly.
+
+The DTCs are listed in raw data which makes it easier for us to check for the root of the code.
+
+[[File:MS4X_Flasher_DTC.png|500px|frameless]]
+
+===DS2 Command Sender===
+The DS2 Command Sender function allows you to easily transmit DS2 commands and receive the answer.
+
+The length and checksum will be automatically calculated, so you only have to focus on the raw commands.
+
+[[File:MS4X_Flasher_DS2_CMD.png|500px|frameless]]
+
+===Checksum Correction===
+We also included a standalone checksum correction for files that you want to flash over boot mode or simply want to store it with correct checksums.
+
+It corrects all available checksums in the supported ECU's and shows you the correction output in the log.
+
+[[File:MS4X_Flasher_Checksum.png|500px|frameless]]
+
+===Settings===
+Here you can disable the checksum correction and security checks for example if the battery voltage is too low, or you want to experiment with the checksums.
+
+Use with extreme caution, if the voltage drops too low during flash, the ECU will reset. This might in a worst case scenario require bootmode recovery afterwards.
+
+Usually the functions are not needed for normal operation.
+
+[[File:MS4X_Flasher_Settings.png|500px|frameless]]
+
+==Changelog==
+Changelog can be seen here: https://github.com/ms4x-net/ms4x_flasher/
+
+'''v1.6.0'''
+* Added GS8.60.2 support for M62TU ZF 5HP gearboxes
+
+'''v1.5.1'''
+* Fix incorrect binary size check that prevented loading of GS8.60.0 binaries
+* Fix issue with "Load License" dialog on linux systems
+* Updated third-party dependencies to latest versions
+
+'''v1.5.0'''
+* Migrated to .NET 9
+* Refactored reading/writing to better support GS20
+* Added GS8.60.0 support
+
+'''v1.4.1'''
+* Reworked user interface design to more closely follow the Microsoft Fluent design guidelines
+* Fix issue where an arithmetic overflow could occur during writing
+
+'''v1.4.0'''
+* Migrated to .NET 8
+* Compiled with ReadyToRun for better startup times and responsiveness
+* Updated UI with system theme support
+* All supported baudrates are now also available on Linux
+* Fixed issue where the com ports would duplicate when the user opened the com port list in the menu
+* Refactored error reporting to be more verbose
+* Fixed issue in GS20 read function where the TCU would return corrupt data when reading data across memory segment boundaries
+
+'''v1.3.2'''
+* Increased retry rates and timeout times to make communication more resilient
+
+'''v1.3.1'''
+* Added a "Load Licence" button in the settngs tab
+
+'''v1.3.0'''
+* Switched to installers for all supported platforms
+* Added support for TCUs (SMG2, GS8.60.0, GS8.60.4, GS20)
+* Moved licence lookup to "C:/ProgramData/MS4x Flasher" or "/var/lib/ms4x-flasher"
+* VIN included in save filename when reading
+* Refactor application to not use FTDI drivers
+* Optimize memory usage and performance
+* Migrated to .NET 7
+
+'''v1.2.7'''
+* Added: Support for multi byte ecu addresses
+* Updated: Migrated to .NET5
+* Updated: FTDI drivers 2.12.36.4 included
+* Optimization: Minor bugfixes
+
+'''v1.1.3'''
+* Added: Action log
+* Added: Checksum corrector for local files
+* Added: DTC reader (with raw HEX output)
+* Optimization: Various bugfixes
+
+'''v1.03'''
+* Optimization: New encryption settings for less AV false positives
+
+'''v1.02'''
+* Updated: Icon changed to new logo
+* Optimization: MS42 fullflash bug fixed
+* Optimization: Minor spelling fixes
+
+'''v1.01'''
+* Updated: Hardware ID will show at startup if an FTDI cable is detected
+
+'''v1.0'''
+* Initial release
+
+==Windows 7 Notes==
+Due to Microsoft dropping support for Windows 7 in their .NET runtime the flasher is not supported on that platform and there is no guarantees that the application will even start.
+
+However by installing the following updates and packages it may be possible to get the flasher running under Windows 7:
+* Windows 7 Service Pack 1
+* [https://aka.ms/vs/17/release/vc_redist.x86.exe Visual C++ Redistributable x86] (for 32 bit executable)
+* [https://aka.ms/vs/17/release/vc_redist.x64.exe Visual C++ Redistributable x64] (for 64 bit executable)
+
+If you are experiencing slow performance or high RAM usage you can try adding the following environment variable to the system as described here [https://github.com/dotnet/runtime/issues/79469 dotnet issue 79469]:
+* '''DOTNET_EnableWriteXorExecute''' = 0

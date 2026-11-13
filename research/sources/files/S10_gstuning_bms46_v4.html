@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<!-- >>>>> head >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<head>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+
+  <meta charset="UTF-8">
+  
+<title>PNPECU - Tuning-WIKI: BMW M43 BMS46 V4</title>
+<meta name="description"       content="BMW M43 BMS46 V4 - Documentation of our tuning solutions and hints for MaxxECU, Baldurs Control Units, VEMS, Link ECU and others.">
+  <meta name="theme-color" content="#d40001">
+  <meta name="viewport"    content="width=device-width, initial-scale=1">
+ 
+
+ <!--
+  <link rel="stylesheet"   href="./fa/font-awesome.min.css">
+ -->
+ 
+ 
+  <script src="./fk/fk.js"></script>
+
+  <link rel="stylesheet" href="./w3/w3.css">
+  <link rel="stylesheet" href="./fk/fk.css">
+  <link rel="stylesheet" href="./wiki/resources/wiki/wiki.css">
+</head>
+<!-- <<<<< head -->
+
+
+<!-- >>>>> body >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<body>
+
+<div class="w3-content" style="max-width:2400px; margin-top:0px">
+<div class="OFF-w3-container OFF-w3-content OFF-w3-padding-small" style="max-width:10000px">
+   
+   
+   
+   
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> page setup -->
+ <div> 
+
+<!-- >>>>> Menu bar >>>>>>>>>>>>>>>>>>>>>>>>> -->
+<div class="w3-bar w3-light-grey w3-border-bottom">   <span class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right w3-light-grey" 
+  onclick="toggleVisibility('navigation')" title="Toggle Navigation Menu"> 
+&#9776;<br><br><br> 
+</span> 
+<a href="./wiki.php?lang=EN&wiki=Main_page"  class="w3-bar-item OFF-w3-button OFF-w3-padding-small" style="padding:0px; padding-left:0px;">    <img src="./wiki/resources/wiki/WIKI-LOGO.png"  alt="Home" height="90px"> </a>
+<a href="./wiki.php?lang=EN&wiki=Main_page"          class="w3-bar-item w3-button w3-padding-small w3-hide-small"><img src=./resources/images/flags/EN.gif alt="Switch to english language"></a>
+<a href="./wiki.php?lang=DE&wiki=Main_page"          class="w3-bar-item w3-button w3-padding-small w3-hide-small"><img src=./resources/images/flags/DE.gif alt="Auf deutsche Sprache umschalten"></a>
+<form action="/wiki.php?lang=EN&wiki=&special=search"       method="post"       class="w3-bar-item w3-button w3-padding-small w3-hide-small w3-right w3-margin-right"> 
+  <input size=20 maxlength=30 type="text" name="query" value="" placeholder="Search wiki pages"> 
+  <button type=submit>go</button> 
+</form> 
+
+  </div>
+<!-- <<<<< Menu bar -->
+
+
+
+<!-- >>>>> Navigation on small devices >>>>>> -->
+<div id="navigation" class="w3-bar-block w3-grey w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:80px">
+
+<br />
+<b>Notice</b>:  Undefined variable: wikimainpage in <b>/var/www/vhosts/hosting127693.a2ff4.netcup.net/httpdocs/gstuning.net/wiki.php</b> on line <b>171</b><br />
+<a href="./wiki.php?lang=EN&wiki="          class="w3-bar-item w3-button w3-padding-small"><img src=./resources/images/flags/EN.gif alt="Switch to english language"></a>
+<br />
+<b>Notice</b>:  Undefined variable: wikimainpage in <b>/var/www/vhosts/hosting127693.a2ff4.netcup.net/httpdocs/gstuning.net/wiki.php</b> on line <b>172</b><br />
+<a href="./wiki.php?lang=DE&wiki="          class="w3-bar-item w3-button w3-padding-small"><img src=./resources/images/flags/DE.gif alt="Auf deutsche Sprache umschalten"></a>
+<form action="/wiki.php?lang=EN&wiki=&special=search"       method="post"       class="w3-bar-item w3-button w3-padding-small w3-hide-medium"> 
+  <input size=20 maxlength=30 type="text" name="query" value="" placeholder="Search wiki pages"> 
+  <button type=submit>go</i></button> 
+</form> 
+
+ 
+</div>
+<!-- <<<<< Navigation on small devices -->
+
+    
+  
+<!-- >>>>> Wiki page >>>>>>>>>>>>>>>>>>>>>>>> -->
+
+              <div class="w3-container w3-light-grey w3-cell">
+                  <p> <b> Navigation </b>
+<br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=Main_page> Main page </a><br>
+<br>
+<b> Getting started </b>
+<br>
+ // <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=Baldurs_ECU><font color=darkred> Baldurs ECU </font></a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=MaxxECU_ECU> MaxxECU </a><br>
+ // <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=VEMS_ECU><font color=darkred> VEMS ECU </font></a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=Link_ECU_Support> Link ECU </a><br>
+<br>
+<b> Support for </b>
+<br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=Baldurs_ECU_Support> Baldurs ECU </a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=MaxxECU_ECU_Support> MaxxECU </a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=VEMS_ECU_Support> VEMS ECU </a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=Link_ECU_Support> Link ECU </a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=ECUMaster_Support> ECUMaster </a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=PNPECU_Support> PNPECU </a><br>
+<br>
+<b> Our sites </b>
+<br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=https://www.pnpecu.com target=\_blank">PNPECU <i class="fa fa-external-link"></i></a><br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=https://www.gstuning.net target=\_blank">GSTuning <i class="fa fa-external-link"></i></a><br>
+<br>
+<b> Contact us </b>
+<br>
+ <a style="display:inline-block; padding: 0px; margin:5px;" href=./wiki.php?lang=EN&wiki=Contact_PNPECU> Contact PNPECU </a><br>
+<hr size=1>
+<font size=0.8em>Last change 08.01.2026, 20:10:06</font></p>
+              </div>
+              <div class="w3-container w3-white w3-cell">
+                  <p>
+                     <h1>BMW M43 BMS46 V4</h1>
+                     <small><a target=_blank href=/wiki/resources/administration/edit.php?lang=EN&wiki=BMW_M43_BMS46_V4>Edit this page</a></small>
+                     <hr size=1>
+                     <div><table class="w3-round wikitable"><tr><td>
+<h2>Contents</h2>
+ <ol style="list-style-position: inside;">
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#PNPECU_EMU_Black_M43_BMS46_solution> PNPECU EMU Black M43 BMS46 solution </a></li>
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#Adapter_extra_connector_information> Adapter extra connector information </a></li>
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#M43_OEM_Sensors_Usage> M43 OEM Sensors Usage </a></li>
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#M43_OEM_Actuator_Usage> M43 OEM Actuator Usage </a></li>
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#CAN_BUS_Compatibility> CAN BUS Compatibility </a></li>
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#Options_at_ordering> Options at ordering </a></li>
+<li><a style="display:inline-block; padding: 0px; margin:5px;" href=#EMU_Black_adapter_pinout_information> EMU Black adapter pinout information </a></li>
+</ol>
+</td></tr></table></div><hr>
+ <h2><a id=PNPECU_EMU_Black_M43_BMS46_solution></a> PNPECU EMU Black M43 BMS46 solution </h2><hr size=1 style="margin: 0px;"> <br>
+This page refers to version 4 PNPECU M43 solution only. Make sure to check the adapter tag for your version.<br>
+<br>
+30/7/2024 - Version 4 is latest.<br>
+<br>
+PNPECU has developed the M43 solution to satisfy customer requests to allow the M43 engine to be fully controlled<br>
+<br>
+<br>
+<h2><a id=Adapter_extra_connector_information></a> Adapter extra connector information </h2><hr size=1 style="margin: 0px;"><br>
+See bottom of this page for the pinouts of these auxiliary connectors <br>
+<br>
+&bullet; 18 pin Auxiliary connector part numbers<br>&nbsp;&nbsp;&bullet; Connector - <a style="display:inline-block; padding: 0px; margin:5px;" href=https://www.te.com/usa-en/product-1355348-1.html target=\_blank">https://www.te.com/usa-en/product-1355348-1.html <i class="fa fa-external-link"></i></a><br>
+&nbsp;&nbsp;&bullet; Cover     - <a style="display:inline-block; padding: 0px; margin:5px;" href=https://www.te.com/usa-en/product-1-1355350-1.html target=\_blank">https://www.te.com/usa-en/product-1-1355350-1.html <i class="fa fa-external-link"></i></a><br>
+&nbsp;&nbsp;&bullet; Terminals - <a style="display:inline-block; padding: 0px; margin:5px;" href=https://www.te.com/usa-en/product-5-963716-1.html target=\_blank">https://www.te.com/usa-en/product-5-963716-1.html <i class="fa fa-external-link"></i></a><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h2><a id=M43_OEM_Sensors_Usage></a> M43 OEM Sensors Usage </h2><hr size=1 style="margin: 0px;"><br>
+&bullet; OEM Lambda sensors are not used<br>&bullet; MAF sensor is not used<br><br>
+<br>
+<br>
+&bullet; Crank sensor - used as OEM<br>&bullet; Cam sensor - used as OEM<br>&bullet; Coolant temperature - used as OEM<br>&bullet; Air temp sensor - used as OEM<br>&bullet; TPS sensor - used as OEM<br>&bullet; Vehicle Speed Sensor Rear Right - used for vehicle speed<br>&bullet; Knock sensors - used as OEM<br>&bullet; Engine oil pressure switch - used as OEM<br>&bullet; Oil level switch - used as OEM<br><br>
+<br>
+<br>
+<h2><a id=M43_OEM_Actuator_Usage></a> M43 OEM Actuator Usage </h2><hr size=1 style="margin: 0px;"><br>
+&bullet; Secondary air pump - not used<br>&bullet; Secondary air valve - not used<br><br>
+<br>
+<br>
+&bullet; Ignition coil wiring - used as OEM<br>&bullet; Tachometer signal - used as OEM<br>&bullet; Fuel pump relay - used as OEM<br>&bullet; Idle control valve - used as OEM<br>&bullet; AC Compressor relay - used as OEM<br>&bullet; Econometer output - used as OEM<br>&bullet; DISA Valve - used as OEM<br><br>
+<br>
+<h2><a id=CAN_BUS_Compatibility></a> CAN BUS Compatibility </h2><hr size=1 style="margin: 0px;"> <br>
+The cars that the M43 BMS46 originally came in did communicate with the rest of the vehicle via CAN BUS. <br>
+Use E46 canbus setup in the ecu<br>
+<br>
+<h2><a id=Options_at_ordering></a> Options at ordering </h2><hr size=1 style="margin: 0px;"> <br>
+Not everyone is going to need or want the same thing with their ECU conversion.<br>
+<br>
+ECU Model<br>
+&bullet; Black - 6 x Analog inputs are spare, 2 x H bridges are free , 1 x Switch input is free<br><br>
+<br>
+<br>
+Injector<br>
+This is a selectable option so that the webstore doesn´t incorrectly calculate shipping cost<br>
+<br>
+<br>
+<h2><a id=EMU_Black_adapter_pinout_information></a> EMU Black adapter pinout information </h2><hr size=1 style="margin: 0px;"> <br>
+Below is the pin functions of the M43  V4.0 BMS46 adapter.<br>
+<br>
+<br>
+<table class="wikitable" style="margin:auto">
+<caption> EMU Black Connector 1 - 39pin - GREY</caption>
+<tr>
+<th> Pin number </th>
+<th> Function </th>
+<th> Information</th>
+</tr>
+<tr>
+<td> 1 </td>
+<td> IGN 5 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 2 </td>
+<td> EGT 1+ </td>
+<td> Not wired</td>
+</tr>
+<tr>
+<td> 3 </td>
+<td> KNOCK 1 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 4 </td>
+<td> ANALOG 2 </td>
+<td> Spare input Aux 18/18</td>
+</tr>
+<tr>
+<td> 5 </td>
+<td> COOLANT TEMP SENSOR </td>
+<td></td>
+</tr>
+<tr>
+<td> 6 </td>
+<td> WBO2 VS </td>
+<td> </td>
+</tr>
+<tr>
+<td> 7 </td>
+<td> CAMSYNC 2 </td>
+<td> Spare input </td>
+</tr>
+<tr>
+<td> 8 </td>
+<td> PRIMARY TRIGGER </td>
+<td> </td>
+</tr>
+<tr>
+<td> 9 </td>
+<td> FLEX FUEL </td>
+<td> Spare input Aux 18/9</td>
+</tr>
+<tr>
+<td> 10 </td>
+<td> SWITCH 1 </td>
+<td> EOP SWITCH</td>
+</tr>
+<tr>
+<td> 11</td>
+<td> RS232TXD </td>
+<td> </td>
+</tr>
+<tr>
+<td> 12 </td>
+<td> CAN H </td>
+<td> Spare Aux 18/5</td>
+</tr>
+<tr>
+<td> 13 </td>
+<td> BATTERY 12V </td>
+<td> </td>
+</tr>
+<tr>
+<td> 14 </td>
+<td> IGN 4 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 15 </td>
+<td> EGT2+ </td>
+<td> NoT wired</td>
+</tr>
+<tr>
+<td> 16 </td>
+<td> KNOCK 2 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 17 </td>
+<td> ANALOG 3 </td>
+<td> Spare input Aux 18/11</td>
+</tr>
+<tr>
+<td> 18 </td>
+<td> TPS-IN </td>
+<td> </td>
+</tr>
+<tr>
+<td> 19 </td>
+<td> WBO IP </td>
+<td> </td>
+</tr>
+<tr>
+<td> 20 </td>
+<td> VSS</td>
+<td> </td>
+</tr>
+<tr>
+<td> 21 </td>
+<td> CAMSYNC 1 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 22 </td>
+<td> WBO RCAL </td>
+<td> </td>
+</tr>
+<tr>
+<td> 23 </td>
+<td> SWITCH 2 </td>
+<td> OIL LEVEL SWITCH</td>
+</tr>
+<tr>
+<td> 24 </td>
+<td> RS232RXD </td>
+<td> </td>
+</tr>
+<tr>
+<td> 25 </td>
+<td> CAN LOW </td>
+<td> Spare Aux 18/6</td>
+</tr>
+<tr>
+<td> 26 </td>
+<td> 5V SUPPLY </td>
+<td> </td>
+</tr>
+<tr>
+<td> 27 </td>
+<td> PWR GND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 28 </td>
+<td> ECU GND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 29 </td>
+<td> Sensor GND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 30 </td>
+<td> ANALOG 4 </td>
+<td> Spare input Aux 18/12</td>
+</tr>
+<tr>
+<td> 31 </td>
+<td> ANALOG 1 </td>
+<td> Spare input Aux 18/13</td>
+</tr>
+<tr>
+<td> 32 </td>
+<td> AIR TEMP SENSOR </td>
+<td> </td>
+</tr>
+<tr>
+<td> 33 </td>
+<td> WBO2 VGND</td>
+<td> </td>
+</tr>
+<tr>
+<td> 34 </td>
+<td> 5V SUPPLY </td>
+<td> </td>
+</tr>
+<tr>
+<td> 35 </td>
+<td> ANALOG 5 </td>
+<td> Spare input Aux 18/7</td>
+</tr>
+<tr>
+<td> 36 </td>
+<td> SWITCH 3 </td>
+<td> Spare input Aux 18/10</td>
+</tr>
+<tr>
+<td> 37 </td>
+<td> ANALOG 6 </td>
+<td> Spare input Aux 18/14</td>
+</tr>
+<tr>
+<td> 38 </td>
+<td> SENSOR GND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 39 </td>
+<td> SENSOR GND </td>
+<td> </td>
+</tr>
+</table><br>
+<br>
+<br>
+<br>
+<table class="wikitable" style="margin:auto">
+<caption> EMU Black Connector 2 - 24pin - BLACK</caption>
+<tr>
+<th> Pin number </th>
+<th> Function </th>
+<th> Information</th>
+</tr>
+<tr>
+<td> 1 </td>
+<td> IGN 6 </td>
+<td> AC Compressor relay</td>
+</tr>
+<tr>
+<td> 2 </td>
+<td> H-BRIDGE 1+ </td>
+<td> Spare output Aux 18/15</td>
+</tr>
+<tr>
+<td> 3 </td>
+<td> H-BRIDGE 2+ </td>
+<td> Spare output Aux 18/17</td>
+</tr>
+<tr>
+<td> 4 </td>
+<td> AUX 6 </td>
+<td> FAN PWM</td>
+</tr>
+<tr>
+<td> 5 </td>
+<td> AUX 3 </td>
+<td> E-STAT</td>
+</tr>
+<tr>
+<td> 6 </td>
+<td> INJ 4 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 7 </td>
+<td> INJ 1 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 8 </td>
+<td> IGN 1 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 9 </td>
+<td> IGN 3 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 10 </td>
+<td> H-BRIDGE 1- </td>
+<td> Spare output Aux 18/16</td>
+</tr>
+<tr>
+<td> 11 </td>
+<td> H-BRIDGE 2- </td>
+<td> Spare output Aux 18/18</td>
+</tr>
+<tr>
+<td> 12 </td>
+<td> AUX 5 </td>
+<td> IDLE OPEN</td>
+</tr>
+<tr>
+<td> 13 </td>
+<td> AUX 2 </td>
+<td> MAIN RELAY</td>
+</tr>
+<tr>
+<td> 14 </td>
+<td> INJ 5 </td>
+<td> TACHO</td>
+</tr>
+<tr>
+<td> 15 </td>
+<td> INJ 2 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 16 </td>
+<td> IGN 2 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 17 </td>
+<td> PWR GND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 18 </td>
+<td> IGN 12 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 19 </td>
+<td> WBO HEATER </td>
+<td> </td>
+</tr>
+<tr>
+<td> 20 </td>
+<td> AUX 4 </td>
+<td> IDLE CLOSE</td>
+</tr>
+<tr>
+<td> 21 </td>
+<td> AUX 1 </td>
+<td> FUEL PUMP RELAY</td>
+</tr>
+<tr>
+<td> 22 </td>
+<td> INJ 6 </td>
+<td> DISA VALVE</td>
+</tr>
+<tr>
+<td> 23 </td>
+<td> INJ 3 </td>
+<td></td>
+</tr>
+<tr>
+<td> 24 </td>
+<td> PWR GND </td>
+<td> </td>
+</tr>
+</table><br>
+<br>
+<br>
+<br>
+<br>
+<table class="wikitable" style="margin:auto">
+<caption> Auxiliary connector - 18pin </caption>
+<tr>
+<th> Pin number </th>
+<th> Function </th>
+<th> Information</th>
+</tr>
+<tr>
+<td> 1 </td>
+<td> 12V SUPPLY </td>
+<td> </td>
+</tr>
+<tr>
+<td> 2 </td>
+<td> 5V SUPPLY </td>
+<td> </td>
+</tr>
+<tr>
+<td> 3 </td>
+<td> ANALOG GROUND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 4 </td>
+<td> POWER GROUND </td>
+<td> </td>
+</tr>
+<tr>
+<td> 5 </td>
+<td> CAN HIGH </td>
+<td> </td>
+</tr>
+<tr>
+<td> 6 </td>
+<td> CAN LOW </td>
+<td> </td>
+</tr>
+<tr>
+<td> 7 </td>
+<td> ANALOG 5 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 8 </td>
+<td> ANALOG 2 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 9 </td>
+<td> FLEX FUEL </td>
+<td> </td>
+</tr>
+<tr>
+<td> 10 </td>
+<td> SWITCH 3 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 11 </td>
+<td> ANALOG 3 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 12 </td>
+<td> ANALOG 4 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 13 </td>
+<td> ANALOG 1 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 14 </td>
+<td> ANALOG 6 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 15 </td>
+<td> H-BRIDGE 1+ </td>
+<td> </td>
+</tr>
+<tr>
+<td> 16 </td>
+<td> H-BRIDGE -1 </td>
+<td> </td>
+</tr>
+<tr>
+<td> 17 </td>
+<td> H-BRIDGE 2+ </td>
+<td> </td>
+</tr>
+<tr>
+<td> 18 </td>
+<td> H-BRIDGE 2- </td>
+<td> </td>
+</tr>
+</table><br>
+<br>
+<br>
+<br>
+<hr size=1>
+<font size=0.8em>Last change 28.08.2024, 10:53:37</font>
+                  </p>
+              </div>  
+           <!--  </div> -->
+<!-- <<<<< Wiki page <<<<<<<<<<<<<<<<<<<<<<<< -->
+
+
+</div>
+</div>
+</div>
+
+<!-- >>>>> Footer >>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<br><br><br>
+<div class="no-print w3-light-grey w3-block w3-border-top w3-right-align w3-bottom" style="height: 50px;">
+      <span class="gs-text-grey w3-small">&copy; Frank Kirchhoff, Spenge</span>
+      
+&nbsp;&nbsp;&nbsp; <a href="./wiki.php?lang=EN&wiki=Imprint" class="gs-text-grey w3-margin-left w3-bar-item w3-button w3-small">Imprint</a>
+&nbsp;&nbsp;&nbsp; <a href="./wiki.php?lang=EN&wiki=Data_Protection" class="gs-text-grey w3-margin-left w3-bar-item w3-button w3-small">Data Protection</a>
+</div>
+<!-- <<<<< Footer <<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+
+
+</body>
+<!-- <<<<< body -->
+
+
+</html>

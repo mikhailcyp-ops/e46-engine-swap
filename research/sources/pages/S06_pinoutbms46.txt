@@ -1,0 +1,435 @@
+
+
+ 
+Telefon:    
+Fax:
+NIP VAT:
+Wyjście
+Po stronie wiązki przewodów
+Opis elementów/obwodu
+Styki
+komputera
+sterującego
+SygnałStanWartość orientacyjna
+Ustawienie oscyloskopu
+(Zalecane wartości
+napięcia/czasu na ekran)
+Oscylogram
+Komputer sterujący układu ABS
+- sygnał prędkości
+D22
+Zapłon włączony -
+samochód w ruchu
+0 V albo 10 V
+Zawór elektromagnetyczny filtra
+z węglem aktywnym
+C6Zapłon włączony11-14 V
+Zawór elektromagnetyczny filtra
+z węglem aktywnym
+C44Zapłon włączony11-14 V
+Zawór elektromagnetyczny filtra
+z węglem aktywnym
+C44Na biegu jałowym9 %10 V/50 ms
+Silnik rozrusznikaC12Zapłon włączony0 V
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+Silnik rozrusznikaC12Obracać rozrusznikiemMind. 9 V
+Czujnik temperatury
+zasysanego powietrza - w
+mierniku przepływu powietrza
+C29
+Zapłon włączony -
+temperatura powietrza
+20°C
+2,4 V
+AkumulatorA7Zapłon wyłączony11-14 V
+Zawór podciśnieniowy układu
+wspomagania hamowania
+C17
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Zawór podciśnieniowy układu
+wspomagania hamowania
+C21
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Magistrala danych CAND36
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Magistrala danych CAND37
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Złącze diagnostyczne - sygnał
+liczby obrotów silnika
+D17Na biegu jałowym27 Hz
+Złącze diagnostyczne - napięcie
+zasilania
+D32Zapłon włączony11-14 V
+Potencjometr przepustnicyC33
+Zapłon włączony -
+przepustnica
+zamknięta
+0,5 V
+Potencjometr przepustnicyC33
+Zapłon włączony -
+przepustnica
+całkowicie otwarta
+4,2 V
+Potencjometr przepustnicyC20Zapłon włączony0 V
+Potencjometr przepustnicyC46Zapłon włączony4,7 V
+Zawór wtryskowy 1C2Zapłon włączony11-14 V
+Zawór wtryskowy 1C51Zapłon włączony11-14 V
+Zawór wtryskowy 1C51Na biegu jałowym4 ms10 V/2 ms
+Zawór wtryskowy 2C1Zapłon włączony11-14 V
+Zawór wtryskowy 2C50Zapłon włączony11-14 V
+Zawór wtryskowy 2C50Na biegu jałowym4 ms10 V/2 ms
+Zawór wtryskowy 3C15Zapłon włączony11-14 V
+Zawór wtryskowy 3C49Zapłon włączony11-14 V
+Zawór wtryskowy 3C49Na biegu jałowym4 ms10 V/2 ms
+Zawór wtryskowy 4C14Zapłon włączony11-14 V
+Zawór wtryskowy 4C48Zapłon włączony11-14 V
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+Zawór wtryskowy 4C48Na biegu jałowym4 ms10 V/2 ms
+Alternator - sygnał ładowaniaC13Zapłon włączony1 V
+Alternator - sygnał ładowaniaC13Na biegu jałowym11-14 V
+Komputer sterujący przekładniB6
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Komputer sterujący przekładni -
+magistrala danych
+B3
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Komputer sterujący przekładni -
+magistrala danych
+B4
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Moduł tablicy przyrządów -
+sygnał ładowania
+D1Zapłon włączony1 V
+Moduł tablicy przyrządów -
+sygnał ładowania
+D1Na biegu jałowym11-14 V
+Moduł tablicy przyrządów -
+sygnał poziomu oleju
+D21Zapłon włączony2 V/1 s
+Moduł tablicy przyrządów -
+sygnał ciśnienia oleju
+D11Zapłon włączony0 V
+Moduł tablicy przyrządów -
+sygnał ciśnienia oleju
+D11Na biegu jałowym11-14 V
+Moduł tablicy przyrządów -
+sygnał uruchomienia
+D2Zapłon włączony0 V
+Moduł tablicy przyrządów -
+sygnał uruchomienia
+D2Obracać rozrusznikiemMind. 9 V
+Przekaźnik sprzęgła sprężarki
+klimatyzacji
+D29
+Na biegu jałowym -
+układ klimatyzacji
+wyłączony
+11-14 V
+Przekaźnik sprzęgła sprężarki
+klimatyzacji
+D29
+Na biegu jałowym -
+układ klimatyzacji
+włączony
+0 V
+Czujnik spalania stukowego -
+sygnał 1
+C18
+Na biegu jałowym - na
+krótko wcisnąć pedał
+przyspieszenia
+50 mV/1 ms
+Czujnik spalania stukowego -
+sygnał 2
+C19
+Na biegu jałowym - na
+krótko wcisnąć pedał
+przyspieszenia
+50 mV/1 ms
+Czujnik spalania stukowego -
+sygnał 3
+C31
+Na biegu jałowym - na
+krótko wcisnąć pedał
+przyspieszenia
+50 mV/1 ms
+Czujnik spalania stukowego -
+sygnał 4
+C32
+Na biegu jałowym - na
+krótko wcisnąć pedał
+przyspieszenia
+50 mV/1 ms
+Przekaźnik pompy paliwaD10Zapłon włączony
+Krótko 0 V, następnie
+11-14 V
+Przekaźnik pompy paliwaD10Na biegu jałowym0 V
+Silnik wentylatora chłodnicyD4Na biegu jałowym6,8 %5 V/5 ms
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+Czujnik temperatury silnika
+wentylatora chłodnicy
+D38Zapłon włączony0 V
+Czujnik temperatury silnika
+wentylatora chłodnicy
+D39
+Zapłon włączony -
+temperatura płynu
+chłodzącego 17°C
+3,6 V
+Czujnik temperatury silnika
+wentylatora chłodnicy
+D39
+Na biegu jałowym -
+silnik rozgrzany
+1,6 V
+Czujnik temperatury płynu
+chłodzącego
+C22Zapłon włączony0 V
+Czujnik temperatury płynu
+chłodzącego
+C28
+Zapłon włączony -
+temperatura płynu
+chłodzącego 17°C
+3,2 V
+Czujnik temperatury płynu
+chłodzącego
+C28
+Na biegu jałowym -
+silnik rozgrzany
+0,5 V
+Termostat płynu chłodzącegoC9
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Termostat płynu chłodzącegoC43
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Czujnik kąta obrotu wału
+korbowego
+C16Zapłon włączony11-14 V
+Czujnik kąta obrotu wału
+korbowego
+C35
+Zapłon włączony -
+obrócić silnik ręką
+0 V albo 5 V
+Czujnik kąta obrotu wału
+korbowego
+C35Na biegu jałowym2 V/0,1 s
+Czujnik kąta obrotu wału
+korbowego
+C36Zapłon włączony0 V
+Sonda lambda 1B9Zapłon włączony0 V
+Sonda lambda 1B18Na biegu jałowym0,1-0,9 V (zmienny)0,2 V/1 s
+Sonda lambda 1 - regulacja
+ogrzewania
+B7Zapłon włączony0 V
+Sonda lambda 1 - regulacja
+ogrzewania
+B24Zapłon włączony0 V
+Sonda lambda 1 - regulacja
+ogrzewania
+B24Na biegu jałowym11-14 V
+Sonda lambda 2B14Zapłon włączony0 V
+Sonda lambda 2B16Na biegu jałowym0,3-0,7 V0,2 V/0,5 s
+Sonda lambda 2 - regulacja
+ogrzewania
+B8Zapłon włączony0 V
+Sonda lambda 2 - regulacja
+ogrzewania
+B22Zapłon włączony0 V
+Sonda lambda 2 - regulacja
+ogrzewania
+B22
+Na biegu jałowym -
+silnik zimny
+77 %2 V/50 ms
+Sonda lambda 2 - regulacja
+ogrzewania
+B22
+Na biegu jałowym -
+silnik rozgrzany
+11-14 V
+Zawór regulacyjny biegu
+jałowego
+C23Zapłon włączony0 V
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+Zawór regulacyjny biegu
+jałowego
+C40Zapłon włączony0 V
+Zawór regulacyjny biegu
+jałowego
+C40Na biegu jałowym70 %5 V/5 ms
+Zawór regulacyjny biegu
+jałowego
+C41Zapłon włączony0 V
+Zawór regulacyjny biegu
+jałowego
+C41Na biegu jałowym45 %5 V/5 ms
+Miernik przepływu powietrzaC3Zapłon włączony11-14 V
+Miernik przepływu powietrzaC8Zapłon włączony0 V
+Miernik przepływu powietrzaC27Zapłon włączony5 V
+Miernik przepływu powietrzaC30Zapłon włączony1 V
+Miernik przepływu powietrzaC30Na biegu jałowym1,4 V
+Miernik przepływu powietrzaC30
+Na biegu jałowym - na
+krótko przy pełnym
+obciążeniu
+4 V
+MasaA4Zapłon włączony0 V
+MasaA5Zapłon włączony0 V
+MasaA6Zapłon włączony0 V
+Wyłącznik lampek kontrolnych
+ciśnienia oleju w silniku
+C26Zapłon włączony0 V
+Wyłącznik lampek kontrolnych
+ciśnienia oleju w silniku
+C26Na biegu jałowym11-14 V
+Czujnik poziom oleju w silnikuC10Zapłon włączony0 V
+Czujnik poziom oleju w silnikuC39Zapłon włączony2 V/1 s
+Przekaźnik sterowania silnikaA8Zapłon wyłączony0 V po 5 sek.
+Przekaźnik sterowania silnikaA8Zapłon włączony11-14 V
+Przekaźnik sterowania silnikaA9Zapłon wyłączony0 V po 5 sek.
+Przekaźnik sterowania silnikaA9Zapłon włączony11-14 V
+Przekaźnik sterowania silnikaB23Zapłon wyłączony11-14 V
+Przekaźnik sterowania silnikaB23Zapłon włączony0 V
+Czujnik położenia wałka
+rozrządu
+C4Zapłon włączony11-14 V
+Czujnik położenia wałka
+rozrządu
+C37Zapłon włączony0 V
+Czujnik położenia wałka
+rozrządu
+C38
+Zapłon włączony -
+obrócić silnik ręką
+0 V albo 5 V
+Czujnik położenia wałka
+rozrządu
+C38Na biegu jałowym2 V/0,1 s
+Zawór regulacyjny przełączania
+kolektora ssącego
+C5Zapłon włączony11-14 V
+Zawór regulacyjny przełączania
+kolektora ssącego
+C45Zapłon włączony11-14 V
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+Zawór regulacyjny przełączania
+kolektora ssącego
+C45
+Na biegu jałowym - na
+krótko przy pełnym
+obciążeniu
+0 V
+Zawór elektromagnetyczny
+powietrza wtórnego
+C7Zapłon włączony11-14 V
+Zawór elektromagnetyczny
+powietrza wtórnego
+C52Zapłon włączony11-14 V
+Zawór elektromagnetyczny
+powietrza wtórnego
+C52
+Na biegu jałowym -
+silnik zimny
+0 V
+Przekaźnik pompy wtórnego
+powietrza/zaworu
+elektromagnetycznego
+D3Zapłon włączony11-14 V
+Przekaźnik pompy wtórnego
+powietrza/zaworu
+elektromagnetycznego
+D3
+Na biegu jałowym -
+silnik zimny
+0 V
+Komputer sterujący
+immobilisera
+D33
+Podłączony styk - brak
+dostępnych danych
+testowych lub
+przypadkowy sygnał
+Wyłącznik zapłonuD26Zapłon włączony11-14 V
+Cewka zapłonowa 1E6Zapłon włączony11-14 V
+Cewka zapłonowa 1E6Na biegu jałowym5 V/2 ms
+Cewka zapłonowa 2E4Zapłon włączony11-14 V
+Cewka zapłonowa 2E4Na biegu jałowym5 V/2 ms
+Cewka zapłonowa 3E8Zapłon włączony11-14 V
+Cewka zapłonowa 3E8Na biegu jałowym5 V/2 ms
+Cewka zapłonowa 4E9Zapłon włączony11-14 V
+Cewka zapłonowa 4E9Na biegu jałowym5 V/2 ms
+59. Cyfrowy, napięcie stałe, o modulowanej
+szerokości impulsu lub cyfrowy, napięcie stałe,
+o modulowanej częstotliwości
+35. Cyfrowy, napięcie stałe, o modulowanej
+szerokości impulsu
+74. Analogowy, napięcie stałe, o modulowanej
+częstotliwości
+58. Analogowy, napięcie zmienne68. Cyfrowy, napięcie stałe, o modulowanej45. Cyfrowy, napięcie stałe, o modulowanej
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+szerokości impulsu lub cyfrowy, napięcie stałe,
+o modulowanej częstotliwości
+częstotliwości i szerokości impulsu
+21. Analogowy, napięcie stałe76. Analogowy, napięcie stałe32. Cyfrowy, napięcie stałe o modulowanej
+częstotliwości
+33. Cyfrowy, napięcie stałe o modulowanej
+częstotliwości
+  
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    
+
+Sygnał w dwóch kierunkach
+Sygnał przychodzący
+Sygnał wychodzący
+Komputer sterujący przełącza na masę
+Masa komputera sterującego
+Producent: BMWModel: 3 Seria (E46) 1,9 316i(c) Autodata Limited 2012
+Kod silnika: 19 4E 1Moc silnika: 77 (105) 5300.2024-12-11
+Wyposażenie dla: Katalizator regulowanyRok produkcji: 1999-02V8.950-ENGS999999    

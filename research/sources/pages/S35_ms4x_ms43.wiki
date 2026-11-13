@@ -1,0 +1,1742 @@
+The Siemens MS43 engine control unit (ECU) uses an Infineon C167CR_SR CPU clocked at 24MHz in combination with a 4 megabit AMD AM29F400BB flash memory.
+
+This ECU controls the BMW M54 inline six engine.
+
+When looking at the cryptic item names this might help you: [[Siemens Keyword Translation]]
+<div style="float:right;">__TOC__</div>
+=Memory Layout=
+The MS43 flash memory can be separated into three major sections, first comes the bootloader, then the program code, and lastly the calibration data.
+
+See the following table for where the sections are located:
+
+{| class="wikitable"
+! style="text-align: center; font-weight:bold;" | Start
+! style="text-align: center; font-weight:bold;" | End
+! style="text-align: center; font-weight:bold;" | Section
+! style="text-align: center; font-weight:bold;" | Size
+|-
+| style="text-align: center; background-color:#fe996b;" | 00000
+| style="text-align: center; background-color:#fe996b;" | 0FFFF
+| style="text-align: center; background-color:#fe996b;" | Bootloader & UIF
+| style="text-align: center; background-color:#fe996b;" | 64 kByte
+|-
+| style="text-align: center; background-color:#fffc9e;" | 10000
+| style="text-align: center; background-color:#fffc9e;" | 1FFFF
+| rowspan="6" style="text-align: center; background-color:#fffc9e;" | Program Code
+| rowspan="6" style="text-align: center; background-color:#fffc9e;" | 384 kByte
+|-
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 20000
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 2FFFF
+|-
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 30000
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 3FFFF
+|-
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 40000
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 4FFFF
+|-
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 50000
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 5FFFF
+|-
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 60000
+| style="text-align: center; background-color:#fffc9e; color:#000000;" | 6FFFF
+|-
+| style="text-align: center; background-color:#9aff99; color:#000000;" | 70000
+| style="text-align: center; background-color:#9aff99; color:#000000;" | 7FFFF
+| style="text-align: center; background-color:#9aff99; color:#000000;" | Calibration Data
+| style="text-align: center; background-color:#9aff99; color:#000000;" | 64 kByte
+|}
+
+
+'''Bootloader Section'''
+
+This section is 64 kilobytes in size and contains the boot code that initializes the ecu and verifies that everything is ok before control is handed over to the program code section. This section also contains one time writeable data such as immobilizer information and user information fields (UIF).
+
+'''Program Code Section'''
+
+This section is 384 kilobytes in size and contains the program code that operates the engine.
+
+'''Calibration Data Section'''
+
+This section is 64 kilobytes in size and contains the calibration data that the program code uses to operate the engine.
+
+=Checksums=
+The MS43 uses three CRC16 checksums that verifies the data integrity of the boot, program and calibration sections and two 32-bit addition checksums that verifies the data integrity of the system monitoring (_mon) parameters. 
+If any of the checksums are incorrect the ecu assumes that the data on flash has been corrupted and it won't allow the engine to start.
+
+When correcting all the checksums the addition checksums has to be corrected '''before''' the CRC16 checksums, as the addition checksums are located inside the CRC16 checksum areas.
+
+The checksums are located at the following addresses:
+
+{| class="wikitable" style="text-align:left;"
+!CRC16
+!Location
+|-
+| Boot
+| 0x3C24
+|-
+| Program
+| 0x6FDE0
+|-
+| Calibration
+| 0x73FE0
+|-
+!32-bit Addition
+!Location
+|-
+| Program
+| 0x6FDAE
+|-
+| Calibration
+| 0x72FFC
+|-
+|}
+
+==Disabling Calibration Checksums==
+'''Warning:''' It's not advised to disable the calibration checksums as the ECU looses the ability to verify the data integrity of the calibration data. This section is provided solely for educational purposes to explain how the factory bypass is performed.
+
+'''Disable CRC16 Checksum'''
+
+To disable the CRC16 calibration checksum do the following.
+
+; Hexeditor
+: 1. Set Word at 0x73FFE to 0xFFFF
+: 2. Set Byte at 0x6FFB0 to 0xA8
+: 3. Change the Byte in the table from 0x84 to 0x94
+::{| class="wikitable" style="text-align:left;"
+!Firmware
+!Location
+|-
+| 430037
+| 0x58999
+|-
+| 430055
+| 0x5B87D
+|-
+| 430056
+| 0x5B87F
+|-
+| 430064
+| 0x5FEB3
+|-
+| 430066
+| 0x63595
+|-
+| 430069
+| 0x63595
+|-
+|}
+
+'''Disable Monitor Checksum'''
+
+'''Warning:''' Disabling the calibration monitor checksum should be avoided as it's an important part of the drive by wire safety system. This section is provided solely for educational purposes to explain how the factory bypass is performed.
+
+To disable the calibration monitor checksum use one of the following methods.
+
+; Tunerpro
+: 1. Set lc_swi_cal_mon_cks to 165
+
+; Hexeditor
+: 1. Set the Byte in the table to 0xA5
+::{| class="wikitable" style="text-align:left;"
+!Firmware
+!Location
+|-
+| 430037
+| 0x70CE3
+|-
+| 430055
+| 0x70D7C
+|-
+| 430056
+| 0x70D7E
+|-
+| 430064
+| 0x70DA0
+|-
+| 430066
+| 0x70E0A
+|-
+| 430069
+| 0x70E07
+|-
+|}
+
+=Variants Configuration=
+As the MS43 ecu is used in many different chassis configurations it uses a combination of configuration switches and automatic learning routines to detect which features or behaviors should be enabled.
+
+==Switches==
+
+'''Configuration switch - Anti jerk load signal reference variant (c_conf_aj_maf)'''
+*0: MAF signal referenced
+*1: MAF substitute referenced
+
+'''Configuration switch - Brake light test switch logic variant (c_conf_bts)'''
+*0: Signal high corresponds to 'brake pedal pressed'
+*1: Signal low corresponds to 'brake pedal pressed'
+
+'''Configuration switch - CAN-bus calibration logic variant (c_conf_can_cal)'''
+*0: CAN-bus calibration logic not active
+*1: CAN-bus calibration logic active
+
+'''Configuration switch - Lambda sensor configuration (c_conf_cat)'''
+*0: Automatic variant learning — Single bank system with one control (pre-cat) sensor, or CATV variant (SA199)
+*1: Automatic variant learning — Dual bank system with two control (pre-cat) sensors, or CATV variant (SA199)
+*2: Single bank system — 1 control (pre-cat) sensor and 1 monitoring (post-cat) sensor
+*3: Dual bank system — 2 control (pre-cat) sensors and 2 monitoring (post-cat) sensors
+*4: Automatic variant learning — Dual bank system, with or without control (pre-cat) and monitoring (post-cat) sensors, or CATV variant (SA199)
+
+;Procedure After Changing c_conf_cat
+:# Disconnect all lambda sensors that are not required for the selected configuration.
+:# Reset the “learned variants” adaptation in the ECU. This step ensures the ECU re-learns the correct lambda sensor configuration during the next startup.
+
+'''Configuration switch - Alternator charge balancing (c_conf_cha_cdn_bat)'''
+*0: Charge balancing not active
+*1: Charge balancing active for manual transmission
+*2: Charge balancing active for automatic transmission
+*3: Charge balancing active for manual and automatic transmission
+
+'''Configuration switch - Main switch cruise control (c_conf_cru_main_swi)'''
+*0: Main switch function active, main switch controlled over steering wheel button O/I
+*1: Main switch function inactive for Z3 usage, main switch enabled when ignition key voltage is present
+
+'''Configuration switch - DMTL module (c_conf_dmtl)'''
+*0: DMTL module not present, function and diagnosis not active
+*1: DMTL module present, function and diagnosis active
+
+'''Configuration switch - Electrical cooling fan (c_conf_ecf)'''
+*0: Electrical cooling fan not present, function and diagnosis not active
+*1: Electrical cooling fan present, function and diagnosis active
+
+'''Configuration switch - Exhaust flap (c_conf_ef)'''
+*0: Exhaust flap not present, function and diagnosis not active
+*1: Exhaust flap present, function and diagnosis active
+
+'''Configuration switch - EOBD (c_conf_eobd)'''
+*0: Distance travelled with MIL On reporting via OBD not active
+*1: Distance travelled with MIL On reporting via OBD active
+
+'''Configuration switch - Lambda sensor diagnosis of secondary air valve (c_conf_lam_sav_diag)'''
+*0: Lambda diagnostic of secondary air valve not active
+*1: Lambda diagnostic of secondary air valve active
+
+'''Configuration switch - Malfunction indicator light variant with monitoring lambda sensors (c_conf_mil)'''
+*0: Malfunction indicator light not active
+*1: Malfunction indicator light active when BMW specific faults are set
+*2: Malfunction indicator light active when OBDII faults or component errors are set after 2nd driving cycle
+*3: Malfunction indicator light active when OBDII faults or component errors are set immediately
+
+'''Configuration switch - Malfunction indicator light variant without monitoring lambda sensors (c_conf_mil_eu2)'''
+*0: Malfunction indicator light not active
+*1: Malfunction indicator light active when BMW defined faults are set
+*2: Malfunction indicator light active when OBDII faults or component errors are set after 2nd driving cycle
+*3: Malfunction indicator light active when OBDII faults or component errors are set immediately
+
+'''Configuration switch - Engine speed hysteresis handling for fuel cut off. Manual transmission (c_conf_n_hys_puc)'''
+*0: Conservative engine speed hysteresis handling active
+*1: Responsive engine speed hysteresis handling active
+
+'''Configuration switch - Engine speed hysteresis handling for fuel cut off. Automatic transmission (c_conf_n_hys_puc_dri)'''
+*0: Conservative engine speed hysteresis handling active
+*1: Responsive engine speed hysteresis handling active
+
+'''Configuration switch - Secondary air pump (c_conf_sap)'''
+*0: Automatic learning of secondary air pump configuration
+*1: Secondary air pump not present
+*2: Secondary air pump present without secondary air flow meter
+*3: Secondary air pump present with secondary air flow meter
+
+To re-do the secondary air pump learning process the "learned variants" adaptation needs to cleared in the ecu.
+
+'''Configuration switch - Secondary air valve diagnosis (c_conf_sav_diag)'''
+*0: Secondary air valve diagnosis not active
+*1: Secondary air valve diagnosis active
+
+'''Configuration switch - Mechanical diagnosis of electrical thermostat based on radiator outlet temperature (c_conf_tco_ex)'''
+*0: Mechanical diagnosis of electrical thermostat not active
+*1: Mechanical diagnosis of electrical thermostat active
+
+'''Configuration switch - Exhaust gas temperature sensors (c_conf_teg)'''
+*0: Automatic learning of exhaust gas temperature sensors
+*1: Exhaust gas temperature sensors not present
+*2: Three exhaust gas temperature sensors present
+
+To re-do the exhaust gas temperature learning process the "learned variants" adaptation needs to cleared in the ecu.
+
+'''Configuration switch - Pre injection during crank synchronization (c_conf_tipr_end)'''
+*0: Allow pre injection during crank synchronization
+*1: Abort pre injection during crank synchronization
+
+'''Configuration switch - Torque limitation in first gear (c_conf_tq_lim_gear)'''
+*0: First gear torque limiter not active
+*1: First gear torque limiter active (E53)
+
+'''Configuration switch - DS2 adaptation write access (c_conf_ad_ena)'''
+*0: DS2 adaptation write access not active
+*1: DS2 adaptation write access active
+
+== Gearbox Variant Detection ==
+To support different gearbox configurations, the ECU monitors the CAN bus for specific CAN messages.
+* If the '''EGS1''' CAN message is detected, the gearbox variant is set to Automatic (AT)
+* If the '''SSG1''' CAN message is detected, the gearbox variant is set to Automated Manual (AMT)
+* If neither message is detected, the gearbox variant defaults to Manual (MT)
+
+Once the detection process is complete, the identified gearbox variant is stored in the on-board EEPROM.
+
+To repeat the gearbox variant learning process, clear the "Learned Variants" adaptation in the ECU.
+
+== Air Conditioning System Detection ==
+The ECU determines whether an air conditioning (A/C) system is installed by monitoring the CAN bus for the '''INSTR3''' message.
+If this message is detected, the A/C system logic is activated.
+
+Once detection is complete, the result is stored in the on-board EEPROM.
+To repeat the A/C system detection process, the “Learned Variants” adaptation must be cleared in the ECU.
+
+== Steering Angle Sensor Detection ==
+The ECU automatically detects whether a steering angle sensor is installed by monitoring the CAN bus for the '''LWS1''' message.
+If this message is present, the ECU activates the steering angle sensor logic.
+
+Once detection is complete, the result is saved to the on-board EEPROM.
+
+To repeat the steering angle sensor learning process, the "learned variants" adaptation must be cleared in the ECU.
+
+== Ignition Coil Detection ==
+During the mid-production phase of the MS43, the original 300g ignition coils were replaced with pencil ignition coils.
+To support both ignition coil configurations, hardware revision Index 04 was introduced along with updated detection logic.
+
+The ECU determines the coil type by checking if pin X60002.12 is connected to terminal 87 (main relay output):
+
+* Not connected: 300g ignition coils are installed
+* Connected: Pencil ignition coils are installed
+
+Once detection is complete, the result is stored in the on-board EEPROM.
+
+To repeat the ignition coil learning process, the "learned variants" adaptation must be cleared in the ECU.
+
+'''Note:''' If pencil coils are used with an older Index 03 MS43, or with an Index 04 or newer MS43 that does not have the X60002.12 jumper wire retrofitted, the values from the ''_pc'' ignition coil tables can be copied to the corresponding ''_300'' tables.
+[[File:Siemens MS43 Coil Data.png|none|none|none|Pencil Coil Data]]
+
+== Ambient Pressure Sensor Detection ==
+During the mid-production phase of the MS43, the Motorola ambient pressure sensor was replaced with a smaller Infineon version.
+To support both sensor configurations, a new detection logic was introduced.
+
+The ECU determines which sensor type is installed by measuring the voltage on one of the ambient pressure sensor input pins:
+
+* Voltage < c_v_var_amp: Motorola sensor detected
+
+* Voltage ≥ c_v_var_amp: Infineon sensor detected
+
+Once detection is complete, the following values are stored in the ECU’s boot sector at memory address 0x3EEC–0x3EF1:
+
+* Motorola sensor: 0xA5A5A5A5A5A5
+
+* Infineon sensor: 0x5A5A5A5A5A5A 
+
+Because this detection result is stored in the boot sector, the ambient pressure sensor learning process can normally only be performed once during the ECU’s lifetime.
+However the learning process can be reset by overwriting the memory area 0x3EEC–0x3EF1 with the value 0xFF with a boot mode write.
+
+=Mass Air Flow Sensor=
+[[File:M54B30 MAF Scalar TunerPro.png|thumb|M54B30 MAF Scalar]]
+The mass airflow sensor is one of the most important sensors as it allows the engine management system to measure how much air is entering the intake system and it's a key component for many calculations.
+
+MS43 uses a MAF sensor that outputs a 0-5V signal that is then converted to a kg/h reading.
+
+There is also provision for a secondary MAF sensor that was planned to be used to meter the air entering the secondary air pump system but is was never used in production.
+
+The analog signals are converted to a MAF reading in kg/h by the following scalars.
+* '''id_maf_tab''' - MAF Sensor Scalar 1x256
+* '''id_saf_tab''' - Secondary Air MAF Sensor Scalar 1x256
+* '''id_maf_tab__v_maf_1__v_maf_2''' - MAF Sensor Scalar 16x16
+* '''id_saf_tab__v_saf_1__v_saf_2''' - Secondary Air MAF Sensor Scalar 16x16
+
+An important note for the sensor definition tables is that there is no configurable voltage scale as the voltage scale is based upon the resolution of the ADC input and no interpolation is performed on the data in the tables.
+
+For better visualization the voltage scale is only included in the 1x256 tables, the 16x16 tables are only numbered.
+
+===Input Monitoring===
+
+To diagnose the mass airflow sensor values the mass airflow sensor input is continuously monitors that the voltage is between the thresholds that are set by the following variables:
+*'''c_maf_max_diag''' - Maximum load threshold to trigger a short to positive fault
+*'''c_maf_min_diag''' - Minimum load threshold to trigger a short to ground fault
+
+If the voltage falls outside these thresholds an error code will be set for the MAF sensor input and MAF failsafe mode will be activated.
+
+When increasing the engine breathing capabilities '''c_maf_max_diag''' should be raised to a value just above the maximum load values that the engine can produce.
+
+===Failsafe Mode===
+
+In case of a mass airflow sensor failure or malfunction the MAF failsafe mode is activated and the MAF sensor load reading will be substituted with the values from the MAF diagnosis table.
+
+* '''ip_maf_1_diag__n__tps_av''' - MAF diagnosis table used as a load substitute if there is a MAF sensor error
+**'''X axis''': throttle position sensor value (tps_av)
+**'''Y axis''': engine speed (n)
+
+The MAF diagnosis table is also used during normal operation to filter VANOS load and diagnosis purposes so if the engine is modified to consume more air it's advisable to re-tune the MAF sensor substitute table to keep the load values as accurate as possible.
+
+When doing this it's good practice to data log MAF sensor load, accelerator pedal value and engine speed to create a histogram table that can be used as a base when modifying the MAF sensor substitute table.
+
+'''Note:''' Be aware that the MAF sensor substitute table can not accurately model all factors that affects the engines breathing capabilities so it's not advisable to use it as a replacement for a real MAF sensor.
+
+=Engine Load=
+During operation several filtered engine load parameters are created with the most important ones for tuning being the following:
+* Injection load (maf_ti)
+* Ignition Load (maf_iga)
+* VANOS load (maf_ivvt)
+
+{| class="wikitable" style="text-align:center; width:100%;"
+|+ '''Load Derivation Paths'''
+|-
+! MAF
+! MAF failover (Alpha-N)
+|-
+| Measure air mass via MAF sensor
+| Estimate air mass based on ip_maf_1_diag table
+|-
+| ↓
+| ↓
+|-
+| Estimate manifold pressure based on intake models and measured air mass
+| Estimate manifold pressure based on intake models and estimated air mass
+|-
+| ↓
+| ↓
+|-
+| Calculate load based on estimated manifold pressure and VO tables
+| Calculate load based on estimated manifold pressure and VO tables
+|}
+
+'''Note:''' Many logging options only reports the engine load measured by the mass airflow sensor that can vary greatly from the filtered loads which can give an incorrect view on what is actually happening.
+
+In boosted applications it's really important that the injection load is monitored and tuned correctly as otherwise the engine will run into a "lean-wall" when hitting positive manifold pressure.
+See [[#Extending_VO_Tables_For_Forced_Induction|Extending VO Tables For Forced Induction]] for tuning guidelines.
+
+==Injection Load==
+[[File:Siemens MS43 Intake Model.png|thumb|right|Intake Manifold Volume Model]]
+The load filtering process for the injection load is used to account for changes in the engines volumetric efficiency due to the variable valve overlap induced by the variable valve timing. This filtration process is in short an optimized version of the speed density control strategy where several steps are pre-calculated and stored in tables which are retrieved at runtime.
+
+'''Calculated Manifold Pressure'''
+
+First the ecu calculates the manifold absolute pressure with the help of Clapeyrons ideal gas equation by taking the effective intake manifold volume, the engine speed, the current airflow reading from the mass airflow sensor and the volumetric efficiency of the engine defined by the vo tables into account.
+
+So for example if the mass airflow sensor measured that 200 mg/stk of air entered the intake manifold and the vo tables defined that the engine at the current intake pressure and engine speed can only consume 100 mg/stk of air then the remaining 100 mg/stk of air must still be inside the intake manifold which increases the pressure inside the intake manifold.
+
+The effective intake volume is different between increasing and decreasing load scenarios and is therefore split up into four different tables:
+
+* '''ip_vol_im__n__maf_mes''' - Effective intake manifold volume at increasing load during part load and full load
+* '''ip_vol_im_neg__n__maf_mes''' - Effective intake manifold volume at decreasing load during part load and full load
+* '''ip_vol_im_is__n__maf_mes''' - Effective intake manifold volume at increasing load during idle, trailing throttle and trailing throttle fuel cut-off
+* '''ip_vol_im_neg_is__n__maf_mes''' - Effective intake manifold volume at decreasing load during idle, trailing throttle and trailing throttle fuel cut-off
+
+The more accurate these models and the MAF sensor readings is, the more accurate the calculated manifold absolute pressure value will be that's used in the next step.
+
+'''Volumetric Efficiency Calculation'''
+
+After the current manifold pressure is calculated 8 volumetric efficiency lookup tables '''ip_maf_vo_[1-8]__map__n''' and a selection table '''ip_nr_ip_maf__vo''' selects the active vo table based on the current valve overlap.
+
+The vo tables can be viewed as speed density lookup tables that contains the pre-calculated results of the speed density formula at different engine speed and intake pressures. The values represent how much air is able to enter the cylinders for a given valve overlap during an engine revolution.
+
+* '''ip_nr_ip_maf__vo''' - Active vo table for speed density calculation
+* '''ip_maf_vo_1__map__n''' - Engine volumetric effiency - Valve overlap step 1
+* '''ip_maf_vo_2__map__n''' - Engine volumetric effiency - Valve overlap step 2
+* '''ip_maf_vo_3__map__n''' - Engine volumetric effiency - Valve overlap step 3
+* '''ip_maf_vo_4__map__n''' - Engine volumetric effiency - Valve overlap step 4
+* '''ip_maf_vo_5__map__n''' - Engine volumetric effiency - Valve overlap step 5
+* '''ip_maf_vo_6__map__n''' - Engine volumetric effiency - Valve overlap step 6
+* '''ip_maf_vo_7__map__n''' - Engine volumetric effiency - Valve overlap step 7
+* '''ip_maf_vo_8__map__n''' - Engine volumetric effiency - Valve overlap step 8
+
+As the current valve overlap will not always be exactly at the 8 different valve overlap breakpoints defined in the '''ip_nr_ip_maf''' table the ecu will interpolate the load value between the '''ip_maf_vo_[1-8]''' tables so for example if the current valve overlap is halfway between the '''ip_maf_vo_1''' table and the '''ip_maf_vo_2''' table then the ecu will combine half of the load value from the '''ip_maf_vo_1''' table with half of the load value from the '''ip_maf_vo_2''' table.
+
+'''Note:''' In stock form these tables are setup to support manifold pressures between 50hPa and 1250hPa which gives some headroom to compensate for outside ambient pressure. In boosted applications the manifold pressure axis of these tables will need to be extended to allow higher pressures to be processed correctly.  
+For boosted applications see [[#Extending_VO_Tables_For_Forced_Induction|Extending VO Tables For Forced Induction]] for tuning guidelines.
+
+'''Coolant temperature correction'''
+
+Due to the speed density calculation being pre-calculated with an assumed temperature of the air entering the cylinders the output from the '''ip_maf_vo_[1-8]__map__n''' tables is multiplied with a correction factor from the '''ip_maf_tco_cor__tco''' table to correct the output for the cooling/heating effect the engine temperature will have on the air entering the cylinders.
+
+==Ignition Load==
+To improve the response time for ignition load adjustments the ECU alternates the ignition load (maf_iga) between two load sources:
+* Injection Load (maf_ti)
+* Filtered MAF Sensor Load (maf_ign)
+
+;Load Filtering Process
+:During each load acquisition cycle the ECU will update the maf_ign load with the help of the following calculation:
+:maf_ign = maf_ign + (maf_mes - maf_ign) * ip_maf_ign_crlc__n__maf_mes
+* '''ip_maf_ign_crlc__n__maf_mes''' - MAF signal filtering constant for maf_ign
+;Load Source Selection
+:If maf_ign is greater than maf_ti + c_maf_iga_hys then maf_ign will take over as maf_iga.
+:And when maf_ign becomes less than maf_ti + c_maf_iga_pas then the ecu will revert back to maf_ti as the source for maf_iga.
+* '''c_maf_iga_hys''' - maf_ign activation hysteresis
+* '''c_maf_iga_pas''' - maf_ign pacification hysteresis
+==VANOS Load==
+To create a feedback free VANOS load signal the ECU blend between the MAF sensor load (maf_mes) and the load values from the MAF sensor substitute table (maf_sub_ivvt).
+
+;Load Filtering Process
+:During each load acquisition cycle the ECU will update the maf_ivvt load with the help of the following calculations:
+:maf_sub_ivvt = (maf_mes - maf_sub_diag) * ip_fac_maf_sub_ivvt__maf_sub_diag + maf_sub_diag
+:maf_ivvt = maf_ivvt + (maf_sub_ivvt - maf_ivvt) * ip_crlc_maf_ivvt__n__maf_sub_diag
+* '''ip_fac_maf_sub_ivvt__maf_sub_diag''' - maf_sub_ivvt blending factor
+* '''ip_crlc_maf_ivvt__n__maf_sub_diag''' - maf_ivvt filtering constant
+[[File:Vanos Load Weighting Factor.png]]
+
+;Load Source Selection
+:The ip_fac_maf_sub_ivvt blending factor table is setup to mostly rely on the load measured by the MAF sensor during low load and as the load readings start to climb the factor start to gravitate more and more against the readings from the MAF sensor substitute table.
+
+When the engine is modified to consume more air it's advisable to re-tune the MAF sensor substitute table to keep the VANOS load as accurate as possible.
+See [[#Failsafe_Mode|MAF Failsafe Mode]] for tuning guidelines.
+
+==Extending VO Tables For Forced Induction==
+In stock form the VO tables are setup to support manifold pressures between 50hPa and 1250hPa which gives some headroom to compensate for varying atmospheric pressure. But a boosted applications can easily exceed 1250hPa of pressure so for the ecu to be able to correctly operate above this pressure we need to re-scale the pressure axis for the VO tables.
+
+As the volumetric efficiency scales pretty linearly with the increasing intake pressure above atmospheric pressure (~1000hPa) it's possible to create rough forced induction VO starter tables by extrapolating the data from the last two pressure rows to the desired boost target that the engine will reach plus a couple of extra hPa to give some headroom to accommodate for boost spikes and varying atmospheric pressure.
+To help with this we have prepared an Excel sheet that can be used to extrapolate your own tables: 
+[[File:Load Filtration Table Extrapolation.zip|thumb|Load_Filtration_Table_Extrapolation.zip]]
+
+On an engine running stock cams the extrapolated VO tables could look something like this if the engine is expected to run a boost target at around 1500hPa with a headroom of 500hPa to accommodate for boost spikes and varying atmospheric pressure.
+[[File:Siemens MS43 Load Filtration Boosted.png|800px]]
+
+Please note that this is only an example that should get you in the ballpark so further tuning will be needed for your specific engine configuration, ideally a real map sensor should be connected to the engine to verify that the calculated manifold pressure values are not drifting away due to incorrectly calibrated intake model or VO tables.
+
+After hundreds of kilometers of logging data, we never experienced a measured pressure of under ~150hPa so it can be considered safe to shift the tables and axis values up to clear the last row to be used for the expected maximal pressure that the engine will see.
+
+When doing a M50 manifold conversions it could be a good idea to take a look at the intake models in the Alpina B3S binary, the Alpina manifold is pretty similar to the M50 so the intake model values should be closer than the M54 intake models.
+
+= Injection =
+
+The MS43 ECU calculates fuel injection time from engine load and engine speed. The base injection maps contain injector opening time in milliseconds, which is then corrected by various enrichment, enleanment, compensation, and adaptation strategies to determine the final injector pulse width.
+
+During closed-loop operation, the ECU uses narrowband lambda sensors to maintain a stoichiometric air-fuel ratio. Fuel trim adaptations learned during closed-loop operation are also applied during open-loop operation, including full load.
+
+Although many correction factors contribute to the final injection time, the following calibration tables define the primary fueling strategy.
+
+== Engine Start ==
+
+Before normal engine operation begins, the ECU uses dedicated fuel maps for engine start.
+
+* '''ip_tipr_cst__tco''' – Base pre injection time.
+* '''ip_ti_cst__n__tco''' – Base cranking injection time.
+
+== Base Injection Maps ==
+
+During normal operation, the ECU interpolates between separate cold and warm injection maps to account for the cold to warm operation transition of the VANOS system. Individual part-load maps are provided for each cylinder bank.
+
+'''Cold Engine'''
+
+* '''ip_ti_tco_1_is_ivvt__n__maf''' – Base injection time during idle.
+* '''ip_ti_tco_1_pl_ivvt_1__n__maf''' – Base injection time for Bank 1 during part load.
+* '''ip_ti_tco_1_pl_ivvt_2__n__maf''' – Base injection time for Bank 2 during part load.
+
+'''Warm Engine'''
+
+* '''ip_ti_tco_2_is_ivvt__n__maf''' – Base injection time during idle.
+* '''ip_ti_tco_2_pl_ivvt_1__n__maf''' – Base injection time for Bank 1 during part load.
+* '''ip_ti_tco_2_pl_ivvt_2__n__maf''' – Base injection time for Bank 2 during part load.
+
+'''Map Axes'''
+
+* '''X-axis''' – Filtered engine load used by the injection subsystem (''maf_ti'')
+* '''Y-axis''' – Engine speed (''n'')
+
+The transition between the cold and warm engine state is explained in the VANOS [[Siemens_MS43#Cold-to-Warm_Transition|Cold-to-Warm Transition]] section.
+
+'''VANOS Failsafe Operation'''
+
+If the ECU detects an active VANOS fault, it can no longer accurately predict the cylinder filling produced by the variable camshaft positions.
+
+In this operating mode, the ECU falls back to the fixed base injection table:
+
+* '''ip_tib__n__maf''' – Base injection time used when VANOS control is unavailable.
+
+'''Important:''' After recalibrating the part-load injection maps, this fallback table should also be updated. Otherwise, the engine may run with incorrect fueling whenever the ECU enters VANOS failsafe mode.
+
+== Temperature Correction ==
+
+To compensate for lean air-fuel mixtures during low ambient temperatures and steady state operation the ECU applies the following temperature correction factor to the base injection timing.
+
+* '''ip_ti_fac_n_maf__n__maf''' – Base temperature correction factor.
+* '''ip_ti_fac_tia_toil__tia__toil''' – Temperature correction weighting factor - Intake temperature vs oil temperature.
+* '''ip_ti_fac_tco__tco''' – Temperature correction weighting factor - Coolant temperature.
+
+== Engine Warm Up ==
+
+To account for the extra fuel that the engine needs during warm-up from a cold start the ECU applies the following warm-up correction factor to the base injection timing.
+
+* '''ip_ti_wup__n__maf''' – Base warm-up correction factor.
+* '''ip_ti_tco_wup_is__tco__tco_st''' – Warm-up weighting factor during idle - Coolant temperature vs Coolant temperature at start.
+* '''ip_ti_tco_wup__tco__tco_st''' – Warm-up weighting factor - Coolant temperature vs Coolant temperature at start.
+* '''ip_ti_vo_wup__tco__vo''' – Warm-up weighting factor - Coolant temperature vs Valve Overlap.
+
+== Full Load Enrichment ==
+
+During full-load operation, the ECU multiplies the calculated part-load injection time by an enrichment factor from the following table:
+
+* '''ip_ti_fl__n''' – Full-load enrichment factor
+
+The purpose of this enrichment is to reduce combustion temperatures, protect the engine from knock, and increase exhaust component durability under high load.
+
+'''Viewing the Table as Lambda or AFR'''
+
+[[File:Full_Load_Injection_AFR_Lambda.png|thumb|right|Full load injection converted to Lambda and AFR]]
+
+For easier calibration, the conversion factor of '''ip_ti_fl__n''' can be modified so that the table displays either Lambda or Air-Fuel Ratio (AFR) instead of the internal enrichment factor.
+
+'''Important:''' The displayed Lambda or AFR values are only achieved if the base injection maps are correctly calibrated to produce stoichiometric combustion (Lambda = 1.00) before full-load enrichment is applied.
+
+{| class="wikitable"
+! Table Display
+! Conversion Formula
+! Minimum
+! Maximum
+|-
+| Lambda
+| 1-(0.0039058823 × X - 0.5)
+| 0.500
+| 1.500
+|-
+| AFR (Gasoline)
+| 14.7-(14.7 × (0.0039058823 × X - 0.5))
+| 7.409
+| 22.050
+|}
+
+== Tip-In Enrichment / Cylinder Rewetting ==
+The wall-film compensation uses two different compensation methods:
+
+A load dependent compensation compensates for changes in the wall-film amount caused by a change in engine load and a
+throttle based compensation provides an additional fast correction to reduce AFR fluctuations caused by delays or errors when the air path is updated.
+
+The wall-film compensation uses both a fast and a slow response. This allows the compensation to react quickly to a load change while also providing a slower correction for the remaining wall-film difference.
+
+'''Load Dependent Wall-Film Compensation'''
+
+The load dependent compensation is based on the change in injection time between two sampling points. The injection time difference represents the change in engine load.
+
+From this load change, the total wall-film difference is calculated using the total wall-film factor. A part of this difference is compensated with a '''fast response''' to react quickly to the load change.
+
+The remaining wall-film difference is compensated with a '''slower response'''. This two-stage approach provides a quick initial correction followed by a slower correction of the remaining wall-film difference.
+
+'''Accelerator Pedal Based Wall-Film Compensation'''
+
+In addition to the load dependent compensation, a separate wall-film compensation is calculated from the change in accelerator pedal angle.
+
+This compensation is used to reduce AFR fluctuations caused by an updating error in the air path. It becomes active shortly after a load change and therefore provides an additional fast correction while the load-dependent compensation is being applied.
+
+The required compensation is determined from the difference between the '''ip_ti_pvs''' map values before and after a map-point change. The resulting injection quantity is then corrected according to coolant temperature.
+
+The accelerator pedal based compensation therefore works independently from the load-dependent wall-film compensation and is primarily intended to correct the short-term AFR deviation caused by the air-path update.
+
+*'''ip_ti_pvs__pvs__n''' - PVS dependent wall film correction amount
+*'''ip_ti_pvs_cr_ae__n''' - PVS dependent wall film acceleration decay factor
+*'''ip_ti_pvs_cr_pur__n''' - PVS dependent wall film deceleration decay factor
+
+*'''ip_ti_tco_pos_wf__n__tco''' - Load dependent wall film acceleration correction amount
+*'''ip_ti_cr_pos_wf__n__tco''' - Load dependent wall film acceleration decay factor
+
+*'''ip_ti_tco_neg_wf__n__tco''' - Load dependent wall film deceleration correction amount
+*'''ip_ti_cr_neg_wf__n__tco''' - Load dependent wall film deceleration decay factor
+
+*'''ip_ti_tco_pos_fast_wf__n__tco''' - High dynamic load wall film acceleration correction amount
+*'''ip_ti_cr_pos_fast_wf__n''' - High dynamic load dependent wall film acceleration decay factor
+
+*'''ip_ti_tco_neg_fast_wf__n__tco''' - High dynamic load wall film deceleration correction amount
+*'''ip_ti_cr_neg_fast_wf__n''' - High dynamic load dependent wall film deceleration decay factor
+
+The accelerator pedal based compensation can be adjusted by revving up the engine and watching the AFR when the throttle is released.
+The goal is to achieve lambda 1.0 or gasoline AFR 14.7.
+
+* If the AFR is '''too rich''', decrease the values in the wall-film table.
+* If the AFR is '''too lean''', increase the values in the wall-film table.
+
+A good starting point is to change the entire '''ip_ti_pvs''' table in '''5 %''' increments. If the AFR is still too rich or too lean, continue adjusting the table in the same direction until the desired AFR is reached.
+
+== Catalyst Preparation Mode ==
+
+If the ECU operates in '''Catalyst Preparation (CATV)''' mode, such as when no lambda sensors are detected it applies an additional correction using:
+
+* '''ip_ti_cat_var__n__maf''' – Fuel correction during CATV operation.
+
+This table leans the base fueling to compensate for operation without closed-loop lambda control.
+
+== Aftermarket Injector Scaling ==
+
+When converting an engine from naturally aspirated to forced induction, higher-flow fuel injectors are typically required. Replacing the stock injectors changes the injector flow rate, which requires recalibration of the ECU's fuel injection tables and injector-specific parameters.
+
+'''Calculating the Injector Scaling Factor'''
+
+To establish a baseline calibration, calculate the injector scaling factor using the injector flow rates at the '''same fuel pressure'''.
+
+ Formula:
+ Scaling Factor = Stock Injector Flow Rate / New Injector Flow Rate
+
+For example:
+
+ Stock Injector: 250 cc/min
+ New Injector: 500 cc/min
+
+ Scaling Factor = 250 / 500 = 0.50
+
+This factor represents the percentage of the original injector pulse width required to deliver the same amount of fuel with the new injectors.
+
+'''Temporary Scaling Using the Application System'''
+
+The MS43 application system provides individual injector pulse width multipliers for each cylinder:
+
+* '''t_ti_as_1'''
+* '''t_ti_as_2'''
+* '''t_ti_as_3'''
+* '''t_ti_as_4'''
+* '''t_ti_as_5'''
+* '''t_ti_as_6'''
+
+These constants can be used to quickly apply a global injector scaling factor during initial tuning without modifying every fuel map individually.
+
+Once a suitable injector scaling factor has been determined, it is recommended to apply the scaling directly to the fuel injection maps and restore all '''t_ti_as_[cyl]''' values to '''1.0'''.
+
+'''Important:''' The application system multipliers do '''not''' affect the injector pulse widths reported by the MS43 logging system. Leaving these multipliers active will result in inaccurate logged injection times.
+
+'''Injector-Specific Parameters'''
+
+The following injector characteristics must also be updated to match the new injectors:
+
+* '''c_ti_min_iv''' – Minimum injector pulse width
+* '''ip_ti_add_dly__vb''' – Injector dead time compensation as a function of battery voltage
+
+See [[Fuel_Injector_Deadtimes|Fuel Injector Deadtimes]] for a list of commonly used injectors and their dead time values.
+
+'''Fuel Injection Maps to Scale'''
+
+Apply the calculated injector scaling factor to the following pulse width maps:
+
+* '''ip_tipr_cst__tco''' – Pre-cold start injection time
+* '''ip_ti_cst__n__tco''' – Cranking injection time
+* '''ip_tib__n__maf''' – Base injection time during VANOS fault operation
+* '''ip_ti_tco_1_is_ivvt__n__maf''' – Cold engine idle injection time
+* '''ip_ti_tco_1_pl_ivvt_1__n__maf''' – Cold engine part-load injection time (Bank 1)
+* '''ip_ti_tco_1_pl_ivvt_2__n__maf''' – Cold engine part-load injection time (Bank 2)
+* '''ip_ti_tco_2_is_ivvt__n__maf''' – Warm engine idle injection time
+* '''ip_ti_tco_2_pl_ivvt_1__n__maf''' – Warm engine part-load injection time (Bank 1)
+* '''ip_ti_tco_2_pl_ivvt_2__n__maf''' – Warm engine part-load injection time (Bank 2)
+* '''ip_ti_slow_wf_thd_min__tco''' – Slow cylinder wall wetting compensation
+* '''ip_ti_fast_wf_thd_min__tco''' – Fast cylinder wall wetting compensation
+
+'''Fine Tuning'''
+
+After applying the initial injector scaling, monitor the lambda integrators during normal engine operation.
+
+The objective is to achieve lambda integrator values as close to '''0%''' as possible (typically within ±5%), indicating that the base fueling is correctly calibrated.
+
+'''Start and After-Start Fueling'''
+The following tables can be adjusted to fine tune engine start and after start behavior:
+
+* '''ip_ti_cast__tia__tco''' – Initial post-start enrichment factor
+* '''ip_ti_cr_cst__cyc__tco''' – Engine start enrichment decay
+* '''ip_ti_cr_cast__cyc__tco''' – After-start enrichment decay
+
+'''Important:''' These tables controls enrichment factors and not injector pulse width so '''do not''' apply the injector scaling factor to them as that will result in incorrect startup fueling.
+
+== Injector Duty Cycle ==
+
+[[File:Maximum Injection Time Calculator.png|thumb|right|Maximum Injection Time Calculator]]
+
+Injector duty cycle represents the percentage of available engine cycle time during which the injector remains open.
+
+As engine speed increases, the available injection window becomes shorter. Consequently, the maximum achievable injection time decreases with increasing RPM.
+
+When calibrating the injection maps, sufficient headroom should always be maintained because the ECU applies numerous additional fuel corrections, including:
+
+* Cold enrichment
+* Full-load enrichment
+* Fuel trim adaptations
+* Transient fuel compensation
+* Other operating state corrections
+
+If the injectors are already operating near their maximum duty cycle, these corrections may no longer be applied accurately, potentially resulting in lean operating conditions.
+
+A maximum injector duty cycle of approximately '''90%''' is generally recommended. This provides adequate headroom for ECU corrections while maintaining consistent injector performance.
+
+If the required duty cycle exceeds this value, higher-flow injectors should be considered instead of increasing the base injection times further.
+
+When evaluating injector duty cycle, always include the additional fuel delivered by the full-load enrichment tables.
+
+== Correcting the Fuel Consumption Gauge ==
+
+After installing larger or different fuel injectors, the fuel consumption displayed on the instrument cluster and other monitoring applications may no longer be accurate.
+
+The calibration is controlled by the table:
+
+'''ip_fco_map_cor__pq_main_col''' – Fuel consumption correction factor.
+
+'''Example:'''
+
+If you reduce all fueling tables by multiplying them with '''0.46''', you must compensate by dividing '''ip_fco_map_cor__pq_main_col''' by '''0.46'''.
+
+This restores the reported fuel consumption to approximately the correct value.
+
+'''Fine Tuning:'''
+
+Once the calibration is close, you can fine-tune the displayed fuel consumption using the instrument cluster's hidden service menu. The cluster allows an adjustment of approximately ±25%.
+
+For more information, see '''Test 20''' in the following guide:
+
+[https://www.bimmerforums.com/forum/showthread.php?61718-INFO-E46-Instrument-Cluster-Test INFO: E46 Instrument Cluster Test]
+
+== Upgraded Fuel Pumps ==
+
+In high fuel demand applications, such as forced induction (turbocharger or supercharger) conversions, the original equipment (OEM) fuel pump may not be able to supply sufficient fuel. In these cases, upgrading the fuel pump is recommended.
+
+The MS43 ECU uses two timer values (in seconds) to control the fuel pump relay before engine start and after engine shutdown:
+
+*'''c_t_efp_prev''' – Duration that the fuel pump relay remains energized after the ignition is switched on, before the engine starts.
+*'''c_t_efp''' – Delay before the fuel pump relay is de-energized after the ignition is switched off.
+
+Increasing these values slightly can improve starting performance by allowing the fuel system more time to build pressure before cranking.
+
+'''Aftermarket Fuel Pumps'''
+
+Some aftermarket fuel pumps do not include an internal check valve. Without one, fuel pressure can bleed back into the tank after the engine is switched off, resulting in longer cranking times before the engine starts.
+
+If your fuel pump does not have an integrated check valve, installing an external check valve immediately after the pump can help maintain fuel pressure and restore stock-like starting behavior.
+
+= Ignition =
+
+The MS43 ECU uses multiple ignition timing maps depending on engine operating conditions, coolant temperature, and the learned fuel octane quality.
+
+During normal engine operation, ignition timing is calculated from different base maps for the cold and warm VANOS operation state. After the VANOS system enters the warm operation state, the ECU further interpolates between separate RON91 and RON98 ignition maps based on its learned octane adaptation.
+
+== Ignition Timing Maps ==
+
+'''Cold Engine'''
+
+* '''ip_iga_tco_1_is_ivvt__n__maf''' – Target ignition angle during idle.
+* '''ip_iga_tco_1_pl_ivvt__n__maf''' – Target ignition angle during part and full load.
+
+'''Warm Engine'''
+
+* '''ip_iga_tco_2_is_ivvt__n__maf''' – Target ignition angle during idle.
+* '''ip_iga_ron_91_pl_ivvt__n__maf''' – Base ignition angle for RON91 fuel during part and full load.
+* '''ip_iga_ron_98_pl_ivvt__n__maf''' – Base ignition angle for RON98 fuel during part and full load.
+
+'''Map Axes'''
+
+* '''X-axis''' – Filtered engine load used by the ignition subsystem (''maf_iga'')
+* '''Y-axis''' – Engine speed (''n'')
+
+'''Cold-to-Warm Transition'''
+
+The transition between the cold and warm engine state is explained in the VANOS [[Siemens_MS43#Cold-to-Warm_Transition|Cold-to-Warm Transition]] section.
+
+== Fuel Octane Adaptation ==
+
+During warm part-load and full-load operation, the ECU continuously interpolates between the RON91 and RON98 ignition maps using an internally learned octane adaptation factor based primarily on knock sensor feedback.
+
+This strategy allows the ECU to optimize ignition timing for varying fuel qualities while maintaining sufficient knock protection.
+
+When calibrating these maps:
+
+* Keep the '''ron_91''' map conservative enough to provide adequate knock protection on lower quality fuel.
+* Optimize the '''ron_98''' map for higher octane fuel without relying on excessive knock correction.
+
+It is common to observe minor knock retard even on an otherwise stock engine running RON99 fuel, indicating that the factory RON98 calibration is already relatively aggressive.
+
+== Optimal Ignition ==
+MS43 has two additional ignition maps that don't work as a ignition target, but define the igntion angle necessary to archive maximum brake torque (MBT):
+
+* '''ip_iga_optm_tco_1__n__maf''' – Optimal ignition advance during cold engine
+* '''ip_iga_optm_tco_2__n__maf''' – Optimal ignition advance during warm engine
+
+These maps are used as references for torque reduction and exhaust gas temperature calculations.
+
+If the targetted ignition angle exceeds these maps, torque intervention will gradually reduce ignition angle until you are within limits again.
+
+When tuning for boost or high NA power, make sure to either set them to dyno-ed MBT, or the same value as ron_98 map.
+
+== Catalyst Heating ==
+
+Maps containing '''"_ch"''' are used during catalyst heating immediately after a cold start.
+
+These maps intentionally retard ignition timing to increase exhaust gas temperature, allowing the catalytic converters to reach operating temperature more quickly and reducing cold-start emissions.
+
+== Anti-Jerk ==
+
+Maps containing '''"_aj"''' temporarily retard ignition timing during rapid throttle changes to smooth engine torque and improve drivability.
+
+This function can effectively be disabled by increasing:
+
+* '''c_tco_min_aj''' – Minimum coolant temperature for Anti-Jerk operation
+
+Setting this value to approximately '''142.5°C''' prevents Anti-Jerk from becoming active under normal operating conditions.
+
+On turbocharged or supercharged engines, Anti-Jerk has occasionally been reported to contribute to transitional knock. If this occurs, it is generally preferable to adjust the transient knock control strategy ('''tra_knk''') rather than relying solely on disabling Anti-Jerk.
+
+== Ignition Current Feedback ==
+
+MS43 monitors ignition performance by measuring spark burn duration through a voltage divider located in the primary ignition coil circuit. The ECU receives this signal on '''X60005 Pin 6'''.
+
+The required '''240 Ω''' shunt resistor is integrated into the factory ignition coil wiring harness and is located beneath the plastic wiring cover.
+
+If aftermarket ignition coils or custom wiring are installed, the measured burn duration may differ from the factory calibration. This can cause false diagnostic faults such as:
+
+* Spark duration too short
+* No spark detected
+
+'''Ignition Current Feedback Parameters'''
+
+* '''c_tco_min_igcfb''' – Minimum coolant temperature for ignition current feedback diagnostics.
+* '''id_t_igcfb_min_300__n__maf''' – Minimum spark burn duration for screw-type ignition coils.
+* '''id_t_igcfb_min_pc__n__maf''' – Minimum spark burn duration for pencil-type ignition coils.
+* '''c_n_max_igcfb_diag''' – Maximum engine speed for ignition current feedback diagnostics.
+* '''c_cur_igc_max_diag''' – Maximum valid ignition current for resistor diagnostics.
+* '''c_n_max_er''' – Maximum engine speed for misfire detection.
+
+'''Note:'''
+
+Some early M52TU cylinder heads have tighter ignition coil bores that can allow the coils housing to contact the cylinder head when retrofitting pencil-type coils.
+
+This contact can short the ignition feedback resistor, preventing the ECU from correctly measuring spark burn duration.
+
+The issue can typically be resolved by:
+
+* Insulating the affected ignition coils with Kapton tape.
+* Removing a small amount of material from the cylinder head to restore clearance.
+
+= VANOS =
+[[File:Vanos max settings.jpg|300px|thumb|right|VANOS Min/Max Values]]
+
+VANOS (''VAriable NOckenwellenSteuerung'') is BMW's variable camshaft timing system. On engines equipped with Dual VANOS, the ECU independently controls the intake and exhaust camshaft positions relative to the crankshaft.
+
+The system uses engine oil pressure, regulated by two solenoid valves, to adjust the camshaft phasing through a helical gear mechanism. By continuously changing valve timing, VANOS improves engine torque at low RPM, increases power at high RPM, and reduces fuel consumption and emissions.
+
+Although the adjustment range is limited to approximately '''40° crankshaft (°CRK)''', it provides enough authority to compensate for different intake manifolds, aftermarket camshafts, and even forced induction applications when properly calibrated.
+
+== Camshaft Position Sensors ==
+
+The VANOS system uses one Hall-effect camshaft position sensor on each camshaft. Each sensor monitors a trigger wheel consisting of two 180° phases.
+
+'''Intake Camshaft Sensor'''
+
+The intake camshaft sensor is used for:
+
+* Cylinder identification during sequential fuel injection.
+* Engine synchronization.
+* Backup engine speed calculation if the crankshaft sensor fails.
+* Closed-loop position control of the intake camshaft.
+
+Since the intake sensor is a '''static''' Hall sensor, it can determine camshaft position even at '''0 RPM''', allowing accurate synchronization during engine start.
+
+'''Exhaust Camshaft Sensor'''
+
+The exhaust camshaft sensor is used exclusively for closed-loop position control of the exhaust camshaft.
+
+Unlike the intake sensor, it is a '''dynamic''' Hall sensor and therefore requires a minimum engine speed before the camshaft phase can be detected.
+
+== VANOS Setpoint Maps ==
+
+The ECU uses separate VANOS target maps for cold and warm engine operation. Different maps are provided for the following operating states:
+
+* '''IS''' – Idle
+* '''PL''' – Part Load
+* '''FL''' – Full Load
+
+'''Cold Engine'''
+
+* '''ip_cam_sp_tco_1_in_is__n__maf_ivvt''' – Intake camshaft target during idle.
+* '''ip_cam_sp_tco_1_ex_is__n__maf_ivvt''' – Exhaust camshaft target during idle.
+* '''ip_cam_sp_tco_1_in_pl__n__maf_ivvt''' – Intake camshaft target during part load.
+* '''ip_cam_sp_tco_1_ex_pl__n__maf_ivvt''' – Exhaust camshaft target during part load.
+* '''ip_cam_sp_tco_1_in_fl__n''' – Intake camshaft target during full load.
+* '''ip_cam_sp_tco_1_ex_fl__n''' – Exhaust camshaft target during full load.
+
+'''Warm Engine'''
+
+* '''ip_cam_sp_tco_2_in_is__n__maf_ivvt''' – Intake camshaft target during idle.
+* '''ip_cam_sp_tco_2_ex_is__n__maf_ivvt''' – Exhaust camshaft target during idle.
+* '''ip_cam_sp_tco_2_in_pl__n__maf_ivvt''' – Intake camshaft target during part load.
+* '''ip_cam_sp_tco_2_ex_pl__n__maf_ivvt''' – Exhaust camshaft target during part load.
+* '''ip_cam_sp_tco_2_in_fl__n''' – Intake camshaft target during full load.
+* '''ip_cam_sp_tco_2_ex_fl__n''' – Exhaust camshaft target during full load.
+
+'''Map Axes'''
+
+* '''X-axis''' – Filtered engine load used by the VANOS subsystem (''maf_ivvt'')
+* '''Y-axis''' – Engine speed (''n'')
+
+== Cold-to-Warm Transition ==
+
+Separate VANOS maps are used for cold and warm engine operation to optimize emissions, drivability, and performance across all coolant temperatures.
+
+The ECU blends between the cold and warm calibration parameters using temperature-dependent interpolation tables.
+
+A blend factor of:
+
+* '''1.0''' = 100% Cold map
+* '''0.0''' = 100% Warm map
+
+'''VANOS Transition Factors'''
+
+During engine warm-up the ECU gradually transitions the VANOS target angles from the cold-engine operating state to the warm-engine operating state.
+To maintain smooth engine operation the ECU gradually blends the cold/warm VANOS target angles using the following transition tables:
+
+* '''ip_fac_cam_sp_in_is__tco__tco_st''' – Intake idle transition.
+* '''ip_fac_cam_sp_ex_is__tco__tco_st''' – Exhaust idle transition.
+* '''ip_fac_cam_sp_in_pl__tco__tco_st''' – Intake part-load transition.
+* '''ip_fac_cam_sp_ex_pl__tco__tco_st''' – Exhaust part-load transition.
+
+'''Ignition and Injection Transition Factors'''
+
+As the engine warms up, the VANOS system transitions from its cold-engine operating state to its warm-engine operating state.
+During this transition valve timing changes affect cylinder scavenging, which in turn influences both combustion and fueling.
+To maintain smooth engine operation the ECU gradually blends the ignition timing and fuel injection calibrations using the following transition tables:
+
+* '''ip_fac_is_ivvt__tco__tco_st''' – Idle transition.
+* '''ip_fac_pl_ivvt__tco__tco_st''' – Part-load and full-load transition.
+
+'''Transition Axes'''
+
+* '''X-axis''' – Engine coolant temperature at engine start (''tco_st'')
+* '''Y-axis''' – Current engine coolant temperature (''tco'')
+
+== Camshaft Parameters ==
+
+In the VANOS home position (maximum camshaft spread), the expected sensor edge locations are:
+
+* Exhaust camshaft: '''CRK teeth 18 / 78 + C_COR_CAM_EX_REF'''
+* Intake camshaft: '''CRK teeth 42 / 102 + C_COR_CAM_IN_REF'''
+
+To detect mechanical timing errors, the ECU defines acceptable limits for the non-adapted camshaft positions.
+
+'''Plausibility Limits'''
+
+'''Intake camshaft'''
+
+* CRK teeth 31–46
+* CRK teeth 91–106
+
+'''Exhaust camshaft'''
+
+* CRK teeth 14–26
+* CRK teeth 74–86
+
+Values outside these ranges will trigger a camshaft position diagnostic fault.
+
+== Camshaft Calibration ==
+
+When installing different factory camshafts or aftermarket camshafts, the following calibration constants should be adjusted accordingly.
+
+'''Intake Camshaft'''
+
+* '''c_cam_op_in''' – Camshaft duration
+* '''c_cam_adj_rng_max_in''' – Maximum VANOS adjustment range
+* '''c_cam_ini_in''' – Initial reference angle for camshaft adaptation
+* '''c_cor_cam_in_ref''' – Camshaft reference angle correction (intake lobe centerline)
+
+'''Exhaust Camshaft'''
+
+* '''c_cam_op_ex''' – Camshaft duration
+* '''c_cam_adj_rng_max_ex''' – Maximum VANOS adjustment range
+* '''c_cam_ini_ex''' – Initial reference angle for camshaft adaptation
+* '''c_cor_cam_ex_ref''' – Camshaft reference angle correction (exhaust lobe centerline)
+
+After modifying these values, the VANOS target maps described above should also be recalibrated to match the new mechanical camshaft geometry.
+
+'''Valid VANOS Operating Range'''
+
+As a general guideline, the usable VANOS target range can be calculated from the initial camshaft reference angle and the maximum adjustment range.
+
+Using the M54B30 intake camshaft as an example:
+
+* '''Upper limit''' = ''c_cam_ini_in/ex'' = '''126°'''
+* '''Lower limit''' = ''c_cam_ini_in/ex'' − ''c_cam_adj_rng_max_in/ex'' = '''126° − 40° = 86°'''
+
+VANOS target values should generally remain within this range unless the camshaft geometry has been recalibrated.
+
+=Drive-By-Wire=
+This section contains information on how the Drive-By-Wire system is controlled by the DME and how it can be modified.
+
+The accelerator pedal unit is different between manual and automatic / sequential transmission. 
+
+For the automatic and sequential gearboxes the unit contains a spring mechanism that feels like a switch when the pedal is pressed to imitate a kick-down switch.
+
+Manual pedal value is ranging from 0-85°PVS, whilst the automatic and sequential pedal value reaches from 0-89°PVS with 103°PVS at kick-down.
+
+==Drivers Wish Tables==
+[[File:Tunerpro comparison tps sp isapwm sp.PNG|thumbnail|right|Tunerpro comparison of the ip_tps_sp_pvs and ip_isapwm_pvs table.]]
+The Drive-By-Wire system is setup so that the ecu uses both the throttle valve and the idle control valve to control how much air is going into the engine.
+
+* '''ip_tps_sp_pvs''' is used by the ecu to decide how much it should open the throttle for a given pvs input.
+
+* '''ip_isapwm_pvs''' is used by the ecu to decide how much idle control valve duty cycle should be used for a given pvs input.
+
+If we look at these tables side by side we can see that a stock ecu is setup to primarily use the idle control valve to control airflow when the pvs input is in the range between 0° and 15° and when the pvs input is higher the ecu will switch over to the throttle valve.
+
+==Drivers Wish Dashpot==
+To provide a smoother driving experience and lower emissions when the accelerator pedal is released the ecu will limit how fast the accelerator pedal sensor (pvs) input decreases.
+
+To determine the scale of the dashpot the ecu first determines how fast the pvs input is decreasing by subracting the previous pvs input with the current pvs input.
+The resulting pvs input difference is then multiplied by the factors in '''ip_pvs_dif_neg_fac''' and '''ip_pvs_dif_cr_neg''' to create an initial dashpot correction value.
+
+After this the dashpot correction result from the previous execution cycle is also multiplied by the '''ip_pvs_dif_cr_neg''' factor and it's then added to the newly calculated dashpot correction factor.
+This operation will make the dashpot correction decay over time which provides a smooth change of the correction.
+
+The resulting dashpot correction is then subtracted from the requested pvs input to create a corrected pvs input which is further processed by the [[Siemens_MS43#Drivers_Wish_Input_Correction|Drivers Wish Input Correction]] function.
+
+If the corrected pvs input is smaller or equal to the requested pvs input the requested pvs input will be used instead.
+
+The ecu also provides the option to disable the dashpot function when the clutch is pressed by setting '''lc_dhp_ltc''' to 1.
+
+==Drivers Wish Input Correction==
+To provide a smooth driving experience during part load the ecu actively controls how fast the accelerator pedal sensor input can increase.
+
+'''ip_pvs_cor_max_rpl_[gear]''' is used by the ecu to decide if the pvs input increase should be limited. The values in the table is the lower limit and the X-axis is the upper limit. 
+If the drivers requested pvs input is between these values then the ecu will start limiting the pvs input increase.
+
+If the following conditions are met then the ecu will not try to start limiting the pvs input increase:
+* The driver requested pvs input is decreasing.
+* The driver requested pvs input change gradient is larger than '''c_pvs_av_grd_max_rpl'''(59,99° pvs).
+* The clutch is pressed.
+* The driver requested pvs input is higher than '''c_pvs_cor_max_rpl'''(42,5° PVS)
+
+When the ecu starts limiting the pvs input increase the pvs input will be increased by the value taken from '''ip_pvs_cor_rpl_lgrd_[gear]''' until the following conditions are met:
+* The limitation duration specified in '''ip_t_pvs_cor_rpl_[gear]''' has expired.
+* The driver requested pvs input change gradient is larger than '''c_pvs_av_grd_max_rpl'''(59,99° pvs).
+* The limited pvs input is larger than the driver requested pvs input.
+
+If any of those conditions are met then the ecu will use the driver requested pvs input and will not start limiting the pvs input again until the time specified in '''c_t_dly_pvs_cor_rpl'''(0,2s) has elapsed.
+
+To disable the drivers wish input correction function set either '''c_pvs_cor_max_rpl''' or '''c_pvs_av_grd_max_rpl''' to zero.
+
+==Throttle Request Correction==
+To provide a smoother driving experience the ecu will limit how fast the throttle can close based on the current engine load.
+
+If the clutch is not pressed and the requested throttle setpoint is larger than the value specified in '''c_tps_req_ltc_min''' or smaller than the value specified in '''ip_tps_req_ltc_min_[gear]''' the throttle setpoint closing rate will be limited.
+
+When the ecu starts limiting the throttle setpoint it will be decremented by the value taken from '''ip_tps_req_ltc_lgrd_[gear]''' until the following conditions are met:
+* The limitation duration specified in '''ip_t_tps_req_ltc_max_[gear]''' has expired.
+* The requested throttle setpoint is larger or equal to '''ip_tps_req_ltc_min_[gear]'''.
+* The limited throttle setpoint is smaller than the requested throttle setpoint.
+* The clutch is pressed.
+
+If any of those conditions are met then the ecu will use the requested throttle setpoint and will not start limiting the throttle setpoint again until the time specified in '''c_t_dly_tps_req_ltc'''(0,85s) has elapsed.
+
+The '''id_tps_req_ltc_gear_[gearbox]''' tables controls if the throttle request correction should be active depending on the current gear. 
+To disable the throttle request correction function set the '''id_tps_req_ltc_gear_[gearbox]''' tables to zero.
+
+=Torque=
+During engine operation the ecu will try to estimate the current torque being produced by using several static torque models.
+
+Torque Models:
+* '''ip_tqi_pvs__n__pvs''' - Indexed engine torque (PVS)
+* '''ip_tqi_maf__n__maf''' - Indexed engine torque (MAF)
+* '''ip_tqfr__n__maf''' - Frictional torque losses (MAF)
+
+==Torque Management==
+Based on the static models the ecu will ensure that the engine torque does not exceed the maximum allowed torque specified in '''ip_tq_max__n__pvs_cor_rpl'''.
+
+As the torque models are setup for a stock engine they can produce unexpected reductions in power if the engine is modified, to disable the function set the torque values in '''ip_tq_max__n__pvs_cor_rpl'''
+to 65535 Nm.
+
+The ECU also have a function to reduce torque in first gear (In production vehicles this was only used by the E53 X5).
+
+The function will be activated if '''c_conf_tq_lim_gear''' is set to one and when active the ecu will ensure that the engine torque does not exceed '''c_tq_max_gear''' while in first gear.
+
+=Idlespeed=
+This section contains information on how the idle is controlled by the DME and how it can be modified.
+
+The base idle speed is controlled by the following tables:
+
+* '''ip_n_sp_is''' Nominal idle speed without additional load on the engine
+* '''ip_dri_n_sp_is''' Nominal idle speed with AT drive engaged
+* '''ip_acin_n_sp_is''' Nominal idle speed with air conditioner switched on
+* '''ip_dri_acin_n_sp_is''' Nominal idle speed with air conditioner switched on and AT drive engaged
+
+This idle setpoint is then modified further by the following tables:
+
+* '''ip_n_sp_add_cs''' Idle speed modifier for drive-off support function - manual transmission
+* '''ip_n_sp_add_cs_amt''' Idle speed modifier for drive-off support function - automated manual transmission
+* '''ip_n_sp_add_ch_2''' Idle speed modifier for catalyst heating 2 function
+* '''ip_dri_n_sp_add_ch_2''' Idle speed modifier for catalyst heating 2 function with AT drive engaged
+* '''ip_n_sp_add_cha_cdn_bat''' Idle speed modifier for battery charge balancing function
+* '''ip_dri_n_sp_add_cha_cdn_bat''' Idle speed modifier for battery charge balancing function with AT drive engaged
+* '''ip_acin_n_sp_add_ccb''' Idle speed modifier for battery charge balancing function with air conditioner switched on
+* '''ip_dri_acin_n_sp_add_ccb''' Idle speed modifier for battery charge balancing function with air conditioner switched on and AT drive engaged
+* '''ip_n_sp_add_heat''' Idle speed modifier for heater request function
+* '''ip_acin_n_sp_add_heat''' Idle speed modifier for heater request function with air conditioner switched on
+* '''ip_dri_acin_n_sp_add_heat''' Idle speed modifier for heater request function with air conditioner switched on and AT drive engaged
+* '''ip_n_sp_add_pste''' Idle speed modifier for power steering request function
+
+The rate of change of the idle speed setpoint is controlled by '''c_n_sp_lgrd_is'''.
+
+When modifying the idle speed setpoint the base idle PWM setpoint tables should also be modified accordingly otherwise the idle controller will run out of adjustment range.
+
+* '''ip_isapwm__tco''' Base idle PWM without additional load on the engine
+* '''ip_isapwm_dri''' Base idle PWM with AT drive engaged
+* '''ip_isapwm_acin''' Base idle PWM with air conditioner switched on
+* '''ip_isapwm_dri_acin''' Base idle PWM with air conditioner switched on and AT drive engaged
+
+=Full Load Operation=
+[[File:Full_Load_Diagram.png|thumbnail|right|Full load tables shown in Tuner Pro]]
+
+In full load operation the ecu will stop targeting a stoichiometric combustion and injection will be enriched to prevent knock and keep the combustion temperature under control.
+
+During full load the closed loop lambda correction will be disabled but already learned fuel trims will still be applied.
+
+==Activation==
+To determine if the full load state should be activated the ecu performs a number of checks.
+
+First it checks if the engine speed is greater than '''c_n_min_fl''' which is the lower engine speed limit for full load detection.
+
+After that it checks if the current accelerator pedal position exceeds the values defined in the following tables are exceeded. If this is the case then the respective function will enter the full load state.
+
+* '''id_pvs_fl__n''' - Accelerator pedal position threshold for full load detection - Injection
+* '''id_pvs_fl_ivvt__n''' - Accelerator pedal position threshold for full load detection - VANOS
+* '''id_pvs_fl_vim__n_vim''' - Accelerator pedal position threshold for full load detection - DISA
+
+To prevent damage to the AC compressor and to extract every last bit of power out of the engine, the AC compressor will be disengaged if the accelerator pedal position exceeds the threshold set in  '''c_pvs_fl_accin'''.
+
+Additionally to prevent that the full load state is not activated to early after an engine start either one of the two following conditions has to be fulfilled before the ecu is able to activate the full load state. 
+After either condition is achieved this check will be disabled until the engine is restarted again.
+
+* '''c_vs_min_fl''' - Minimum vehicle speed for full load detection after engine start if c_tco_min_fl has not been exceeded.
+* '''c_tco_min_fl''' -  Minimum coolant temperature for full load detection after engine start if c_vs_min_fl has not been exceeded.
+
+==Effect On Operation==
+
+When the VANOS and DISA function enters full load they will switch over to separate full load tables, but for the injection function an enrichment factor will be applied to the injection amount.
+
+This leaves us with the following tables that alter injection, VANOS and DISA behavior during full load.
+
+*'''ip_ti_fl__n''' - Full load enrichment factor for nominal injection time
+*'''ip_cam_sp_tco_1_in_fl__n''' - Intake camshaft setpoint during full load with cold engine
+*'''ip_cam_sp_tco_1_ex_fl__n''' - Exhaust camshaft setpoint during full load with cold engine
+*'''ip_cam_sp_tco_2_in_fl__n''' - Intake camshaft setpoint during full load with warm engine
+*'''ip_cam_sp_tco_2_ex_fl__n''' - Exhaust camshaft setpoint during full load with warm engine
+*'''id_vim_fl__n_vim''' - Variable intake manifold (DISA) activation setpoints at full load
+
+==Time Limited Operation==
+[[File:Siemens_MS43_Full_Load_Max_Time.png|thumbnail|right|Full load state maximum timers]]
+
+This function doesn't seem to have been used in production but the full load function also has the capabilities to limit how long the full load state can be active in each gear.
+
+When the gear dependent timer has counted down to zero the ecu will leave the full load operating state and the driver has to lift the accelerator pedal below the configured full load detection threshold before the ecu can re-enter the full load operating state again.
+
+*'''id_t_max_fl__gear''' - Maximum time in the full load state. Manual transmission.
+*'''id_t_max_fl_at__gear''' - Maximum time in the full load state. Automatic transmission.
+*'''c_n_max_fl''' - Maximum engine speed for time limited full load
+*'''c_vs_max_fl''' - Maximum vehicle speed before time limited full load can be activated (This is set to 255km/h in production which disables this function)
+
+=Lambda Regulation=
+MS43 has a cylinder bank selective lambda regulation that is utilizing one narrow band O2 sensor per cylinder bank.
+
+That means the ECU knows when a lean or rich condition occurs, but doesn't know HOW rich or lean it currently runs.
+
+Due to this limitation the ECU continuously regulates the mixture to keep combustion exactly at lambda 1.0 (14.7 AFR / Stoichiometric) while in closed loop operating state.
+
+'''Closed loop lambda regulation''' means that the O2 sensors or lambda probes provide feedback to the fuel injection routines which will then correct injection time accordingly.
+
+'''Open loop''' means that the fuel injection time will solely depend on input quantities like air mass flow and ambient pressure without a feedback loop.
+
+
+The MS43 has several requirements to be fulfilled to enter closed loop mode:
+*'''c_lam_n_min''' - Minimum engine speed to enable closed loop regulation
+*'''id_t_max_ls__tco_st''' - Minimum time after engine start to enable closed loop regulation
+*'''id_lam_tco_min__tco_st''' - Minimum coolant temperature after engine start to enable closed loop regulation
+
+If every of these conditions is met, MS43 will enable closed loop feedback. Whilst active, there is a lower and upper limit to lean out or enrichen the air fuel mixture:
+*'''c_lam_min''' - Minimum lambda integrator value for leaning the mixture
+*'''c_lam_max''' - Maximum lambda integrator value for richening the mixture
+
+Between these two values the ECU can regulate the air fuel mixture instantaneously. These are called lambda integrators or short time fuel trims (STFT).
+
+
+===Lambda Adaptation===
+
+[[File:Lambda Adaptation Scheme.png]]
+
+The additive and multiplicative adaptation corrections are taken into account in the entire map for calculation of the injection time.
+
+To avoid problems involving the mixture while the engine is not at operating temperature, the lambda adaptation values of TCO and their own values (determined with engine at service temperature) can be attenuated.
+
+This is accomplished by weighting the multiplicative components with IP_TI_AD_FAC_FAC__TCO__TI_AD_FAC and the additive components with IP_TI_AD_ADD_FAC__TCO__TI_AD_ADD.
+
+'''Main Conditions:'''
+*'''c_tco_ti_ad_min''' - Minimum coolant temperature for lambda adaptation
+*'''c_tia_ti_ad_max''' - Maximum intake air temperature for lambda adaptation
+*'''c_maf_ti_ad_max''' - Maximum air mass for lambda adaptation
+
+
+'''Lambda Additive Corrections:'''
+*'''c_ti_ad_add_min''' - Minimum value of lambda adaptation additive factor
+*'''c_ti_ad_add_max''' - Maximum value of lambda adaptation additive factor
+*'''c_maf_ti_ad_add_max''' - Maximum air mass for additive lambda adaptation
+*'''c_n_ti_ad_add_max''' - Maximum engine speed for additive lambda adaptation
+
+'''Lambda Multiplicative Corrections:'''
+*'''c_ti_ad_fac_min''' - Minimum value of lambda adaptation multiplicative factor
+*'''c_ti_ad_fac_max''' - Maximum value of lambda adaptation multiplicative factor
+*'''c_n_ti_ad_fac_min''' - Minimum engine speed for multiplicative lambda adaptation
+*'''c_maf_ti_ad_fac_min''' - Minimum air mass for multiplicative lambda adaptation
+*'''ip_maf_ti_ad_min__n''' - Minimum air mass for multiplicative lambda adaptation
+*'''ip_maf_ti_ad_max__n''' - Maximum air mass for multiplicative lambda adaptation
+
+To temporary disable fuel learning trims (additive & multiplicative) you can simply set c_tco_ti_ad_min to something like 140°C. This will disable adaptation, but keeps short term regulation working.
+
+MS43 also stores cylinder individual fuel trim adaptation values for all cylinders (-10% to +10%). This function is quite CPU heavy and only happens below engine speed threashold '''c_n_max_cyl_lam'''. With any other exhaust manifold than the factory ones this may lead to wrong adaptations and therefor wrong AFR. You can disable cylinder individual fuel trims by setting before mentioned constant to "0".
+
+=Diagnostic Trouble Codes (DTC)=
+During operation MS43 will perform a series of self diagnostic tests to ensure that everything is operating correctly.
+
+To prevent an error from triggering too quickly the MS43 uses a debounce system where an error has to be detected a set number of times before the error can become active.
+
+===DTC To P-Code Translation=== 
+To translate the active DTCs to the equivalent OBD2 P code the ECU uses a set of variables '''c_dtc_[dtc name]_x''' that specifies the corresponding OBD2 P code.
+
+The full list of DTCs and their corresponding OBD2 P code can be found here: [[Diagnostic_Trouble_Code_Translation|Diagnostic Trouble Code Translation]]
+
+===Suppressing Diagnostic Trouble Codes===
+Not all DTCs can be suppressed but those who can be suppressed have an incrementation variable '''c_abc_inc_[dtc name]''' which defines how much the debounce counter should increment each time the error is detected and a threshold variable '''c_abc_max_[dtc name]''' which defines the maximum value for the debounce counter before the error is activated.
+
+To suppress a DTC the corresponding '''c_abc_inc_[dtc name]''' variable needs to be set to zero. This prevents the debounce counter from incrementing which prevents the DTC from activating.
+
+'''Note:''' Suppressing a DTC will not de-activate the functions associated with it so it's advised to correct the tune instead of suppressing any DTC.
+
+=Extra Features=
+This section describes extra functions or modification that where not intended by Siemens or BMW.
+
+==Engine Coolant Temperature Control==
+The M54 engine family is fitted with an electronic thermostat that the ECU can control to alter the engine coolant temperature.
+
+By altering these values we can change how hot the engine will run in different conditions.
+
+'''E-thermostat minimum conditions'''
+* c_tam_min_ect - Minimum ambient temperature threshold for e-thermostat activation
+* c_tia_min_ect - Minimum intake air temperature threshold for e-thermostat activation
+* c_toil_min_ect - Minimum oil temperature threshold for e-thermostat activation
+* c_tco_min_ect - Minimum coolant temperature threshold for full energization of the e-thermostat
+
+'''E-thermostat maximum conditions'''
+* c_tia_max_ect - Maximum intake air temperature threshold. When exceeded target coolant temperature will be set to c_tco_sp_tia_max
+* c_tco_ex_max_ect - Maximum radiator outlet temperature threshold. When exceeded target coolant temperature will be set to c_tco_sp_tco_ex_max
+* c_toil_max_ect - Maximum oil temperature threshold. When exceeded target coolant temperature will be set to c_tco_sp_tia_max
+
+'''E-thermostat target coolant temperature'''
+* c_tco_sp_toil_min - Target coolant temperature until the thresholds set by c_toil_min_ect, c_tam_min_ect, and c_tia_min_ect are exceeded.
+* c_tco_sp_tco_ex_max - Target coolant temperature if c_tco_ex_max_ect is exceeded
+* c_tco_sp_tia_max - Target coolant temperature if c_toil_max_ect or c_tia_max_ect are exceeded
+* c_tco_bol_ect - Target coolant temperature if an external low coolant temperature request has been received
+
+
+'''E-thermostat target coolant temperatures maps'''
+* id_tco_sp_ect__n__maf_sub - Target coolant temperature when c_toil_min_ect, c_tam_min_ect, and c_tia_min_ect are exceeded - AC off
+* id_tco_sp_ect_acin__n__maf_sub - Target coolant temperature Target coolant temperature when c_toil_min_ect, c_tam_min_ect, and c_tia_min_ect are exceeded - AC on
+
+'''E-thermostat regulations'''
+* ip_ectpwm_i__tco_dif - e-thermostat I component
+* ip_ectpwm_p__tco_dif - e-thermostat P component
+* id_ectpwm_add__n__tco_sp - Required e-thermostat duty cycle to achieve coolant temperature setpoint
+
+PS : some of you may experience loss of power setting coolant temperature too low on M54B30. Seems that those engines likes higher temp for optimal run.
+[[File:Coolant-config.JPG|300px|thumb|none|TunerPro depiction of Coolant Maps]]
+
+==Electronic Coolant Fan Control==
+The cooling fan is controlled by MS43 via a PWM output signal. The fan speed depends on exhaust temperature, radiator ouput temperature, climate control requirement and vehicle speed.
+
+*'''ip_n_ecf__tco_ex''' - Electric coolant fan minimum speed stage depending on radiator outlet temperature
+*'''ip_n_ecf_temp_cat__temp_cat''' - Electric coolant fan minimum speed stage depending on catalyst temperature
+*'''id_n_ecf_min_accin__n_ecf''' - Electric coolant fan minimum speed stage CAN-bus request
+*'''ip_n_ecf_vs_cor__vs''' - Vehicle speed correction of electric coolant fan speed
+
+==Secondary Air Pump Removal==
+When removing the secondary air pump the ecu needs to be configured to ignore the removed sap equipment.
+To instruct the ecu that there is no secondary air pump installed set '''c_conf_sap''' to 1 and clear the "learned variants" adaptation in the ecu.
+
+==MAF Sensor Scalar Adjustments==
+The standard MAF sensor map is a non-interpolated 16 x 16 lookup table, that can also be shown as 1 x 256 table. The 10 bit analog to digital conversion is reduced to 8 bits and 4 bits of each are used to lookup the MAF value. 
+
+There are differences in flow between the M54B22/M54B25 and M54B30 MAF sensors, as the diameter is different. Differences in cross sectional area would be expected to rescale the values, but the sensor is part of the tube and not easily modified.
+
+Ford or Bosch slot type sensors are often used in high horse power blow through configurations for turbocharging which the BMW OEM sensors are not well suited for.
+
+Engine load (mg/stroke) is proportional to airflow (kg/h) divided by RPM and is used to reference most of the important injection and ignition tables.
+
+There is a factory airflow limit of 1024kg/h that can be doubled with a patch that has undergone extensive testing, but the maximum engine load is still limited to 1389mg/stroke.
+
+A M54B30 pulls about 600mg/stroke in cold conditions with a maximum airflow of about 630kg/h.
+
+Changes to MAF tables should be kept smooth and progressive. Fuel trims plotted against MAF voltage can be used to fine tune the closed loop areas.
+
+*'''id_maf_tab__v_maf_1__v_maf_2''' - MAF sensor definition. 1x256
+*'''id_maf_tab''' - MAF sensor definition. 16x16
+
+==Engine Speed Limiter==
+The MS43 has two gear dependent engine speed limiters, a soft-limiter and a hard-limiter for each gearbox type (manual or automatic transmission).
+
+The soft-limiter works by cutting single injectors based on fuel-cut pattern, whereas the hard-limiter immediately cuts off all cylinders.
+
+*'''id_n_max_at''': soft-limiter for AT gearbox
+*'''id_n_max_mt''': soft-limiter for MT gearbox and SMG
+*'''id_n_max_max_at''': hard-limiter for AT gearbox
+*'''id_n_max_max_mt''': hard-limiter for MT gearbox and SMG
+
+In addition to that, there is a maximum engine speed threashold for the soft limiter '''id_n_max_vs_max_at__gear''' or '''id_n_max_vs_max_mt__gear'''. If engine speed exceeds this value the soft limiter will be disabled.
+
+The ecu receives the current vehicle speed (_vs) from the rear right speed sensor signal of the ABS control unit. This is new and differs from older chassis that got it from a sensor inside the differential.
+
+In case the ECU doesn't get a valid vehicle speed signal from the ABS control unit or the ASC/DSC control unit a third RPM limiter is applied:
+
+*'''c_n_max_vs_diag''': engine speed limiter in case of missing vehicle speed
+
+For aggressive hard cut reduce the limiter hysteresis to:
+*'''c_n_max_hys''' 32 to 0
+*'''c_n_max_hys_max''' 320 to 32
+
+==Vehicle Speed Limiter==
+The maximum allowed vehicle speed is dependent on the transmission type and operates in two stages.
+
+The first stage consist of a soft limiter where the ecu will shut down cylinders to prevent the vehicle speed from increasing.
+The activation point of the soft limiter is defined by the following variables:
+*'''c_vs_max_at_1''' - Maximum vehicle speed automatic transmission
+*'''c_vs_max_mt_1''' - Maximum vehicle speed manual transmission
+
+The second stage consist of a hard limiter where the ecu will shut down the fuel pump to prevent the vehicle speed from increasing.
+The activation point of the hard limiter is calculated by adding '''c_vs_max_add''' to the soft limiter threshold.
+'''ov_vs_max_max = c_vs_max_[at/mt]_1 + c_vs_max_add'''
+
+*'''c_vs_max_add''' - Additive fuel cut hard limit for vehicle speed
+
+By maxing out '''c_vs_max_[at/mt]_1''' and '''c_vs_max_add''' the vehicle speed limit can be increased to 287km/h. 
+
+To completely disable the vehicle speed limiter set '''c_n_min_vs_max''' to 8160rpm.
+*'''c_n_min_vs_max''' - Minimum engine speed for activation of vehicle speed limiter
+
+There is also some additional vehicle speed limits that will override in different scenarios:
+*'''c_vs_max_toil_max''' - Maximum speed when exceeding the max. oil temperature (c_toil_max)
+*'''c_vs_max_amt''' - Maximum speed with an active ssg error
+
+=Safety Features=
+The following information need to be handled with care as you´re able to turn off safety features! This can lead to severe damage to your engine.
+
+==Catalyst Overheating Prevention==
+
+*'''ip_maf_min_cop__n__iga_dif''' - MAF threshold for catalyst overheating prevention function
+*'''ip_maf_min_cop_ron__n__iga_dif''' - MAF threshold for catalyst overheating prevention function with bad fuel quality
+
+To disable catalyst overheating prevention (COP) set ip_maf_min_cop__n__iga_dif and ip_maf_min_cop_ron__n__iga_dif to 1389mg/stroke.
+
+==CAT Heating==
+'''Stage 1'''
+*'''id_t_ch_ti_cat_var__tco_st''' - Duration after start to switch on the injection time correction for catalyst heating function with cat-preparation (c_conf_cat 0 or 1)
+*'''ip_t_ch_ti__tco_st__km_ctr''' - Duration after start to switch on the injection time correction for catalyst heating function
+*'''id_t_iga_ch_cat_var__tco_st''' - Duration after start to switch on the ignition angle intervention for catalyst heating function with cat-preparation (c_conf_cat 0 or 1)
+*'''ip_t_iga_ch__tco_st__km_ctr''' - Duration after start to switch on the ignition angle intervention for catalyst heating function
+
+'''Stage 2'''
+*'''ip_t_ch_2__tco_st__km_ctr''' - Duration after start to switch on catalyst heating stage 2
+
+'''Stage 3'''
+*'''c_vs_max_ch_3''' - Maximum vehicle speed condition to trigger cat heating stage 3 in idle
+*'''c_n_max_ch_3''' - Maximum engine speed condition to trigger cat heating stage 3 in part-load
+
+Set them all to "0" to disable catalyst heating injection and ignition altering in all cat heating stages.
+
+==Misfire Detection==
+*'''c_n_min_er''' - minimum engine speed for detection of misfire
+*'''c_n_max_er''' - maximum engine speed for detection of misfire
+*'''c_mis_nr_off_iv_igcfb''' - Maximum number of cylinders that can be shut off due to misfire
+*'''c_tco_min_igcfb''' - coolant temperature condition for ignition current feedback diagnosis 
+*'''id_t_igcfb_min_300__n__maf''' - min. spark burning duration for ignition current feedback diagnosis with variant bolted coils
+*'''id_t_igcfb_min_pc__n__maf''' - min. spark burning duration for ignition current feedback diagnosis with variant pencil coils
+
+==Knock Detection==
+The ECU samples the knock sensor voltage several times during the measurement window set by the '''id_knkwb_[0-5]''' and '''id_knkwe_[0-5]''' tables and the biggest reading is then selected for further processing to calculate the noise level for each cylinder '''nl_[0-5]'''.
+
+To determine the level 1 knock (Light knock) threshold the '''nl_[0-5]''' data is multiplied with the '''ip_fac_knk_[0-5]''' tables and if the knock signal '''knks_[0-5]''' exceeds this threshold a level 1 knock event is signaled.
+
+To determine the level 2 (Heavy knock) knock threshold the level 1 knock threshold is multiplied by the '''id_fac_knks_thd__tia''' table.
+
+If the multiplication factors in the '''ip_fac_knk_[0-5]'''/'''id_fac_knks_thd__tia''' tables is made smaller it will make the knock detection logic more sensitive and if they are made bigger the multiplication factor will make the knock detection logic less sensitive.
+
+The amount of ignition angle retard to apply for a given knock level is specified in the following tables:
+*'''id_iga_dec_knk_1__n''': ignition angle reduction based on knock level 1 (Light knock)
+*'''id_iga_dec_knk_2__n''': ignition angle reduction based on knock level 2 (Heavy knock)
+
+If the ecu detects that the knock ignition angle retard has been sustained for a longer period it will slowly start to fade out the '''ip_iga_ron_98''' ignition table and instead fade in the '''ip_iga_ron_91''' ignition table until the sustained knock ignition angle retard goes back to zero.
+
+=Special Functions=
+==Differential Vehicle Speed Sensor Mod For E30/E34==
+If you want to use an MS43 in an older E30 or E34 chassis and keep the speed signal sensor inside your rear differential housing, you have to change the number of impulses needed for one kilometer.
+
+* '''c_vs_fac''' = Number of vehicle speed sensor pulses per kilometer
+
+A suitable number for the E30,E34 and e36 diffs is '''c_vs_fac''' = "1096" ~ "1100" (Smaller value = Higher speed reading / Higher Value = Lower speed reading)  
+
+'''Note:''' This only affects ECU data acquisition and not the dashboard view, but its helpful for speed based parameters like LC config
+
+Values can be fine tuned with a GPS based device to adjust for wheel/tire dimension differences
+
+Unfortunately this low value will make the reading very unprecise. For a fix check out the [[TunerPro_MS43_Community_Patchlist|MS43 Commuinity Patchlist]].
+
+==Exhaust Pop Modifications==
+When tuning for exhaust pops there are two approaches that can be taken.
+
+===== Toggleable exhaust pops =====
+This approach disables the trailing throttle fuel cut by raising the minimum engine speed threshold for trailing throttle fuel cut to an engine speed that the engine can't reach, this will produce continuous exhaust pops as soon as the throttle is lifted.
+
+As the MS43 has two separate tables for when the AC is on or off. We can use that logic to only activate exhaust pops when the AC is on.
+
+*'''ip_n_min_puc__tco''' - Minimum engine speed for trailing throttle fuel cut activation with AC off
+*'''ip_n_min_accin_puc__tco''' - Minimum engine speed for trailing throttle fuel cut activation with AC on
+
+To tune the intensity of the exhaust pops the following ignition tables can be used.
+
+*'''ip_iga_pu__n__tco''' - Target ignition angle in case of trailing throttle
+*'''ip_iga_puc__n__tco''' - Target ignition angle in case of trailing throttle fuel cut-off
+*'''ip_iga_accin_puc__n__tco''' - Target ignition angle in case of trailing throttle fuel cut-off with AC on
+
+[[File:TP Toggle Exhaust Pops.PNG|300px|thumb|none|TunerPro depiction of toggled exhaust pops. This example should only be used as a starting point for further tuning.]]
+
+===== Timered exhaust pops =====
+This approach uses a built in timer function in the MS43 which delays the activation of the trailing throttle fuel cut by a set amount of time. 
+
+With this approach it's possible to achieve a set amount of pops before the trailing throttle fuel cut is activated.
+*'''c_t_puc_deacc_vs''' - Delay before activating trailing throttle fuel cut when car is stationary
+*'''ip_t_puc_deacc_1__n__maf_mmv''' - Delay before activating trailing throttle fuel cut. First gear
+*'''ip_t_puc_deacc_2__n__maf_mmv''' - Delay before activating trailing throttle fuel cut. Second gear
+*'''ip_t_puc_deacc_3__n__maf_mmv''' - Delay before activating trailing throttle fuel cut. Third gear
+*'''ip_t_puc_deacc_4__n__maf_mmv''' - Delay before activating trailing throttle fuel cut. Forth gear
+*'''ip_t_puc_deacc_5__n__maf_mmv''' - Delay before activating trailing throttle fuel cut. Fifth gear
+
+To tune the intensity of the exhaust pops the same tables as the toggleable exhaust pops approach can be used.
+
+[[File:TP Timer Exhaust Pops.PNG|300px|thumb|none|TunerPro depiction of timered exhaust pops. This example should only be used as a starting point for further tuning.]]
+
+Both approaches can also be combined in the following way to have short pops with AC off and continous pops when the AC is on.
+[[File:TP Combined Exhaust Pops.PNG|300px|thumb|none|TunerPro depiction of combined exhaust pops. This example should only be used as a starting point for further tuning.]]
+
+==Idle Control Valve Delete==
+The M54 engine’s motorized throttle body allows for the complete removal of the Idle Control Valve (ICV) or Idle Speed Actuator (ISA).
+
+'''Physical Removal'''
+
+# Disconnect the ICV electrical connector.
+# Either:
+#* Remove the ICV and plug the opening in the intake manifold (recommended)
+#* Leave the ICV in place and ensure it is completely sealed to prevent any air leaks.
+
+If you plan to machine a custom plug, you can use the following reference template:
+[[:File:ISA Delete Plug.pdf|ISA_Delete_Plug.pdf]]
+
+'''ECU Configuration Changes'''
+
+The key calibration change required for an ICV delete involves modifying the '''ip_pvs_isa_isapwm''' table.
+This table determines how the ECU adds additional PVS (Pedal Value Sensor) input to the driver’s requested PVS input, based on the idle control duty cycle.
+
+In the factory configuration, the ECU primarily uses the ICV to regulate airflow into the engine during idle.
+If the ECU requires more air than the ICV can deliver (even at 100% duty cycle), it references the '''ip_pvs_isa_isapwm''' table to translate that duty cycle into an additional PVS input.
+This results in a small throttle opening via the electronic throttle body, even though the driver’s requested PVS input is zero (no throttle pedal input).
+
+'''Example:''' Stock M54B30 Behavior
+
+At 109% idle control duty cycle, the '''ip_pvs_isa_isapwm''' table adds 17.5° of PVS input.
+At an idle speed of 700 RPM, the '''ip_tps_sp_pvs''' table translates this to a 1.699° throttle opening.
+
+At 75% idle control duty cycle, the table adds 15° of PVS input.
+Under the same idle conditions (700 RPM), the '''ip_tps_sp_pvs''' table translates this to 0° throttle opening, meaning all idle airflow is supplied by the ICV.
+
+'''Adapting for ICV Removal'''
+
+When the ICV is removed, the '''ip_pvs_isa_isapwm''' table must be rescaled to simulate the airflow that the ICV previously provided, using only the motorized throttle body.
+
+See [[ICV Delete Values]] for copy pasteable ICV delete values for the M54B30 engine configuration.
+
+For M54B22 or M54B25 engines (which use smaller throttle bodies), the '''ip_pvs_isa_isapwm''' values may require adjustment to achieve a stable idle.
+A good starting point is to increase the values proportionally to the difference in throttle body opening area between the M54B30 and the smaller engines.
+
+'''Note:''' After modifying calibration parameters that affect the idle controller, it is recommended to clear the ECU idle adaptations as stored adaptation values from a previous calibration may negatively influence the behavior of the updated calibration.
+
+'''Checksum Correction'''
+
+This modification changes a monitoring table, which means that the calibration addition checksum must be corrected after doing this modification. When using the MS4x Flasher this checksum will be corrected automatically.
+For more information, see: [[#Checksums|Checksums Section]]
+
+== Lumpy Idle / Ghost Cam ==
+
+A characteristic "lumpy" or "choppy" idle is commonly associated with engines fitted with high-overlap performance camshafts. The increased valve overlap allows both the intake and exhaust valves to remain open simultaneously for a longer period, reducing idle stability and producing the distinctive exhaust note.
+
+Because the M52TU and M54 engines are equipped with continuously variable intake and exhaust camshaft timing (VANOS), a similar idle characteristic can be achieved through calibration alone by increasing valve overlap at idle. This modification is commonly referred to as '''Ghost Cam''' or '''Fake Race Cam'''.
+
+'''VANOS Calibration'''
+
+Valve overlap is increased by adjusting the idle VANOS target angles in the following maps:
+
+* '''ip_cam_sp_tco_1_in_is__n__maf_iv''' – Intake camshaft setpoint during idle. Cold engine.
+* '''ip_cam_sp_tco_1_ex_is__n__maf_iv''' – Exhaust camshaft setpoint during idle. Cold engine.
+* '''ip_cam_sp_tco_2_in_is__n__maf_iv''' – Intake camshaft setpoint during idle. Warm engine.
+* '''ip_cam_sp_tco_2_ex_is__n__maf_iv''' – Exhaust camshaft setpoint during idle. Warm engine.
+
+Increasing valve overlap generally requires advancing the intake camshaft and retarding the exhaust camshaft within the allowable adjustment range. The maximum overlap is achieved when the intake camshaft is commanded to its minimum permitted angle (typically '''80°''' or '''86°''', depending on the engine variant) and the exhaust camshaft is commanded to '''−80°'''.
+
+[[File:Camshaft Mod.jpg|300px|thumb|none|Minimum allowable VANOS target angles shown in TunerPro.]]
+
+'''Misfire Detection'''
+
+Large amounts of valve overlap can significantly reduce idle stability, causing the ECU's misfire detection system to falsely identify normal combustion as misfires.
+
+To prevent unnecessary intervention or engine stalling, increase the minimum engine speed threshold for misfire detection:
+
+* '''c_n_min_er''' – Minimum engine speed for misfire detection.
+
+This threshold should be set above the desired idle speed so that misfire detection remains inactive while the engine is operating with the increased valve overlap.
+
+'''Calibration Starting Point'''
+
+The following calibration provides a useful starting point for further tuning. Final values should be optimized for the specific engine configuration, idle speed, and desired idle characteristics.
+
+[[File:GhostCam.jpg|300px|thumb|none|Example Ghost Cam calibration shown in TunerPro.]]
+
+== Map Reduction ==
+[[File:Siemens MS43 Map Reduction.png|thumb|MS43 Map Reduction]]
+The MS43 ECU contains separate calibration tables for cold-engine '''tco_1''' and warm-engine '''tco_2''' operation.
+This allows the ECU to optimize VANOS targets, fueling and ignition timing throughout the engine warm-up phase improving emissions, idle quality, and drivability.
+
+While this provides greater calibration flexibility, it also significantly increases the number of maps that must be tuned.
+
+For applications where separate cold and warm calibrations are not required the ECU can be configured to use only the '''tco_1''' (cold-engine) maps during normal operation.
+
+'''Configuration'''
+
+To force the ECU to use the '''tco_1''' maps, set the following transition factor tables to '''1.0''' across their entire operating range:
+
+* '''ip_fac_is_ivvt'''
+* '''ip_fac_pl_ivvt'''
+* '''ip_fac_cam_sp_in_is'''
+* '''ip_fac_cam_sp_ex_is'''
+* '''ip_fac_cam_sp_in_pl'''
+* '''ip_fac_cam_sp_ex_pl'''
+
+Setting these tables to '''1.0''' prevents the ECU from blending to the '''tco_2''' (warm-engine) tables, causing the '''tco_1''' maps to always be active.
+
+'''Maps Used During Normal Operation'''
+
+After this change, the following maps are used during normal engine operation:
+
+'''Injection'''
+
+* '''Idle:''' '''ip_ti_tco_1_is_ivvt'''
+* '''Part Load:''' '''ip_ti_tco_1_pl_ivvt_1''' and '''ip_ti_tco_1_pl_ivvt_2'''
+
+'''Ignition'''
+
+* '''Idle:''' '''ip_iga_tco_1_is_ivvt'''
+* '''Part and Full Load:''' '''ip_iga_tco_1_pl_ivvt'''
+
+'''VANOS'''
+
+* '''Idle:''' '''ip_cam_sp_tco_1_in_is''' and '''ip_cam_sp_tco_1_ex_is'''
+* '''Part Load:''' '''ip_cam_sp_tco_1_in_pl''' and '''ip_cam_sp_tco_1_ex_pl'''
+* '''Full Load:''' '''ip_cam_sp_tco_1_in_fl''' and '''ip_cam_sp_tco_1_ex_fl'''
+
+'''Important:''' The following fallback maps are still used whenever the ECU enters a VANOS fault state. These tables are '''not''' affected by the transition factors and should always be calibrated appropriately.
+
+* '''ip_tib__n__maf''' – Base injection time during VANOS fault operation
+* '''ip_igab_is__n__maf''' – Base idle ignition timing during VANOS fault operation
+* '''ip_igab__n__maf''' – Base ignition timing during VANOS fault operation
+
+==VANOS Tweak for little extra midrange power==
+Insert the following tables into the desired part-load map where you need the effect ( part-load cold / part-load warm / both).
+
+{| class="wikitable mw-collapsible mw-collapsed" style="width: 920pt"
+|+ VANOS Tweak maps in table form for copy and pasting into TunerPro M54B30 only
+! Exhaust cam setpoint part-load !! Intake cam setpoint part-load
+|-
+|
+ {|class="wikitable border="1" style="width: 450pt; margin: auto; text-align:right"
+ | -105.0 || -105.0 || -105.0 || -104.6 || -103.1 || -97.5 || -96.0 || -96.8 || -98.3 || -104.3 || -99.0 || -99.0
+ |-
+ | -105.0 || -104.6 || -103.9 || -102.0 || -99.0 || -96.0 || -95.3 || -96.4 || -97.9 || -103.9 || -98.6 || -98.6
+ |-
+ | -104.6 || -103.9 || -100.9 || -97.5 || -93.8 || -92.6 || -93.4 || -94.9 || -96.4 || -101.6 || -97.5 || -97.5
+ |-
+ | -103.9 || -102.4 || -96.4 || -92.6 || -88.9 || -88.1 || -90.0 || -91.5 || -93.8 || -97.1 || -91.9 || -91.9
+ |-
+ | -103.1 || -101.6 || -94.9 || -91.1 || -87.4 || -86.6 || -88.5 || -90.4 || -92.6 || -96.0 || -90.8 || -90.8
+ |-
+ | -100.9 || -98.6 || -90.4 || -87.0 || -85.9 || -85.1 || -85.9 || -88.5 || -91.1 || -95.6 || -90.4 || -90.4
+ |-
+ | -99.0 || -96.4 || -88.5 || -85.9 || -85.1 || -84.8 || -85.5 || -88.9 || -94.1 || -97.5 || -95.3 || -95.3
+ |-
+ | -97.9 || -95.3 || -87.8 || -85.9 || -85.1 || -85.1 || -85.9 || -91.9 || -97.5 || -100.9 || -99.0 || -99.0
+ |-
+ | -96.8 || -94.5 || -88.5 || -86.6 || -85.9 || -96.0 || -95.6 || -95.6 || -95.6 || -95.6 || -95.6 || -97.5
+ |-
+ | -95.6 || -94.1 || -91.1 || -88.5 || -88.5 || -99.8 || -101.6 || -101.6 || -101.6 || -101.6 || -100.5 || -101.3
+ |-
+ | -95.3 || -93.8 || -91.9 || -90.4 || -90.4 || -101.3 || -102.0 || -102.0 || -102.0 || -102.0 || -100.9 || -101.6
+ |-
+ | -93.8 || -93.0 || -92.3 || -92.3 || -94.5 || -102.4 || -101.3 || -101.3 || -101.3 || -101.3 || -100.1 || -101.3
+ |-
+ | -91.9 || -91.5 || -91.9 || -92.3 || -95.3 || -105.8 || -106.1 || -106.1 || -106.1 || -106.1 || -105.0 || -102.8
+ |-
+ | -87.8 || -88.5 || -89.6 || -91.1 || -94.9 || -106.1 || -106.1 || -106.1 || -106.1 || -106.1 || -105.0 || -103.1
+ |-
+ | -85.5 || -87.0 || -88.5 || -90.0 || -93.8 || -106.1 || -106.1 || -106.1 || -106.1 || -106.1 || -105.0 || -103.1
+ |-
+ | -84.0 || -85.9 || -87.4 || -88.9 || -93.0 || -106.1 || -106.1 || -106.1 || -106.1 || -106.1 || -105.0 || -103.1
+ |}
+|
+ {| class="wikitable" border="1" style="width: 450pt; margin: auto; text-align:right"
+ | 126.00 || 126.00 || 125.63 || 124.88 || 123.00 || 118.88 || 113.25 || 106.50 || 105.00 || 104.25 || 108.00 || 108.00
+ |-
+ | 126.00 || 126.00 || 125.25 || 124.50 || 122.63 || 118.50 || 112.88 || 106.50 || 105.00 || 104.25 || 105.00 || 105.00
+ |-
+ | 126.00 || 125.63 || 124.88 || 124.13 || 122.25 || 118.13 || 112.50 || 105.75 || 104.25 || 103.50 || 100.13 || 100.13
+ |-
+ | 125.63 || 124.88 || 123.75 || 122.63 || 120.38 || 115.88 || 110.25 || 103.88 || 99.75 || 98.63 || 91.50 || 91.50
+ |-
+ | 125.25 || 124.50 || 123.38 || 121.88 || 119.25 || 114.75 || 109.50 || 102.75 || 98.63 || 97.50 || 90.75 || 90.75
+ |-
+ | 124.50 || 123.38 || 122.25 || 120.38 || 117.38 || 112.50 || 107.25 || 101.25 || 97.50 || 96.75 || 90.75 || 90.75
+ |-
+ | 123.38 || 122.25 || 120.75 || 118.88 || 114.38 || 107.63 || 102.00 || 98.25 || 97.13 || 96.38 || 90.38 || 90.38
+ |-
+ | 122.63 || 121.13 || 120.00 || 117.75 || 112.13 || 103.50 || 99.38 || 97.50 || 96.75 || 96.38 || 91.50 || 91.50
+ |-
+ | 115.50 || 113.63 || 111.75 || 109.50 || 104.25 || 93.75 || 99.38 || 98.25 || 94.50 || 94.13 || 94.13 || 94.13
+ |-
+ | 113.25 || 111.75 || 110.25 || 107.25 || 100.50 || 91.88 || 100.88 || 99.75 || 94.88 || 94.50 || 94.50 || 94.50
+ |-
+ | 112.13 || 110.25 || 108.00 || 104.63 || 94.50 || 90.38 || 101.25 || 100.50 || 97.50 || 97.50 || 97.50 || 97.50
+ |-
+ | 110.63 || 105.38 || 99.75 || 95.25 || 89.63 || 90.75 || 105.75 || 105.00 || 101.63 || 100.50 || 100.50 || 100.50
+ |-
+ | 109.88 || 104.25 || 97.50 || 92.25 || 109.50 || 110.25 || 109.50 || 110.25 || 108.75 || 108.75 || 108.75 || 108.75
+ |-
+ | 108.75 || 103.88 || 99.38 || 94.88 || 115.50 || 118.13 || 118.13 || 118.13 || 117.75 || 117.75 || 117.75 || 117.75
+ |-
+ | 108.38 || 106.50 || 104.25 || 101.25 || 118.50 || 126.00 || 126.00 || 126.00 || 126.00 || 126.00 || 122.25 || 122.25
+ |-
+ | 108.38 || 108.75 || 108.00 || 106.50 || 122.25 || 126.00 || 126.00 || 126.00 || 126.00 || 126.00 || 126.00 || 126.00
+ |}
+|}
+
+[[File:vanos_tweak.jpg|DoCr VANOS Tweak]]
+
+===Explanation===
+For stock engine with stock exhaust and intake flow, above VANOS tune works best.
+
+For a modded engine, or stock with free flowing exhaust and cold air intake, valve overlap can help increase volumetric efficiency at middle engine speeds (~4000rpm), which results in more power.
+
+Taking as a base M54B30 engine with intake cam 126° for max, and 86° for min ; exhaust cam -105° for max and -80° for min
+
+'''126° represents intake cam in its max retard form, and 86° in its max advance position'''
+
+'''-105° represents exhaust cam in its max advance position, and -80° in its max retard stage'''
+
+General rule for overlap :
+*'''Advancing both cams''' - more low end torque and less top end power
+*'''Retarding both cams''' - less low end torque and more top end power
+
+Tip for full load VANOS table: Begin from low rpm with max number for your cam (intake 126° , exhaust -105°) and  progressively reduce number until you reach 4000rpm and lowest cam number (intake 86,exhaust -80)
+
+From 4000rpm upwards, use inverse technique, start to rise again numbers, progressively. (every engine responds different by exhaust config) Test combinations until you are happy.
+
+Also, do changes for intake only, leave exhaust alone if you are on stock exhaust manifold.
+
+'''note'''  Theoretically, there is no risk of damaging the engine (valve hits piston) if you stay within specified range for your particular cams. (m54b30 intake 126/86 ,exhaust -105/-80)

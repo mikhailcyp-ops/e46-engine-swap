@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M54B30 X5 → E46 M43 — визуальный план</title>
+  <style>
+    :root {
+      --bg: #0f1114;
+      --surface: #181b21;
+      --border: #2a3038;
+      --text: #e8eaed;
+      --muted: #9aa3ad;
+      --accent: #3d8bfd;
+      --warn: #e6a23c;
+      --ok: #3ecf8e;
+      --danger: #f07178;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: "Cascadia Code", "Consolas", monospace;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f4f5f7;
+        --surface: #fff;
+        --border: #d8dde3;
+        --text: #1a1d21;
+        --muted: #5c6570;
+        --accent: #1a6fd4;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    h1 { font-size: 1.75rem; font-weight: 600; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .subtitle { color: var(--muted); font-size: 0.95rem; max-width: 42rem; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+    .badge.accent { border-color: var(--accent); color: var(--accent); }
+    section { margin: 2rem 0; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 0 0 1rem; }
+    .callout {
+      border-left: 3px solid var(--warn);
+      background: var(--surface);
+      padding: 1rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 0.92rem;
+    }
+    .callout.danger { border-left-color: var(--danger); }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    svg { display: block; max-width: 100%; height: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+    }
+    th { background: var(--bg); font-weight: 600; }
+    code { font-family: var(--mono); font-size: 0.85em; }
+    ol.timeline { list-style: none; padding: 0; margin: 0; counter-reset: phase; }
+    ol.timeline li {
+      position: relative;
+      padding: 0 0 1.5rem 2.5rem;
+      counter-increment: phase;
+    }
+    ol.timeline li::before {
+      content: counter(phase);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.75rem;
+      height: 1.75rem;
+      line-height: 1.75rem;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 50%;
+      background: var(--surface);
+    }
+    ol.timeline li::after {
+      content: "";
+      position: absolute;
+      left: 0.85rem;
+      top: 1.85rem;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    ol.timeline li:last-child::after { display: none; }
+    ol.timeline h3 { margin: 0 0 0.35rem; font-size: 1rem; }
+    ol.timeline p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+    @media print {
+      body { background: #fff; color: #000; }
+      .panel { break-inside: avoid; border-color: #ccc; }
+      .callout { border-color: #999; }
+    }
+    footer { margin-top: 3rem; font-size: 0.8rem; color: var(--muted); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>M54B30 (X5 E53) → BMW E46 (ex-M43B19)</h1>
+      <p class="subtitle">
+        Донор с АКПП, в машине — МКПП. MS43 + моторная коса X5, кузовная проводка E46.
+        Диаграммы и порядок работ; детали — в <code>M54_X5_to_E46_M43_swap_plan.md</code>.
+      </p>
+      <div class="badge-row">
+        <span class="badge accent">Siemens MS43</span>
+        <span class="badge">BMS46 → стыковка</span>
+        <span class="badge">Manual M54 flash</span>
+        <span class="badge">Cyprus / EU</span>
+      </div>
+    </header>
+
+    <div class="callout danger">
+      <strong>До закупок:</strong> колокол КПП 318 M43 часто не совместим с M54; маховик с АКПП-донора не подходит под сцепление.
+      Прошивка MS43 должна быть под <strong>Manual</strong>, не E53 Auto. Не включать зажигание до решения по EWS.
+    </div>
+
+    <section>
+      <h2>Архитектура: кто с кем разговаривает</h2>
+      <div class="panel">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема проводки">
+          <defs>
+            <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="currentColor" />
+            </marker>
+          </defs>
+          <style>text { font-family: Segoe UI, sans-serif; fill: currentColor; }</style>
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="20" y="90" width="130" height="50" rx="6" />
+            <text x="85" y="112" text-anchor="middle" font-size="13" font-weight="600">E46 кузов</text>
+            <text x="85" y="128" text-anchor="middle" font-size="10" opacity="0.7">BMS46 жгут</text>
+            <rect x="190" y="35" width="110" height="44" rx="6" />
+            <text x="245" y="62" text-anchor="middle" font-size="12" font-weight="600">X60004</text>
+            <rect x="190" y="105" width="110" height="44" rx="6" />
+            <text x="245" y="132" text-anchor="middle" font-size="12" font-weight="600">X6011</text>
+            <rect x="350" y="70" width="120" height="58" rx="6" stroke-width="2" />
+            <text x="410" y="95" text-anchor="middle" font-size="13" font-weight="600">MS43 DME</text>
+            <text x="410" y="112" text-anchor="middle" font-size="10" opacity="0.7">коса X5</text>
+            <rect x="520" y="35" width="140" height="48" rx="6" />
+            <text x="590" y="64" text-anchor="middle" font-size="12" font-weight="600">M54B30</text>
+            <rect x="520" y="105" width="140" height="48" rx="6" />
+            <text x="590" y="134" text-anchor="middle" font-size="12" font-weight="600">МКПП E46</text>
+            <line x1="150" y1="115" x2="190" y2="57" marker-end="url(#a)" />
+            <line x1="150" y1="115" x2="190" y2="127" marker-end="url(#a)" />
+            <line x1="300" y1="57" x2="350" y2="90" marker-end="url(#a)" stroke-width="2" />
+            <line x1="300" y1="127" x2="350" y2="110" marker-end="url(#a)" stroke-width="2" />
+            <line x1="470" y1="99" x2="520" y2="59" marker-end="url(#a)" />
+            <line x1="470" y1="99" x2="520" y2="129" marker-end="url(#a)" />
+            <rect x="20" y="200" width="720" height="70" rx="6" stroke-dasharray="4 3" />
+            <text x="380" y="228" text-anchor="middle" font-size="11" font-weight="600">X60003 — датчики/форсунки на косе X5 (не трогать без нужды)</text>
+            <text x="380" y="248" text-anchor="middle" font-size="10" opacity="0.75">X60002 pin 3–4 CAN АКПП — не в TCU при МКПП</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section>
+      <h2>Последовательность фаз</h2>
+      <ol class="timeline">
+        <li>
+          <h3>Инвентаризация</h3>
+          <p>Фото разъёмов, прозвонка X60004 / X6011 / X5. Таблица «есть / нет»: DBW, clutch, brake 4-wire, SAP, DMTL, вентилятор PWM.</p>
+        </li>
+        <li>
+          <h3>Механика</h3>
+          <p>Поддон E46 M54, опоры 6-цил., manual flywheel, КПП/колокол, кардан. Снять навесное АКПП с двигателя.</p>
+        </li>
+        <li>
+          <h3>Стыковка X60004 + X6011</h3>
+          <p>Четыре индикаторные цепи с кузова → X6011 на моторной стороне; стартер/D+; разъём у крыла (3+1).</p>
+        </li>
+        <li>
+          <h3>Педаль, сцепление, тормоз</h3>
+          <p>DBW manual 786282; X11400→X60004; clutch → pin 23; BLS 4-wire → 24/28.</p>
+        </li>
+        <li>
+          <h3>EWS и прошивка Manual</h3>
+          <p>Комплект X5 или sync E46; MS43 не под E53 Auto. Адаптации DME после flash.</p>
+        </li>
+        <li>
+          <h3>Pre-start</h3>
+          <p>Массы, EKP relay logic (pin 10), CAN 36–37, без 12 V на сигналы педали.</p>
+        </li>
+        <li>
+          <h3>Первый пуск</h3>
+          <p>INPA, лампы приборки, вентилятор, короткая обкатка.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="grid2">
+      <div>
+        <h2>Перенос BMS46 → X6011</h2>
+        <div class="panel">
+          <table>
+            <thead><tr><th>Функция</th><th>BMS46 X60004</th><th>X6011 (PL)</th></tr></thead>
+            <tbody>
+              <tr><td>Лампа зарядки</td><td>1</td><td>4</td></tr>
+              <tr><td>Start feedback</td><td>2</td><td>6</td></tr>
+              <tr><td>Давление масла</td><td>11</td><td>3</td></tr>
+              <tr><td>Уровень масла</td><td>21</td><td>5</td></tr>
+              <tr><td>Стартер / D+</td><td>др. разъём</td><td>1 / 2</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.8rem;color:var(--muted);margin:0.75rem 0 0">На X5 прозвонить — не копировать номера E46 вслепую.</p>
+        </div>
+      </div>
+      <div>
+        <h2>Педаль DBW → MS43</h2>
+        <div class="panel">
+          <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="20" width="100" height="140" rx="6" fill="none" stroke="currentColor"/>
+            <text x="60" y="45" text-anchor="middle" font-size="11" fill="currentColor">X11400</text>
+            <rect x="250" y="20" width="100" height="140" rx="6" fill="none" stroke="currentColor"/>
+            <text x="300" y="45" text-anchor="middle" font-size="11" fill="currentColor">X60004</text>
+            <text x="22" y="70" font-size="10" fill="currentColor" opacity="0.8">1→7</text>
+            <text x="22" y="86" font-size="10" fill="currentColor" opacity="0.8">2→12</text>
+            <text x="22" y="102" font-size="10" fill="currentColor" opacity="0.8">3→14</text>
+            <text x="22" y="118" font-size="10" fill="currentColor" opacity="0.8">4→8</text>
+            <text x="22" y="134" font-size="10" fill="currentColor" opacity="0.8">5→9</text>
+            <text x="22" y="150" font-size="10" fill="currentColor" opacity="0.8">6→13</text>
+            <line x1="110" y1="66" x2="250" y2="66" stroke="currentColor" stroke-dasharray="3 2" opacity="0.6"/>
+            <line x1="110" y1="98" x2="250" y2="98" stroke="currentColor" stroke-dasharray="3 2" opacity="0.6"/>
+            <line x1="110" y1="130" x2="250" y2="130" stroke="currentColor" stroke-dasharray="3 2" opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>MS43 X60004 — добавить для МКПП</h2>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Pin</th><th>Назначение</th><th>Действие</th></tr></thead>
+          <tbody>
+            <tr><td>23</td><td>Clutch switch</td><td>35426876898 → DME + EWS</td></tr>
+            <tr><td>24, 28</td><td>Brake BLS</td><td>4-проводный датчик педали</td></tr>
+            <tr><td>27</td><td>MFL / cruise</td><td>если tempomat</td></tr>
+            <tr><td>10</td><td>EKP relay</td><td>сигнал реле, не силовой насос</td></tr>
+            <tr><td>3</td><td>SAP relay</td><td>опционально</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>EWS — выбор до первого KL-R</h2>
+      <div class="panel">
+        <ol style="margin:0;padding-left:1.2rem;color:var(--muted);font-size:0.92rem">
+          <li>Комплект с X5: EWS + вставка замка + ключ.</li>
+          <li>Синхронизация E46 EWS ↔ MS43 (INPA / MS4x).</li>
+          <li>EWS off в прошивке — осознанный риск и право.</li>
+        </ol>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        Репозиторий: <code>e46-engine-swap</code> ·
+        <a href="M54_X5_to_E46_M43_swap_plan.md">Текстовый план</a> ·
+        <a href="../research/sources/README.md">Источники S01–S42</a>
+      </p>
+      <p>Интерактивная версия в Cursor: откройте Canvas
+        <code>m54-x5-e46-swap-guide.canvas.tsx</code> (папка canvases проекта).</p>
+    </footer>
+  </div>
+</body>
+</html>

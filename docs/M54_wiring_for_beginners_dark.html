@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Проводка M54 X5 → E46 — руководство с нуля</title>
+  <style>
+    :root {
+      --bg: #0f1114;
+      --surface: #181b21;
+      --border: #2a3038;
+      --text: #e8eaed;
+      --muted: #9aa3ad;
+      --accent: #3d8bfd;
+      --warn: #e6a23c;
+      --danger: #f07178;
+      --ok: #3ecf8e;
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --mono: "Cascadia Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 11pt;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .wrap { max-width: 210mm; margin: 0 auto; padding: 14mm 16mm 18mm; }
+    h1 { font-size: 20pt; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em; }
+    h2 { font-size: 13pt; font-weight: 600; margin: 22px 0 10px; color: var(--text); page-break-after: avoid; }
+    h3 { font-size: 11pt; font-weight: 600; margin: 16px 0 8px; color: var(--accent); page-break-after: avoid; }
+    p { margin: 0 0 10px; color: var(--muted); }
+    p.lead { color: var(--text); font-size: 11.5pt; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 16px; }
+    .badge {
+      font-size: 8.5pt;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+    .badge.ac { border-color: var(--accent); color: var(--accent); }
+    .callout {
+      border-left: 3px solid var(--warn);
+      background: var(--surface);
+      padding: 12px 14px;
+      margin: 14px 0;
+      font-size: 10.5pt;
+      color: var(--text);
+      page-break-inside: avoid;
+    }
+    .callout.danger { border-left-color: var(--danger); }
+    .callout.info { border-left-color: var(--accent); }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      margin: 12px 0;
+      page-break-inside: avoid;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin: 8px 0; }
+    th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #12151a; color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
+    code { font-family: var(--mono); font-size: 9pt; color: var(--accent); }
+    ul, ol { margin: 0 0 10px; padding-left: 1.2rem; color: var(--muted); }
+    li { margin-bottom: 5px; }
+    li strong { color: var(--text); }
+    .diagram { color: var(--text); }
+    .diagram text { fill: currentColor; }
+    .mono-block {
+      font-family: var(--mono);
+      font-size: 8.5pt;
+      background: #12151a;
+      border: 1px solid var(--border);
+      padding: 10px;
+      color: var(--muted);
+      white-space: pre-wrap;
+      line-height: 1.35;
+    }
+    .steps { counter-reset: step; list-style: none; padding: 0; }
+    .steps > li {
+      counter-increment: step;
+      position: relative;
+      padding: 0 0 14px 2rem;
+      border-left: 1px solid var(--border);
+      margin-left: 0.85rem;
+    }
+    .steps > li::before {
+      content: counter(step);
+      position: absolute;
+      left: -0.85rem;
+      transform: translateX(-50%);
+      width: 1.4rem;
+      height: 1.4rem;
+      line-height: 1.4rem;
+      text-align: center;
+      font-size: 8.5pt;
+      font-weight: 600;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 50%;
+      background: var(--bg);
+    }
+    .steps > li:last-child { border-left-color: transparent; }
+    footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 8.5pt; color: var(--muted); }
+    @media print {
+      html, body { background: var(--bg) !important; }
+      .wrap { padding: 10mm 12mm; }
+      h2 { page-break-before: auto; }
+      .page-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Проводка M54 (X5) + MS43 в E46 318</h1>
+    <p class="lead">Руководство с нуля: вы впервые у машины и впервые стыкуете жгуты. E46 после M43B19 (BMS46), донор M54B30 + коса X5 + MS43 (на доноре была АКПП), у вас остаётся <strong>механическая КПП</strong>.</p>
+    <div class="badges">
+      <span class="badge ac">Siemens MS43</span>
+      <span class="badge">Кузовной жгут E46</span>
+      <span class="badge">Моторный жгут X5</span>
+      <span class="badge">Manual flash</span>
+    </div>
+
+    <div class="callout danger">
+      <strong>До закупок:</strong> колокол КПП 318 M43 часто не стыкуется с M54; маховик с АКПП-донора не под сцепление. Не включайте зажигание (II), пока не решён EWS + DME.
+    </div>
+
+    <h2>1. Что вы меняете</h2>
+    <p class="lead">Вы не перепрошиваете всю машину. M54 приехал с <strong>моторным жгутом</strong> (форсунки, катушки, датчики) и <strong>MS43</strong>. В E46 остался <strong>кузовной жгут</strong> (приборка, стартер, насос, EWS, OBD). Задача — согласовать их: MS43 должен «видеть» машину, а двигатель — управляться через косу X5.</p>
+
+    <div class="panel diagram">
+      <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#9aa3ad" />
+          </marker>
+        </defs>
+        <rect x="20" y="80" width="140" height="52" rx="5" fill="#181b21" stroke="#2a3038" stroke-width="1.5"/>
+        <text x="90" y="102" text-anchor="middle" font-size="12" font-weight="600" fill="#e8eaed">Кузов E46</text>
+        <text x="90" y="118" text-anchor="middle" font-size="10" fill="#9aa3ad">жгут в машине</text>
+        <rect x="190" y="28" width="118" height="44" rx="5" fill="#181b21" stroke="#2a3038"/>
+        <text x="249" y="54" text-anchor="middle" font-size="11" fill="#3d8bfd">X60004 · 40 pin</text>
+        <rect x="190" y="100" width="118" height="44" rx="5" fill="#181b21" stroke="#2a3038"/>
+        <text x="249" y="126" text-anchor="middle" font-size="11" fill="#3d8bfd">X6011 · 8 pin</text>
+        <rect x="350" y="62" width="128" height="58" rx="5" fill="#181b21" stroke="#3d8bfd" stroke-width="1.5"/>
+        <text x="414" y="88" text-anchor="middle" font-size="12" font-weight="600" fill="#e8eaed">MS43 DME</text>
+        <text x="414" y="106" text-anchor="middle" font-size="10" fill="#9aa3ad">с косой X5</text>
+        <rect x="520" y="28" width="150" height="46" rx="5" fill="#181b21" stroke="#2a3038"/>
+        <text x="595" y="56" text-anchor="middle" font-size="11" fill="#e8eaed">M54 + коса</text>
+        <rect x="520" y="98" width="150" height="46" rx="5" fill="#181b21" stroke="#2a3038"/>
+        <text x="595" y="126" text-anchor="middle" font-size="11" fill="#e8eaed">Ваша МКПП</text>
+        <line x1="160" y1="106" x2="190" y2="50" stroke="#9aa3ad" marker-end="url(#ar)"/>
+        <line x1="160" y1="106" x2="190" y2="122" stroke="#9aa3ad" marker-end="url(#ar)"/>
+        <line x1="308" y1="50" x2="350" y2="85" stroke="#3d8bfd" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="308" y1="122" x2="350" y2="100" stroke="#3d8bfd" stroke-width="2" marker-end="url(#ar)"/>
+        <line x1="478" y1="91" x2="520" y2="51" stroke="#9aa3ad" marker-end="url(#ar)"/>
+        <text x="360" y="175" text-anchor="middle" font-size="10" fill="#9aa3ad">X60003 — к двигателю (обычно уже на косе X5)</text>
+      </svg>
+    </div>
+
+    <h2>2. Словарь</h2>
+    <table>
+      <thead><tr><th>Термин</th><th>Значение</th></tr></thead>
+      <tbody>
+        <tr><td><strong>DME</strong></td><td>Блок управления двигателем. Был BMS46, стал MS43.</td></tr>
+        <tr><td><strong>Жгут</strong></td><td>Пучок проводов с разъёмами.</td></tr>
+        <tr><td><strong>X60004</strong></td><td>40-контактный разъём «машина ↔ DME» — главная работа.</td></tr>
+        <tr><td><strong>X6011</strong></td><td>8-pin мост: лампы приборки, стартер, D+ на M54.</td></tr>
+        <tr><td><strong>EWS</strong></td><td>Иммобилайзер: ключ и DME должны быть согласованы.</td></tr>
+        <tr><td><strong>DBW</strong></td><td>Электронная педаль газа вместо троса M43.</td></tr>
+        <tr><td><strong>Прозвонка</strong></td><td>Мультиметр: какой провод куда (минус АКБ, блоки сняты).</td></tr>
+      </tbody>
+    </table>
+
+    <div class="mono-block">[Приборка / EWS / стартер] ←—— кузовной E46 ——→ [X60004] ←—— MS43 ——→ [M54 датчики/форсунки]</div>
+
+    <h2>3. Где искать на E46</h2>
+    <table>
+      <thead><tr><th>Что</th><th>Где</th></tr></thead>
+      <tbody>
+        <tr><td>MS43 / бывший BMS46</td><td>Правый моторный отсек, у стенки у подушек</td></tr>
+        <tr><td>40-pin кузовной</td><td>Тот же район, жгут «в кузов»</td></tr>
+        <tr><td>X6011</td><td>E-box у стенки моторного отсека</td></tr>
+        <tr><td>Педаль газа</td><td>Под рулём слева</td></tr>
+        <tr><td>EWS</td><td>За бардачком / под обшивкой</td></tr>
+      </tbody>
+    </table>
+
+    <h2>4. Инструменты</h2>
+    <ul>
+      <li>Мультиметр, маркер, скотч, фото каждого разъёма</li>
+      <li>OBD + INPA/ISTA — ошибки, EWS, адаптации</li>
+      <li>Depin BMW (желательно), обжим/паска для переходов</li>
+    </ul>
+
+    <h2>5. Безопасность (шаг 0)</h2>
+    <ol>
+      <li>Снимайте <strong>минус АКБ</strong> при работе с проводами.</li>
+      <li>Не включайте <strong>зажигание II</strong> до решения EWS + MS43.</li>
+      <li>Не подавайте <strong>+12 V</strong> на сигналы педали и датчиков.</li>
+      <li><code>X60004 pin 10</code> — сигнал <strong>реле</strong> насоса, не силовой «+» на мотор насоса.</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>6. Пошагово</h2>
+    <ol class="steps">
+      <li>
+        <h3>Разведка</h3>
+        <p style="color:var(--muted);margin:0">Подписать разъёмы MS43 (X60001…05). Найти кузовной 40-pin. Прозвонить pin 1, 2, 11, 21 BMS46 (PA6000D): лампа зарядки, start feedback, масло.</p>
+      </li>
+      <li>
+        <h3>Механика (параллельно)</h3>
+        <p style="color:var(--muted);margin:0">Manual flywheel; колокол КПП M43 vs M54; поддон/опоры E46.</p>
+      </li>
+      <li>
+        <h3>X60004 + X6011</h3>
+        <p style="color:var(--muted);margin:0">Перенести индикаторные провода с кузовного X60004 на X6011 косы X5. Номера X6011 на E53 — <strong>прозвонить</strong>, не копировать вслепую с E46.</p>
+      </li>
+      <li>
+        <h3>Педаль DBW, сцепление, тормоз</h3>
+        <p style="color:var(--muted);margin:0">Электронная педаль manual; clutch → pin 23; тормоз 4-wire → 24/28.</p>
+      </li>
+      <li>
+        <h3>EWS и прошивка Manual</h3>
+        <p style="color:var(--muted);margin:0">Комплект X5 или sync E46; MS43 не под E53 Auto.</p>
+      </li>
+      <li>
+        <h3>Проверки без пуска</h3>
+        <p style="color:var(--muted);margin:0">Массы, CAN 36–37, EKP pin 10.</p>
+      </li>
+      <li>
+        <h3>Первый пуск</h3>
+        <p style="color:var(--muted);margin:0">Масло, ОЖ, сцепление; короткий пуск; коды DME.</p>
+      </li>
+    </ol>
+
+    <h2>7. BMS46 → X6011 (ориентир PL)</h2>
+    <table>
+      <thead><tr><th>Сигнал</th><th>BMS46 X60004</th><th>X6011</th></tr></thead>
+      <tbody>
+        <tr><td>Лампа зарядки</td><td>1</td><td>4</td></tr>
+        <tr><td>Start feedback</td><td>2</td><td>6</td></tr>
+        <tr><td>Давление масла</td><td>11</td><td>3</td></tr>
+        <tr><td>Уровень масла</td><td>21</td><td>5</td></tr>
+        <tr><td>Стартер (управл.)</td><td>др. разъём M43</td><td>1</td></tr>
+        <tr><td>D+ генератора</td><td>др. разъём M43</td><td>2</td></tr>
+      </tbody>
+    </table>
+
+    <h2>8. Педаль X11400 → MS43 X60004</h2>
+    <table>
+      <thead><tr><th>Педаль pin</th><th>X60004 pin</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>7</td></tr>
+        <tr><td>2</td><td>12</td></tr>
+        <tr><td>3</td><td>14</td></tr>
+        <tr><td>4</td><td>8</td></tr>
+        <tr><td>5</td><td>9</td></tr>
+        <tr><td>6</td><td>13</td></tr>
+      </tbody>
+    </table>
+    <p>PN ориентир: пластина <code>35 42 6 772 703</code> LHD, педаль manual <code>35 42 6 786 282</code>.</p>
+
+    <h2>9. MS43 X60004 — добавить для МКПП</h2>
+    <table>
+      <thead><tr><th>Pin</th><th>Назначение</th></tr></thead>
+      <tbody>
+        <tr><td>23</td><td>Датчик сцепления (35426876898 → DME + EWS)</td></tr>
+        <tr><td>24, 28</td><td>Педаль тормоза BLS (4 провода)</td></tr>
+        <tr><td>27</td><td>MFL / cruise (если есть)</td></tr>
+        <tr><td>10</td><td>Реле бензонасоса (сигнал)</td></tr>
+        <tr><td>3</td><td>SAP (можно не подключать)</td></tr>
+      </tbody>
+    </table>
+    <p><code>X60002 pin 3–4</code> — CAN АКПП: при МКПП не в TCU донора.</p>
+
+    <h2>10. EWS — три пути</h2>
+    <table>
+      <thead><tr><th></th><th>Суть</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>EWS + замок + ключ с X5</td></tr>
+        <tr><td>B</td><td>EWS E46 + sync MS43 (INPA / MS4x)</td></tr>
+        <tr><td>C</td><td>EWS off в прошивке — отдельное решение</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout info">
+      <strong>pinoutbms46.pdf</strong> в корне репо — Autodata M43, не таблица X60004. Используйте PA6000D в <code>research/sources</code>.
+    </div>
+
+    <footer>
+      e46-engine-swap · M54_wiring_for_beginners · тёмная тема для печати · 2026-10-20
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+[
+    {
+        "id":  "S04",
+        "bytes":  0,
+        "out":  "S04_e46forum_pl_m43_m54.html",
+        "error":  "Удаленный сервер возвратил ошибку: (403) Запрещено.",
+        "url":  "https://e46forum.pl/bmw-e46-swap-m43-na-m54-18149-5",
+        "status":  "fail"
+    },
+    {
+        "id":  "S05",
+        "bytes":  227455,
+        "out":  "S05_github_krided_e46.html",
+        "error":  "",
+        "url":  "https://github.com/krided/E46",
+        "status":  "ok"
+    },
+    {
+        "id":  "S07",
+        "bytes":  0,
+        "out":  "S07_ecuconnections_bms46.html",
+        "error":  "Удаленный сервер возвратил ошибку: (403) Запрещено.",
+        "url":  "https://www.ecuconnections.com/forum/viewtopic.php?t=81616",
+        "status":  "fail"
+    },
+    {
+        "id":  "S08",
+        "bytes":  2181,
+        "out":  "S08_ecu_design_bms46.html",
+        "error":  "",
+        "url":  "https://ecu.design/ecu-pinout/pinout-bosch-bms46-bmw-main-connector/",
+        "status":  "ok"
+    },
+    {
+        "id":  "S09",
+        "bytes":  3038,
+        "out":  "S09_scribd_bms46.html",
+        "error":  "",
+        "url":  "https://www.scribd.com/document/756953671/Bosch-Bms46-Bmw-Main-Connector",
+        "status":  "ok"
+    },
+    {
+        "id":  "S10",
+        "bytes":  17483,
+        "out":  "S10_gstuning_bms46_v4.html",
+        "error":  "",
+        "url":  "https://www.gstuning.net/mediawiki/index.php?title=BMW_M43_BMS46_V4",
+        "status":  "ok"
+    },
+    {
+        "id":  "S11",
+        "bytes":  177302,
+        "out":  "S11_bimmertuningtools_pinouts.html",
+        "error":  "",
+        "url":  "https://www.bimmertuningtools.com/pinouts/",
+        "status":  "ok"
+    },
+    {
+        "id":  "S12",
+        "bytes":  0,
+        "out":  "S12_ecubackup_bms46.html",
+        "error":  "Удаленный сервер возвратил ошибку: (403) Запрещено.",
+        "url":  "https://www.ecubackup.com/bmw/bmw-3xx/bmw-316-0261204420-dme1430940-bms46-e46-000442941/",
+        "status":  "fail"
+    },
+    {
+        "id":  "S13",
+        "bytes":  1845372,
+        "out":  "S13_centralinemotore_bms46.html",
+        "error":  "",
+        "url":  "https://www.centralinemotore.com/product-page/0261204420-bosch-bms46-dme-1430940-centralina-motore-ecu-bmw-z3-e36-e46-318ci",
+        "status":  "ok"
+    },
+    {
+        "id":  "S16",
+        "bytes":  85526,
+        "out":  "S16_bmwteka_e46.html",
+        "error":  "",
+        "url":  "https://bmwteka.com/wds/en/e46",
+        "status":  "ok"
+    },
+    {
+        "id":  "S17",
+        "bytes":  53695,
+        "out":  "S17_bmwteka_bms46_scheme.html",
+        "error":  "",
+        "url":  "https://bmwteka.com/wds/en/e46/f770ef12",
+        "status":  "ok"
+    },
+    {
+        "id":  "S18",
+        "bytes":  5675,
+        "out":  "S18_wds_psjr_drive.html",
+        "error":  "",
+        "url":  "https://wds.psjr.org/en/e46/Complete%20vehicle/Drive",
+        "status":  "ok"
+    },
+    {
+        "id":  "S19",
+        "bytes":  0,
+        "out":  "S19_newtis_x6011.html",
+        "error":  "Удаленный сервер возвратил ошибку: (403) Запрещено.",
+        "url":  "https://www.newtis.info/tisv2/a/en/e46-316ci-cou/components-connectors/plug-in-comb-type-solder-connectors/connectors-from-x6/x6011-x6011/",
+        "status":  "fail"
+    },
+    {
+        "id":  "S20",
+        "bytes":  0,
+        "out":  "S20_newtis_bms46_ac.html",
+        "error":  "Удаленный сервер возвратил ошибку: (403) Запрещено.",
+        "url":  "https://www.newtis.info/tisv2/a/en/e46-m3-cou/wiring-functional-info/power-train/engine-control-bms46/a-c-compressor-control/compressor-control/pAleAsK",
+        "status":  "fail"
+    },
+    {
+        "id":  "S21",
+        "bytes":  0,
+        "out":  "S21_realoem_vin.html",
+        "error":  "Удаленный сервер возвратил ошибку: (403) Запрещено.",
+        "url":  "https://www.realoem.com/bmw/enUS/partgrp?vin=JK85100",
+        "status":  "fail"
+    }
+]
